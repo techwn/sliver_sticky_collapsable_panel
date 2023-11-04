@@ -110,7 +110,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: InfiniteGroupedList<Transaction, DateTime, String>(
         groupBy: (item) => item.dateTime,
         sortGroupBy: (item) => item.dateTime,
-        groupTitleBuilder: (index, title, groupBy, isPinned, isExpanded, scrollPercentage) {
+        groupTitleBuilder:
+            (index, title, groupBy, isPinned, isExpanded, scrollPercentage) {
           return Container(
             width: double.infinity,
             height: 50,
@@ -152,7 +153,8 @@ class _MyHomePageState extends State<MyHomePage> {
             child: ListTile(
               onTap: () {
                 if (kDebugMode) {
-                  print('tap on item: name = ${item.name} date = ${item.dateTime}');
+                  print(
+                      'tap on item: name = ${item.name} date = ${item.dateTime}');
                 }
               },
               title: Text(item.name),
@@ -186,15 +188,19 @@ class _MyHomePageState extends State<MyHomePage> {
           final lastWeek = today.subtract(const Duration(days: 7));
           final lastMonth = DateTime(today.year, today.month - 1, today.day);
 
-          if (today.day == dateTime.day && today.month == dateTime.month && today.year == dateTime.year) {
+          if (today.day == dateTime.day &&
+              today.month == dateTime.month &&
+              today.year == dateTime.year) {
             return 'Today';
           } else if (yesterday.day == dateTime.day &&
               yesterday.month == dateTime.month &&
               yesterday.year == dateTime.year) {
             return 'Yesterday';
-          } else if (lastWeek.isBefore(dateTime) && dateTime.isBefore(yesterday)) {
+          } else if (lastWeek.isBefore(dateTime) &&
+              dateTime.isBefore(yesterday)) {
             return 'Last Week';
-          } else if (lastMonth.isBefore(dateTime) && dateTime.isBefore(lastWeek)) {
+          } else if (lastMonth.isBefore(dateTime) &&
+              dateTime.isBefore(lastWeek)) {
             return 'Last Month';
           } else {
             // Convert the DateTime to a string for grouping

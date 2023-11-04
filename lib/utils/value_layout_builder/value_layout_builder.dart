@@ -50,7 +50,8 @@ class BoxValueConstraints<T> extends BoxConstraints {
 ///
 ///  * [LayoutBuilder].
 ///  * [SliverValueLayoutBuilder], the sliver version of this widget.
-class ValueLayoutBuilder<T> extends ConstrainedLayoutBuilder<BoxValueConstraints<T>> {
+class ValueLayoutBuilder<T>
+    extends ConstrainedLayoutBuilder<BoxValueConstraints<T>> {
   /// Creates a widget that defers its building until layout.
   const ValueLayoutBuilder({
     Key? key,
@@ -58,11 +59,14 @@ class ValueLayoutBuilder<T> extends ConstrainedLayoutBuilder<BoxValueConstraints
   }) : super(key: key, builder: builder);
 
   @override
-  RenderValueLayoutBuilder<T> createRenderObject(BuildContext context) => RenderValueLayoutBuilder<T>();
+  RenderValueLayoutBuilder<T> createRenderObject(BuildContext context) =>
+      RenderValueLayoutBuilder<T>();
 }
 
 class RenderValueLayoutBuilder<T> extends RenderBox
-    with RenderObjectWithChildMixin<RenderBox>, RenderConstrainedLayoutBuilder<BoxValueConstraints<T>, RenderBox> {
+    with
+        RenderObjectWithChildMixin<RenderBox>,
+        RenderConstrainedLayoutBuilder<BoxValueConstraints<T>, RenderBox> {
   @override
   double computeMinIntrinsicWidth(double height) {
     assert(_debugThrowIfNotCheckingIntrinsics());
@@ -112,7 +116,8 @@ class RenderValueLayoutBuilder<T> extends RenderBox
   bool _debugThrowIfNotCheckingIntrinsics() {
     assert(() {
       if (!RenderObject.debugCheckingIntrinsics) {
-        throw FlutterError('ValueLayoutBuilder does not support returning intrinsic dimensions.\n'
+        throw FlutterError(
+            'ValueLayoutBuilder does not support returning intrinsic dimensions.\n'
             'Calculating the intrinsic dimensions would require running the layout '
             'callback speculatively, which might mutate the live render object tree.');
       }

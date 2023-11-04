@@ -77,7 +77,8 @@ class SliverValueConstraints<T> extends SliverConstraints {
 /// See also:
 ///
 ///  * [ValueLayoutBuilder], the non-sliver version of this widget.
-class SliverValueLayoutBuilder<T> extends ConstrainedLayoutBuilder<SliverValueConstraints<T>> {
+class SliverValueLayoutBuilder<T>
+    extends ConstrainedLayoutBuilder<SliverValueConstraints<T>> {
   /// Creates a sliver widget that defers its building until layout.
   const SliverValueLayoutBuilder({
     Key? key,
@@ -91,13 +92,15 @@ class SliverValueLayoutBuilder<T> extends ConstrainedLayoutBuilder<SliverValueCo
   SliverValueLayoutWidgetBuilder<T> get builder => super.builder;
 
   @override
-  RenderSliverValueLayoutBuilder<T> createRenderObject(BuildContext context) => RenderSliverValueLayoutBuilder<T>();
+  RenderSliverValueLayoutBuilder<T> createRenderObject(BuildContext context) =>
+      RenderSliverValueLayoutBuilder<T>();
 }
 
 class RenderSliverValueLayoutBuilder<T> extends RenderSliver
     with
         RenderObjectWithChildMixin<RenderSliver>,
-        RenderConstrainedLayoutBuilder<SliverValueConstraints<T>, RenderSliver> {
+        RenderConstrainedLayoutBuilder<SliverValueConstraints<T>,
+            RenderSliver> {
   @override
   double childMainAxisPosition(RenderObject child) {
     assert(child == this.child);
@@ -128,6 +131,8 @@ class RenderSliverValueLayoutBuilder<T> extends RenderSliver
       {required double mainAxisPosition, required double crossAxisPosition}) {
     return child != null &&
         child!.geometry!.hitTestExtent > 0 &&
-        child!.hitTest(result, mainAxisPosition: mainAxisPosition, crossAxisPosition: crossAxisPosition);
+        child!.hitTest(result,
+            mainAxisPosition: mainAxisPosition,
+            crossAxisPosition: crossAxisPosition);
   }
 }
