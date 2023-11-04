@@ -2,7 +2,8 @@
 
 A Sliver implementation of panel with a sticky collapsable header and a sliver as child.
 
-![Screenshot](https://github.com/techwn/files/blob/main/imgs/sliver_sticky_collapsable_panel.gif?raw=true)
+## Snap Shot
+<img src="https://github.com/techwn/files/blob/main/imgs/sliver_sticky_collapsable_panel.gif?raw=true" width=360>
 
 ## Features
 
