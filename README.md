@@ -3,7 +3,7 @@
 A Sliver implementation of panel with a sticky collapsable header and a sliver as child.
 
 ## Snap Shot
-<img src="https://github.com/techwn/files/blob/main/imgs/sliver_sticky_collapsable_panel.gif?raw=true" width=360>
+<img src="https://github.com/techwn/files/blob/main/imgs/sliver_sticky_collapsable_panel.gif?raw=true" width=360 alt="Snap Shot">
 
 ## Features
 
@@ -22,7 +22,6 @@ In the `pubspec.yaml` of your flutter project, add the following dependency:
 
 ```yaml
 dependencies:
-  ...
   sliver_sticky_collapsable_panel:
 ```
 
