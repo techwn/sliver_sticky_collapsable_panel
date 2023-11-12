@@ -31,6 +31,28 @@ In your library add the following import:
 import 'package:sliver_sticky_collapsable_panel/sliver_sticky_collapsable_panel.dart';
 ```
 
+In your code, use the sliver like this:
+```dart
+CustomScrollView(
+  controller: _scrollController,
+  slivers: [
+    SliverStickyCollapsablePanel.builer(
+      scrollController: _scrollController,
+      controller: StickyCollapsablePanelController(key:'key_1'),
+      headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
+      sliver: SliverList.list(children: [...]),
+    ),
+    SliverStickyCollapsablePanel.builer(
+      scrollController: _scrollController,
+      controller: StickyCollapsablePanelController(key:'key_2'),
+      headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
+      sliver: SliverList.list(children: [...]),
+    ),
+    ...,
+  ],
+);
+```
+
 ## Thanks
 
 Thanks to [letsar](https://github.com/letsar) with
