@@ -13,39 +13,47 @@ typedef ExpandCallback = void Function(bool isExpanded);
 class SliverStickyCollapsablePanel extends StatefulWidget {
   const SliverStickyCollapsablePanel.builder({
     Key? key,
+    required ScrollController scrollController,
+    required StickyCollapsablePanelController controller,
     required HeaderBuilder headerBuilder,
     Widget? sliver,
-    bool overlapsContent = false,
     bool sticky = true,
-    required StickyCollapsablePanelController controller,
+    bool overlapsContent = false,
     bool defaultExpanded = true,
-    required ScrollController scrollController,
     ExpandCallback? expandCallback,
     bool disableCollapsable = false,
   }) : this._(
             key: key,
+            scrollController: scrollController,
+            panelController: controller,
             headerBuilder: headerBuilder,
             sliver: sliver,
-            overlapsContent: overlapsContent,
             sticky: sticky,
-            headerController: controller,
+            overlapsContent: overlapsContent,
             defaultExpanded: defaultExpanded,
-            scrollController: scrollController,
             expandCallback: expandCallback,
             disableCollapsable: disableCollapsable);
 
   const SliverStickyCollapsablePanel._({
     Key? key,
+    required this.scrollController,
+    required this.panelController,
     required this.headerBuilder,
     this.sliver,
-    this.overlapsContent = false,
     this.sticky = true,
-    required this.headerController,
+    this.overlapsContent = false,
     this.defaultExpanded = true,
-    required this.scrollController,
     this.expandCallback,
     this.disableCollapsable = false,
   }) : super(key: key);
+
+  final ScrollController scrollController;
+
+  /// The controller used to interact with this sliver.
+  ///
+  /// If a [StickyCollapsablePanelController] is not provided, then the value of [DefaultStickyCollapsablePanelController.of]
+  /// will be used.
+  final StickyCollapsablePanelController panelController;
 
   /// The header to display before the sliver.
   final HeaderBuilder headerBuilder;
@@ -53,23 +61,15 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
   /// The sliver to display after the header.
   final Widget? sliver;
 
-  /// Whether the header should be drawn on top of the sliver
-  /// instead of before.
-  final bool overlapsContent;
-
   /// Whether to stick the header.
   /// Defaults to true.
   final bool sticky;
 
-  /// The controller used to interact with this sliver.
-  ///
-  /// If a [StickyCollapsablePanelController] is not provided, then the value of [DefaultStickyCollapsablePanelController.of]
-  /// will be used.
-  final StickyCollapsablePanelController headerController;
+  /// Whether the header should be drawn on top of the sliver
+  /// instead of before.
+  final bool overlapsContent;
 
   final bool defaultExpanded;
-
-  final ScrollController scrollController;
 
   final ExpandCallback? expandCallback;
 
@@ -99,7 +99,7 @@ class SliverStickyCollapsablePanelState
               isExpanded = !isExpanded;
               if (!isExpanded && constraints.value.isPinned) {
                 widget.scrollController.jumpTo(
-                    widget.headerController.stickyCollapsablePanelScrollOffset);
+                    widget.panelController.stickyCollapsablePanelScrollOffset);
               }
             });
             widget.expandCallback?.call(isExpanded);
@@ -117,7 +117,7 @@ class SliverStickyCollapsablePanelState
               : null,
       overlapsContent: widget.overlapsContent,
       sticky: widget.sticky,
-      controller: widget.headerController,
+      controller: widget.panelController,
     );
   }
 }

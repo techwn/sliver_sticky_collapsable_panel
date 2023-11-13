@@ -1,3 +1,6 @@
+## 1.0.5
+* adjust parameter order to highlight required parameters
+
 ## 1.0.4
 * regenerate example with latest stable flutter chanel
 
