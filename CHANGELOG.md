@@ -1,3 +1,6 @@
+## 1.0.4
+* regenerate example with latest stable flutter chanel
+
 ## 1.0.3
 * update README for simplest demo 
 
