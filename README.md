@@ -36,13 +36,13 @@ In your code, use the sliver like this:
 CustomScrollView(
   controller: _scrollController,
   slivers: [
-    SliverStickyCollapsablePanel.builer(
+    SliverStickyCollapsablePanel.builder(
       scrollController: _scrollController,
       controller: StickyCollapsablePanelController(key:'key_1'),
       headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
       sliver: SliverList.list(children: [...]),
     ),
-    SliverStickyCollapsablePanel.builer(
+    SliverStickyCollapsablePanel.builder(
       scrollController: _scrollController,
       controller: StickyCollapsablePanelController(key:'key_2'),
       headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
