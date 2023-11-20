@@ -22,17 +22,20 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
     bool defaultExpanded = true,
     ExpandCallback? expandCallback,
     bool disableCollapsable = false,
+    bool iOSStyleSticky = false,
   }) : this._(
-            key: key,
-            scrollController: scrollController,
-            panelController: controller,
-            headerBuilder: headerBuilder,
-            sliver: sliver,
-            sticky: sticky,
-            overlapsContent: overlapsContent,
-            defaultExpanded: defaultExpanded,
-            expandCallback: expandCallback,
-            disableCollapsable: disableCollapsable);
+          key: key,
+          scrollController: scrollController,
+          panelController: controller,
+          headerBuilder: headerBuilder,
+          sliver: sliver,
+          sticky: sticky,
+          overlapsContent: overlapsContent,
+          defaultExpanded: defaultExpanded,
+          expandCallback: expandCallback,
+          disableCollapsable: disableCollapsable,
+          iOSStyleSticky: iOSStyleSticky,
+        );
 
   const SliverStickyCollapsablePanel._({
     Key? key,
@@ -45,6 +48,7 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
     this.defaultExpanded = true,
     this.expandCallback,
     this.disableCollapsable = false,
+    this.iOSStyleSticky = false,
   }) : super(key: key);
 
   final ScrollController scrollController;
@@ -74,6 +78,9 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
   final ExpandCallback? expandCallback;
 
   final bool disableCollapsable;
+
+  /// Like the iOS contact, header replace another header when it reaches the edge
+  final bool iOSStyleSticky;
 
   @override
   State<StatefulWidget> createState() => SliverStickyCollapsablePanelState();
@@ -110,14 +117,12 @@ class SliverStickyCollapsablePanelState
     );
     return _SliverStickyCollapsablePanel(
       header: header,
-      sliver: widget.disableCollapsable
-          ? widget.sliver
-          : isExpanded
-              ? widget.sliver
-              : null,
+      sliver: (widget.disableCollapsable || isExpanded) ? widget.sliver : null,
       overlapsContent: widget.overlapsContent,
       sticky: widget.sticky,
       controller: widget.panelController,
+      isExpanded: isExpanded,
+      iOSStyleSticky: widget.iOSStyleSticky,
     );
   }
 }
@@ -143,6 +148,8 @@ class _SliverStickyCollapsablePanel extends RenderObjectWidget {
     this.overlapsContent = false,
     this.sticky = true,
     this.controller,
+    this.isExpanded = true,
+    this.iOSStyleSticky = false,
   }) : super(key: key);
 
   /// The header to display before the sliver.
@@ -158,6 +165,13 @@ class _SliverStickyCollapsablePanel extends RenderObjectWidget {
   /// Whether to stick the header.
   /// Defaults to true.
   final bool sticky;
+
+  /// Whether we are expanded,
+  /// Default to true.
+  final bool isExpanded;
+
+  /// Like the iOS contact, header replace another header when it reaches the edge
+  final bool iOSStyleSticky;
 
   /// The controller used to interact with this sliver.
   ///
@@ -176,6 +190,8 @@ class _SliverStickyCollapsablePanel extends RenderObjectWidget {
       sticky: sticky,
       controller:
           controller ?? DefaultStickyCollapsablePanelController.of(context),
+      isExpanded: isExpanded,
+      iOSStyleSticky: iOSStyleSticky,
     );
   }
 
@@ -188,7 +204,9 @@ class _SliverStickyCollapsablePanel extends RenderObjectWidget {
       ..overlapsContent = overlapsContent
       ..sticky = sticky
       ..controller =
-          controller ?? DefaultStickyCollapsablePanelController.of(context);
+          controller ?? DefaultStickyCollapsablePanelController.of(context)
+      ..isExpanded = isExpanded
+      ..iOSStyleSticky = iOSStyleSticky;
   }
 }
 

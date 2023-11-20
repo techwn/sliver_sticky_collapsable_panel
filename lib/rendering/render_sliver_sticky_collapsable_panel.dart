@@ -17,8 +17,12 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     bool overlapsContent = false,
     bool sticky = true,
     StickyCollapsablePanelController? controller,
+    bool isExpanded = true,
+    bool iOSStyleSticky = false,
   })  : _overlapsContent = overlapsContent,
         _sticky = sticky,
+        _isExpanded = isExpanded,
+        _iOSStyleSticky = iOSStyleSticky,
         _controller = controller {
     this.headerChild = headerChild;
     this.sliverChild = sliverChild;
@@ -26,7 +30,28 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
 
   SliverStickyCollapsablePanelStatus? _oldStatus;
   double _headerExtent = 0;
+
   late bool _isPinned;
+
+  bool _iOSStyleSticky;
+
+  bool get iOSStyleSticky => _iOSStyleSticky;
+
+  set iOSStyleSticky(bool value) {
+    if (value == _iOSStyleSticky) return;
+    _iOSStyleSticky = value;
+    markNeedsLayout();
+  }
+
+  bool _isExpanded;
+
+  bool get isExpanded => _isExpanded;
+
+  set isExpanded(bool value) {
+    if (_isExpanded == value) return;
+    _isExpanded = value;
+    markNeedsLayout();
+  }
 
   bool _overlapsContent;
 
@@ -154,7 +179,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
       headerChild!.layout(
         BoxValueConstraints<SliverStickyCollapsablePanelStatus>(
           value: _oldStatus ??
-              const SliverStickyCollapsablePanelStatus(0, false, true),
+              SliverStickyCollapsablePanelStatus(0, false, isExpanded),
           constraints: constraints.asBoxConstraints(),
         ),
         parentUsesSize: true,
@@ -245,20 +270,12 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     if (headerChild != null) {
       final SliverPhysicalParentData? headerParentData =
           headerChild!.parentData as SliverPhysicalParentData?;
-      final double sliverChildScrollExtent =
-          sliverChild?.geometry?.scrollExtent ?? 0;
 
       _isPinned = sticky &&
           ((constraints.scrollOffset + constraints.overlap) > 0 &&
               geometry!.visible);
 
-      final double headerPosition = _isPinned
-          ? math.min(
-              constraints.overlap,
-              sliverChildScrollExtent -
-                  constraints.scrollOffset -
-                  (overlapsContent ? _headerExtent : 0))
-          : -constraints.scrollOffset;
+      double headerPosition = calculateHeaderPosition();
 
       final double headerScrollRatio =
           ((headerPosition - constraints.overlap).abs() / _headerExtent);
@@ -272,7 +289,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
 
         SliverStickyCollapsablePanelStatus status =
             SliverStickyCollapsablePanelStatus(
-                headerScrollRatioClamped, _isPinned, sliverChild != null);
+                headerScrollRatioClamped, _isPinned, isExpanded);
         if (_oldStatus != status) {
           _oldStatus = status;
           headerChild!.layout(
@@ -283,6 +300,11 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
             parentUsesSize: true,
           );
         }
+      }
+
+      if (_iOSStyleSticky) {
+        geometry = geometry!
+            .copyWith(hitTestExtent: geometry!.hitTestExtent + headerExtent);
       }
 
       switch (axisDirection) {
@@ -312,15 +334,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     _isPinned = sticky &&
         ((constraints.scrollOffset + constraints.overlap) > 0 &&
             geometry!.visible);
-    final double sliverChildScrollExtent =
-        sliverChild?.geometry?.scrollExtent ?? 0;
-    final double headerPosition = _isPinned
-        ? math.min(
-            constraints.overlap,
-            sliverChildScrollExtent -
-                constraints.scrollOffset -
-                (overlapsContent ? _headerExtent : 0))
-        : -constraints.scrollOffset;
+    double headerPosition = calculateHeaderPosition();
 
     if (headerChild != null &&
         (mainAxisPosition - headerPosition) <= _headerExtent) {
@@ -349,6 +363,25 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
           crossAxisPosition: crossAxisPosition);
     }
     return false;
+  }
+
+  double calculateHeaderPosition() {
+    final double scrollExtent = geometry!.scrollExtent;
+    final double sliverChildScrollExtent =
+        sliverChild?.geometry?.scrollExtent ?? 0;
+    final double headerPosition = _iOSStyleSticky
+        ? (_isPinned
+            ? math.min(
+                constraints.overlap, scrollExtent - constraints.scrollOffset)
+            : -constraints.scrollOffset)
+        : (_isPinned
+            ? math.min(
+                constraints.overlap,
+                sliverChildScrollExtent -
+                    constraints.scrollOffset -
+                    (overlapsContent ? _headerExtent : 0))
+            : -constraints.scrollOffset);
+    return headerPosition;
   }
 
   @override

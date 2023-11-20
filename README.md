@@ -15,6 +15,7 @@ A Sliver implementation of panel with a sticky collapsable header and a sliver a
 * Supports not sticky headers (with `sticky: false` parameter).
 * Supports a controller which notifies the scroll offset of the current sticky header.
 * Supports click the header to collapse the content.
+* Supports iOS style sticky header, just like iOS's system contact app
 
 ## Getting started
 
@@ -45,6 +46,40 @@ CustomScrollView(
     SliverStickyCollapsablePanel.builder(
       scrollController: _scrollController,
       controller: StickyCollapsablePanelController(key:'key_2'),
+      headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
+      sliver: SliverList.list(children: [...]),
+    ),
+    ...,
+  ],
+);
+```
+
+you can disable collapse for any sliver you wanted just add ```disableCollapsable = true```
+```dart
+CustomScrollView(
+  controller: _scrollController,
+  slivers: [
+    SliverStickyCollapsablePanel.builder(
+      scrollController: _scrollController,
+      controller: StickyCollapsablePanelController(key:'key_1'),
+      headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
+      disableCollapsable = true
+      sliver: SliverList.list(children: [...]),
+    ),
+    ...,
+  ],
+);
+```
+
+you can also enable iOS style sticky header, just like the system's contact app with just one parameter ```iOSStyleSticky = true```
+```dart
+CustomScrollView(
+  controller: _scrollController,
+  slivers: [
+    SliverStickyCollapsablePanel.builder(
+      scrollController: _scrollController,
+      controller: StickyCollapsablePanelController(key:'key_1'),
+      iOSStyleSticky: true,
       headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
       sliver: SliverList.list(children: [...]),
     ),

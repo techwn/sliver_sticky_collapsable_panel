@@ -601,6 +601,7 @@ class InfiniteGroupedListState<Cell, GroupBy, Group>
                           index,
                           //常规的可折叠的阵容
                           SliverStickyCollapsablePanel.builder(
+                            iOSStyleSticky: true,
                             scrollController: _scrollController,
                             controller: StickyCollapsablePanelController(
                                 key: title.toString()),

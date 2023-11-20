@@ -1,3 +1,6 @@
+## 1.0.6
+* add iOS style sticky header, just like what ios contact app use.
+
 ## 1.0.5
 * adjust parameter order to highlight required parameters
 
