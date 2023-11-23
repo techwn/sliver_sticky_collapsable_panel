@@ -1,6 +1,6 @@
 name: sliver_sticky_collapsable_panel
 description: "A Sliver implementation of sticky collapsable header with a sliver as child."
-version: 1.0.6
+version: 1.0.7
 repository: https://github.com/techwn/sliver_sticky_collapsable_panel
 
 environment:

@@ -313,7 +313,6 @@ class InfiniteGroupedListState<Cell, GroupBy, Group>
   bool loading = true;
   bool hasError = false;
 
-  //标记是否有更多数据
   bool stillHasItems = true;
   final _InfiniteGroupedListInternalController<Cell, GroupBy, Group>
       _pageInformationController = _InfiniteGroupedListInternalController();
@@ -599,7 +598,6 @@ class InfiniteGroupedListState<Cell, GroupBy, Group>
                       .map<int, Widget>((index, title) {
                         return MapEntry(
                           index,
-                          //常规的可折叠的阵容
                           SliverStickyCollapsablePanel.builder(
                             iOSStyleSticky: true,
                             scrollController: _scrollController,
@@ -609,7 +607,6 @@ class InfiniteGroupedListState<Cell, GroupBy, Group>
                             disableCollapsable: (index % 2) == 1,
                             expandCallback: (isExpanded) {
                               if (!isExpanded) {
-                                //如果是折叠，我们可能需要需要加载更多
                                 _loadMore();
                               }
                             },

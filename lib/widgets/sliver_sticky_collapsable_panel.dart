@@ -104,7 +104,7 @@ class SliverStickyCollapsablePanelState
           if (!widget.disableCollapsable) {
             setState(() {
               isExpanded = !isExpanded;
-              if (!isExpanded && constraints.value.isPinned) {
+              if (constraints.value.isPinned) {
                 widget.scrollController.jumpTo(
                     widget.panelController.stickyCollapsablePanelScrollOffset);
               }

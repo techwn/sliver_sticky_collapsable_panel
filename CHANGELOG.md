@@ -1,3 +1,6 @@
+## 1.0.7
+*  when expand pined header, calibration position more accurately
+
 ## 1.0.6
 * add iOS style sticky header, just like what ios contact app use.
 
