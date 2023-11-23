@@ -181,8 +181,8 @@ class InfiniteGroupedList<ItemType, GroupBy, GroupTitle>
     this.refreshIndicatorColor,
     this.refreshIndicatorBackgroundColor,
     this.gridDelegate,
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final SliverGridDelegate? gridDelegate;
   final ListStyle listStyle;
@@ -535,7 +535,7 @@ class InfiniteGroupedListState<Cell, GroupBy, Group>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _scrollController = PrimaryScrollController.of(context);
+    _scrollController = PrimaryScrollController.of(context)!;
     _scrollController.removeListener(_loadMore);
     _scrollController.addListener(_loadMore);
   }

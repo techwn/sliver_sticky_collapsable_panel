@@ -4,7 +4,7 @@ import 'package:sliver_sticky_collapsable_panel/sliver_sticky_collapsable_panel.
 
 void main() {
   setUp(() {
-    WidgetsBinding.instance.renderView.configuration =
+    WidgetsBinding.instance!.renderView.configuration =
         TestViewConfiguration(size: const Size(400, 800));
   });
 

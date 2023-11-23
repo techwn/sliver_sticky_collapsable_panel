@@ -1,11 +1,12 @@
 ## 1.0.8
-* remove use of new api from flutter 3.13, and make sure flutter 2.5.0 compatibility
+* remove careless use of new api in flutter 3.13 since flutter source code has no hint for new api
+* chore - run example with flutter 2.15 to flutter 3.16 to make sure compatibility
 
 ## 1.0.7
 *  when expand pined header, calibration position more accurately
 
 ## 1.0.6
-* add iOS style sticky header, just like what ios contact app use.
+* add iOS style sticky header, just like what ios contact app use
 
 ## 1.0.5
 * adjust parameter order to highlight required parameters
@@ -27,5 +28,5 @@
 ## 1.0.0
 
 * implementation of sliver_sticky_collapsable_panel
-* dart 3 ready
-* null safety ready
+* relying solely on the Flutter framework itself
+* null-safety ready, dart 3 ready
