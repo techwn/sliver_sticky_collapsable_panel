@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Sliver Sticky collapsable Panel'),
     );
   }
 }
@@ -100,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: const Text('Infinite Grouped List'),
+        title: Text(widget.title),
       ),
       body: InfiniteGroupedList<Transaction, DateTime, String>(
         groupBy: (item) => item.dateTime,
@@ -110,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
           return Container(
             width: double.infinity,
             height: 50,
-            color: Colors.white,
+            color: Colors.blueGrey,
             child: Stack(
               children: [
                 Align(

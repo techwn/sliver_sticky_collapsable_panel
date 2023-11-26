@@ -5,7 +5,7 @@ import 'package:sliver_tools/sliver_tools.dart';
 
 void main() {
   setUp(() {
-    WidgetsBinding.instance!.renderView.configuration =
+    WidgetsBinding.instance.renderView.configuration =
         TestViewConfiguration(size: const Size(400, 800));
   });
 

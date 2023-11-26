@@ -23,6 +23,8 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
     ExpandCallback? expandCallback,
     bool disableCollapsable = false,
     bool iOSStyleSticky = false,
+    EdgeInsetsGeometry paddingBeforeCollapse = const EdgeInsets.only(),
+    EdgeInsetsGeometry paddingAfterCollapse = const EdgeInsets.only(),
   }) : this._(
           key: key,
           scrollController: scrollController,
@@ -35,6 +37,8 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
           expandCallback: expandCallback,
           disableCollapsable: disableCollapsable,
           iOSStyleSticky: iOSStyleSticky,
+          paddingBeforeCollapse: paddingBeforeCollapse,
+          paddingAfterCollapse: paddingAfterCollapse,
         );
 
   const SliverStickyCollapsablePanel._({
@@ -43,12 +47,14 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
     required this.panelController,
     required this.headerBuilder,
     this.sliver,
-    this.sticky = true,
-    this.overlapsContent = false,
-    this.defaultExpanded = true,
+    required this.sticky,
+    required this.overlapsContent,
+    required this.defaultExpanded,
     this.expandCallback,
-    this.disableCollapsable = false,
-    this.iOSStyleSticky = false,
+    required this.disableCollapsable,
+    required this.iOSStyleSticky,
+    required this.paddingBeforeCollapse,
+    required this.paddingAfterCollapse,
   }) : super(key: key);
 
   final ScrollController scrollController;
@@ -81,6 +87,12 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
 
   /// Like the iOS contact, header replace another header when it reaches the edge
   final bool iOSStyleSticky;
+
+  /// Padding used for sliver child before collapse
+  final EdgeInsetsGeometry paddingBeforeCollapse;
+
+  /// Padding used for sliver child after collapse, it means even it's collapsed, Padding still exist between headers
+  final EdgeInsetsGeometry paddingAfterCollapse;
 
   @override
   State<StatefulWidget> createState() => SliverStickyCollapsablePanelState();
@@ -115,13 +127,19 @@ class SliverStickyCollapsablePanelState
         child: widget.headerBuilder(context, constraints.value),
       ),
     );
+    final isExpandedNow = (widget.disableCollapsable || isExpanded);
     return _SliverStickyCollapsablePanel(
       header: header,
-      sliver: (widget.disableCollapsable || isExpanded) ? widget.sliver : null,
+      sliver: SliverPadding(
+        padding: isExpandedNow
+            ? widget.paddingBeforeCollapse
+            : widget.paddingAfterCollapse,
+        sliver: isExpandedNow ? widget.sliver : null,
+      ),
       overlapsContent: widget.overlapsContent,
       sticky: widget.sticky,
       controller: widget.panelController,
-      isExpanded: isExpanded,
+      isExpanded: isExpandedNow,
       iOSStyleSticky: widget.iOSStyleSticky,
     );
   }

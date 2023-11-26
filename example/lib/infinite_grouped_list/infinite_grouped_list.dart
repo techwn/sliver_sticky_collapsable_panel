@@ -601,6 +601,8 @@ class InfiniteGroupedListState<Cell, GroupBy, Group>
                           SliverStickyCollapsablePanel.builder(
                             iOSStyleSticky: true,
                             scrollController: _scrollController,
+                            paddingAfterCollapse:
+                                const EdgeInsets.only(bottom: 10),
                             controller: StickyCollapsablePanelController(
                                 key: title.toString()),
                             sticky: widget.stickyGroups,

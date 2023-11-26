@@ -1,11 +1,17 @@
 name: sliver_sticky_collapsable_panel
-description: "A Sliver implementation of sticky collapsable header with a sliver as child."
-version: 1.0.8
+version: 1.1.0
+description: "A Sliver implementation of sticky collapsable panel, with a box header rebuild on status and a sliver child as panel content."
+topics:
+  - sliver
+  - sticky
+  - collapsable
+  - expansion
+  - header
 repository: https://github.com/techwn/sliver_sticky_collapsable_panel
 
 environment:
-  sdk: '>=2.14.0 <4.0.0'
-  flutter: ">=2.5.0"
+  sdk: '>=2.18.0 <4.0.0'
+  flutter: ">=3.3.0"
 
 dependencies:
   flutter:

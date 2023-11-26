@@ -1,38 +1,40 @@
 # sliver_sticky_collapsable_panel
 
-A Sliver implementation of panel with a sticky collapsable header and a sliver as child.
+A Sliver implementation of sticky collapsable panel, with a box header rebuild on status and a sliver child as panel content.
 
 ## Snap Shot
-<img src="https://github.com/techwn/files/blob/main/imgs/sliver_sticky_collapsable_panel.gif?raw=true" width=360 alt="Snap Shot">
+<img src="https://github.com/techwn/files/blob/main/imgs/sliver_sticky_collapsable_pannel/simple_demo.gif?raw=true" width=360 alt="simple Shot">
 
+---
 ## Features
+* Relying solely on the Flutter framework itself.
+* Accept one box child as header and one sliver child as panel content.
+* Header can overlap panel content (useful for sticky side header for example).
+* Notify and rebuild the header when status changed (scroll outside the viewport for example).
+* Support not sticky headers (with `sticky: false` parameter).
+* Support a controller which notifies the scroll offset of the current sticky header.
+* Support click the header to collapse the panel, or disable collapse (with `disableCollapsable = true` parameter).
+* Support iOS style sticky header, just like iOS's system contact app (with `iOSStyleSticky = true` parameter).
+* Support add padding for sliver child (with `paddingBeforeCollapse` parameter).
+* Support add padding after the header even the panel collapsed (with `paddingAfterCollapse` parameter).
 
-* Accepts one sliver as content.
-* Header can overlap its sliver (useful for sticky side header for example).
-* Notifies when the header scrolls outside the viewport.
-* Can scroll in any direction.
-* Supports overlapping (AppBars for example).
-* Supports not sticky headers (with `sticky: false` parameter).
-* Supports a controller which notifies the scroll offset of the current sticky header.
-* Supports click the header to collapse the content.
-* Supports iOS style sticky header, just like iOS's system contact app
-
+---
 ## Getting started
 
-In the `pubspec.yaml` of your flutter project, add the following dependency:
+* In the `pubspec.yaml` of your flutter project, add the following dependency:
 
 ```yaml
 dependencies:
-  sliver_sticky_collapsable_panel:
+  sliver_sticky_collapsable_panel: ^1.1.0
 ```
 
-In your library add the following import:
+* In your library add the following import:
 
 ```dart
 import 'package:sliver_sticky_collapsable_panel/sliver_sticky_collapsable_panel.dart';
 ```
 
-In your code, use the sliver like this:
+* In your code, use the sliver like this:
 ```dart
 CustomScrollView(
   controller: _scrollController,
@@ -53,8 +55,10 @@ CustomScrollView(
   ],
 );
 ```
+---
+## More Advanced Feature:
 
-you can disable collapse for any sliver you wanted just add ```disableCollapsable = true```
+* you can disable collapse for any sliver you wanted just add `disableCollapsable = true`.
 ```dart
 CustomScrollView(
   controller: _scrollController,
@@ -71,7 +75,7 @@ CustomScrollView(
 );
 ```
 
-you can also enable iOS style sticky header, just like the system's contact app with just one parameter ```iOSStyleSticky = true```
+* you can also enable iOS style sticky header, just like the system's contact app with just one parameter `iOSStyleSticky = true`.
 ```dart
 CustomScrollView(
   controller: _scrollController,
@@ -87,9 +91,29 @@ CustomScrollView(
   ],
 );
 ```
+<img src="https://github.com/techwn/files/blob/main/imgs/sliver_sticky_collapsable_pannel/ios_style_sticky.gif?raw=true" width=360 alt="simple Shot">
 
+* you can also add padding for sliver child (with `paddingBeforeCollapse`), even if the panel is collapsed, the padding still works between headers with  `paddingAfterCollapse`.
+```dart
+CustomScrollView(
+  controller: _scrollController,
+  slivers: [
+    SliverStickyCollapsablePanel.builder(
+      scrollController: _scrollController,
+      controller: StickyCollapsablePanelController(key:'key_1'),
+      paddingBeforeCollapse: const EdgeInsets.all(16),
+      paddingAfterCollapse: const EdgeInsets.only(bottom: 10),
+      headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
+      sliver: SliverList.list(children: [...]),
+    ),
+    ...,
+  ],
+);
+```
+<img src="https://github.com/techwn/files/blob/main/imgs/sliver_sticky_collapsable_pannel/padding.gif?raw=true" width=360 alt="simple Shot">
+
+---
 ## Thanks
 
 Thanks to [letsar](https://github.com/letsar) with
-it's [flutter_sticky_header](https://pub.dev/packages/flutter_sticky_header) which provide solid foundation to implement
-the collapsable feature.
+it's [flutter_sticky_header](https://pub.dev/packages/flutter_sticky_header) which provide solid foundation for this project.
