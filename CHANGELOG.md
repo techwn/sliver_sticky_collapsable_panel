@@ -1,3 +1,7 @@
+## 1.1.1
+
+* [chore] - more strict field access for render layer
+
 ## 1.1.0
 
 * [feature] - support add padding for sliver child (with `paddingBeforeCollapse` parameter)
