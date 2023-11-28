@@ -1,3 +1,8 @@
+## 1.1.2
+
+* [chore] - fix pub score issue
+* [chore] - update readme for simple arrow hint for header
+
 ## 1.1.1
 
 * [chore] - more strict field access for render layer

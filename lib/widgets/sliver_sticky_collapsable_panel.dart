@@ -161,20 +161,26 @@ class _SliverStickyCollapsablePanel extends RenderObjectWidget {
   /// [DefaultStickyCollapsablePanelController.of] will be used.
   const _SliverStickyCollapsablePanel({
     Key? key,
-    this.header,
-    this.sliver,
+    required this.header,
+    required this.sliver,
+    required this.controller,
     this.overlapsContent = false,
     this.sticky = true,
-    this.controller,
     this.isExpanded = true,
     this.iOSStyleSticky = false,
   }) : super(key: key);
 
   /// The header to display before the sliver.
-  final Widget? header;
+  final Widget header;
 
   /// The sliver to display after the header.
-  final Widget? sliver;
+  final Widget sliver;
+
+  /// The controller used to interact with this sliver.
+  ///
+  /// If a [StickyCollapsablePanelController] is not provided, then the value of [DefaultStickyCollapsablePanelController.of]
+  /// will be used.
+  final StickyCollapsablePanelController controller;
 
   /// Whether the header should be drawn on top of the sliver
   /// instead of before.
@@ -191,12 +197,6 @@ class _SliverStickyCollapsablePanel extends RenderObjectWidget {
   /// Like the iOS contact, header replace another header when it reaches the edge
   final bool iOSStyleSticky;
 
-  /// The controller used to interact with this sliver.
-  ///
-  /// If a [StickyCollapsablePanelController] is not provided, then the value of [DefaultStickyCollapsablePanelController.of]
-  /// will be used.
-  final StickyCollapsablePanelController? controller;
-
   @override
   _SliverStickyCollapsablePanelRenderObjectElement createElement() =>
       _SliverStickyCollapsablePanelRenderObjectElement(this);
@@ -206,8 +206,7 @@ class _SliverStickyCollapsablePanel extends RenderObjectWidget {
     return RenderSliverStickyCollapsablePanel(
       overlapsContent: overlapsContent,
       sticky: sticky,
-      controller:
-          controller ?? DefaultStickyCollapsablePanelController.of(context),
+      controller: controller,
       isExpanded: isExpanded,
       iOSStyleSticky: iOSStyleSticky,
     );
@@ -221,11 +220,15 @@ class _SliverStickyCollapsablePanel extends RenderObjectWidget {
     renderObject
       ..overlapsContent = overlapsContent
       ..sticky = sticky
-      ..controller =
-          controller ?? DefaultStickyCollapsablePanelController.of(context)
+      ..controller = controller
       ..isExpanded = isExpanded
       ..iOSStyleSticky = iOSStyleSticky;
   }
+}
+
+enum _Slot {
+  headerSlot,
+  sliverSlot,
 }
 
 class _SliverStickyCollapsablePanelRenderObjectElement
@@ -251,6 +254,7 @@ class _SliverStickyCollapsablePanelRenderObjectElement
 
   @override
   void forgetChild(Element child) {
+    assert(child == _header || child == _sliver);
     if (child == _header) _header = null;
     if (child == _sliver) _sliver = null;
     super.forgetChild(child);
@@ -259,16 +263,15 @@ class _SliverStickyCollapsablePanelRenderObjectElement
   @override
   void mount(Element? parent, dynamic newSlot) {
     super.mount(parent, newSlot);
-    _header = updateChild(_header, widget.header, 0);
-    _sliver = updateChild(_sliver, widget.sliver, 1);
+    _header = updateChild(_header, widget.header, _Slot.headerSlot);
+    _sliver = updateChild(_sliver, widget.sliver, _Slot.sliverSlot);
   }
 
   @override
   void update(_SliverStickyCollapsablePanel newWidget) {
     super.update(newWidget);
-    assert(widget == newWidget);
-    _header = updateChild(_header, widget.header, 0);
-    _sliver = updateChild(_sliver, widget.sliver, 1);
+    _header = updateChild(_header, widget.header, _Slot.headerSlot);
+    _sliver = updateChild(_sliver, widget.sliver, _Slot.sliverSlot);
   }
 
   @override
@@ -279,9 +282,15 @@ class _SliverStickyCollapsablePanelRenderObjectElement
   }
 
   @override
-  void insertRenderObjectChild(RenderObject child, int? slot) {
-    if (slot == 0) renderObject.headerChild = child as RenderBox?;
-    if (slot == 1) renderObject.sliverChild = child as RenderSliver?;
+  void insertRenderObjectChild(RenderObject child, _Slot slot) {
+    switch (slot) {
+      case _Slot.headerSlot:
+        renderObject.headerChild = child as RenderBox;
+        break;
+      case _Slot.sliverSlot:
+        renderObject.sliverChild = child as RenderSliver;
+        break;
+    }
   }
 
   @override
