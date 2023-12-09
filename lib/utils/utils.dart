@@ -23,8 +23,7 @@ class StickyCollapsablePanelController with ChangeNotifier {
   /// If there is no sticky headers, this is 0.
   double _stickyCollapsablePanelScrollOffset = 0;
 
-  double get stickyCollapsablePanelScrollOffset =>
-      _stickyCollapsablePanelScrollOffset;
+  double get stickyCollapsablePanelScrollOffset => _stickyCollapsablePanelScrollOffset;
 
   /// This setter should only be used by flutter_RenderBox package.
   set stickyCollapsablePanelScrollOffset(double value) {
@@ -65,18 +64,15 @@ class DefaultStickyCollapsablePanelController extends StatefulWidget {
   /// ```
   static StickyCollapsablePanelController? of(BuildContext context) {
     final _StickyCollapsablePanelControllerScope? scope =
-        context.dependOnInheritedWidgetOfExactType<
-            _StickyCollapsablePanelControllerScope>();
+        context.dependOnInheritedWidgetOfExactType<_StickyCollapsablePanelControllerScope>();
     return scope?.controller;
   }
 
   @override
-  DefaultStickyCollapsablePanelControllerState createState() =>
-      DefaultStickyCollapsablePanelControllerState();
+  DefaultStickyCollapsablePanelControllerState createState() => DefaultStickyCollapsablePanelControllerState();
 }
 
-class DefaultStickyCollapsablePanelControllerState
-    extends State<DefaultStickyCollapsablePanelController> {
+class DefaultStickyCollapsablePanelControllerState extends State<DefaultStickyCollapsablePanelController> {
   StickyCollapsablePanelController? _controller;
 
   @override
@@ -134,9 +130,7 @@ class SliverStickyCollapsablePanelStatus {
   bool operator ==(dynamic other) {
     if (identical(this, other)) return true;
     if (other is! SliverStickyCollapsablePanelStatus) return false;
-    return scrollPercentage == other.scrollPercentage &&
-        isPinned == other.isPinned &&
-        isExpanded == other.isExpanded;
+    return scrollPercentage == other.scrollPercentage && isPinned == other.isPinned && isExpanded == other.isExpanded;
   }
 
   @override
