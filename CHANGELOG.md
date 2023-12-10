@@ -1,3 +1,7 @@
+## 1.1.3
+
+* [feature] - update ValueLayoutBuilder according to framework's LayoutBuilder
+
 ## 1.1.2
 
 * [chore] - fix pub score issue
