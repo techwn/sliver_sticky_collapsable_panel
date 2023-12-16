@@ -1,3 +1,7 @@
+## 1.1.4
+
+* [chore] - update gif source in readme for easier access
+
 ## 1.1.3
 
 * [feature] - update ValueLayoutBuilder according to framework's LayoutBuilder
