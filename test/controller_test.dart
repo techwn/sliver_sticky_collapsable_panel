@@ -53,8 +53,7 @@ void main() {
     expect(header00Finder, findsOneWidget);
     expect(header01Finder, findsNothing);
     expect(header02Finder, findsNothing);
-    expect(stickyCollapsablePanelController.stickyCollapsablePanelScrollOffset,
-        equals(0));
+    expect(stickyCollapsablePanelController.precedingScrollExtent, equals(0));
 
     final gesture = await tester.startGesture(const Offset(200, 100));
 
@@ -65,8 +64,7 @@ void main() {
     expect(header00Finder, findsOneWidget);
     expect(header01Finder, findsNothing);
     expect(header02Finder, findsNothing);
-    expect(stickyCollapsablePanelController.stickyCollapsablePanelScrollOffset,
-        equals(0));
+    expect(stickyCollapsablePanelController.precedingScrollExtent, equals(0));
 
     // We scroll just after the Header #1 so that it is visible.
     await gesture.moveBy(const Offset(0, -80));
@@ -75,8 +73,7 @@ void main() {
     expect(header00Finder, findsOneWidget);
     expect(header01Finder, findsOneWidget);
     expect(header02Finder, findsNothing);
-    expect(stickyCollapsablePanelController.stickyCollapsablePanelScrollOffset,
-        equals(0));
+    expect(stickyCollapsablePanelController.precedingScrollExtent, equals(0));
 
     // We scroll in a way that Headers 0 and 1 are side by side.
     await gesture.moveBy(const Offset(0, -640));
@@ -85,8 +82,7 @@ void main() {
     expect(header00Finder, findsOneWidget);
     expect(header01Finder, findsOneWidget);
     expect(header02Finder, findsNothing);
-    expect(stickyCollapsablePanelController.stickyCollapsablePanelScrollOffset,
-        equals(0));
+    expect(stickyCollapsablePanelController.precedingScrollExtent, equals(0));
 
     // We scroll in a way that Header #1 is at the top of the screen.
     await gesture.moveBy(const Offset(0, -80));
@@ -99,8 +95,7 @@ void main() {
     expect(header00Finder, findsNothing);
     expect(header01Finder, findsOneWidget);
     expect(header02Finder, findsNothing);
-    expect(stickyCollapsablePanelController.stickyCollapsablePanelScrollOffset,
-        equals(880));
+    expect(stickyCollapsablePanelController.precedingScrollExtent, equals(880));
   });
 
   testWidgets(
@@ -149,8 +144,7 @@ void main() {
     expect(header00Finder, findsOneWidget);
     expect(header01Finder, findsNothing);
     expect(header02Finder, findsNothing);
-    expect(stickyCollapsablePanelController.stickyCollapsablePanelScrollOffset,
-        equals(0));
+    expect(stickyCollapsablePanelController.precedingScrollExtent, equals(0));
 
     final gesture = await tester.startGesture(const Offset(200, 100));
 
@@ -161,8 +155,7 @@ void main() {
     expect(header00Finder, findsOneWidget);
     expect(header01Finder, findsNothing);
     expect(header02Finder, findsNothing);
-    expect(stickyCollapsablePanelController.stickyCollapsablePanelScrollOffset,
-        equals(0));
+    expect(stickyCollapsablePanelController.precedingScrollExtent, equals(0));
 
     // We scroll just after the Header #1 so that it is visible.
     await gesture.moveBy(const Offset(0, 80));
@@ -171,8 +164,7 @@ void main() {
     expect(header00Finder, findsOneWidget);
     expect(header01Finder, findsOneWidget);
     expect(header02Finder, findsNothing);
-    expect(stickyCollapsablePanelController.stickyCollapsablePanelScrollOffset,
-        equals(0));
+    expect(stickyCollapsablePanelController.precedingScrollExtent, equals(0));
 
     // We scroll in a way that Headers 0 and 1 are side by side.
     await gesture.moveBy(const Offset(0, 640));
@@ -181,8 +173,7 @@ void main() {
     expect(header00Finder, findsOneWidget);
     expect(header01Finder, findsOneWidget);
     expect(header02Finder, findsNothing);
-    expect(stickyCollapsablePanelController.stickyCollapsablePanelScrollOffset,
-        equals(0));
+    expect(stickyCollapsablePanelController.precedingScrollExtent, equals(0));
   });
 }
 

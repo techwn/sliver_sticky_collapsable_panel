@@ -1,6 +1,8 @@
 ## 1.1.5
 
-* [chore] - render layer code clean 
+* [chore] - more strict non-null/required/final type constraint
+* [chore] - project structure adjustment for better readability
+* [fix] - remove careless import of cupertino package
 
 ## 1.1.4
 

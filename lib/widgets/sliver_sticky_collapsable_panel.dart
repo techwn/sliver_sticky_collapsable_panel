@@ -4,7 +4,15 @@ import 'package:flutter/widgets.dart';
 import '../rendering/render_sliver_sticky_collapsable_panel.dart';
 import '../sliver_sticky_collapsable_panel.dart';
 
+/// Callback used by [SliverStickyCollapsablePanel.builder] to notify when the panel expand status change
 typedef ExpandCallback = void Function(bool isExpanded);
+
+/// Signature used by [SliverStickyCollapsablePanel.builder] to build the header
+/// when the sticky header status has changed.
+typedef HeaderBuilder = Widget Function(
+  BuildContext context,
+  SliverStickyCollapsablePanelStatus status,
+);
 
 /// A sliver that displays a header before its sliver and can allow click to collapse.
 /// The header scrolls off the viewport only when the sliver does.
@@ -117,8 +125,8 @@ class SliverStickyCollapsablePanelState
             setState(() {
               isExpanded = !isExpanded;
               if (constraints.value.isPinned) {
-                widget.scrollController.jumpTo(
-                    widget.panelController.stickyCollapsablePanelScrollOffset);
+                widget.scrollController
+                    .jumpTo(widget.panelController.precedingScrollExtent);
               }
             });
             widget.expandCallback?.call(isExpanded);
@@ -194,7 +202,7 @@ class _SliverStickyCollapsablePanel extends RenderObjectWidget {
   /// Default to true.
   final bool isExpanded;
 
-  /// Like the iOS contact, header replace another header when it reaches the edge
+  /// Like the iOS contact, header replace another header when it reaches the viewport edge
   final bool iOSStyleSticky;
 
   @override
@@ -276,8 +284,6 @@ class _SliverStickyCollapsablePanelRenderObjectElement
 
   @override
   RenderSliverStickyCollapsablePanel get renderObject {
-    assert(super.renderObject is RenderSliverStickyCollapsablePanel,
-        'renderObject type should be Render_SliverStickyCollapsablePanel');
     return super.renderObject as RenderSliverStickyCollapsablePanel;
   }
 
