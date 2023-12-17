@@ -29,9 +29,16 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
   }
 
   SliverStickyCollapsablePanelStatus? _oldStatus;
+
   double _headerExtent = 0;
 
   late bool _isPinned;
+
+  void updateIsPinned() {
+    _isPinned = _sticky &&
+        geometry?.visible == true &&
+        (constraints.scrollOffset + constraints.overlap) > 0;
+  }
 
   bool _iOSStyleSticky;
 
@@ -134,10 +141,10 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
   List<DiagnosticsNode> debugDescribeChildren() {
     List<DiagnosticsNode> result = <DiagnosticsNode>[];
     if (headerChild != null) {
-      result.add(headerChild!.toDiagnosticsNode(name: 'header'));
+      result.add(headerChild!.toDiagnosticsNode(name: 'headerChild'));
     }
     if (sliverChild != null) {
-      result.add(sliverChild!.toDiagnosticsNode(name: 'child'));
+      result.add(sliverChild!.toDiagnosticsNode(name: 'sliverChild'));
     }
     return result;
   }
@@ -277,17 +284,12 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     }
 
     if (headerChild != null) {
-      final SliverPhysicalParentData? headerParentData =
-          headerChild!.parentData as SliverPhysicalParentData?;
-
-      _isPinned = _sticky &&
-          ((constraints.scrollOffset + constraints.overlap) > 0 &&
-              geometry!.visible);
-
+      updateIsPinned();
       double headerPosition = computeHeaderPosition();
 
       final double headerScrollRatio =
           ((headerPosition - constraints.overlap).abs() / _headerExtent);
+
       if (_isPinned && headerScrollRatio <= 1) {
         _controller?.stickyCollapsablePanelScrollOffset =
             constraints.precedingScrollExtent;
@@ -327,6 +329,8 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
         );
       }
 
+      final SliverPhysicalParentData? headerParentData =
+          headerChild!.parentData as SliverPhysicalParentData?;
       switch (axisDirection) {
         case AxisDirection.up:
           headerParentData!.paintOffset =
@@ -350,10 +354,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
   bool hitTestChildren(SliverHitTestResult result,
       {required double mainAxisPosition, required double crossAxisPosition}) {
     assert(geometry!.hitTestExtent > 0);
-
-    _isPinned = _sticky &&
-        ((constraints.scrollOffset + constraints.overlap) > 0 &&
-            geometry!.visible);
+    updateIsPinned();
     double headerPosition = computeHeaderPosition();
 
     if (headerChild != null &&
