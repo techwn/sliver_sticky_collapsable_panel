@@ -1,3 +1,7 @@
+## 1.1.7
+
+* [feature] - update render layer according to framework's RenderSliverPadding
+
 ## 1.1.6
 
 * [feature] - update render layer according to framework's RenderSliverPadding

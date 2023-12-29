@@ -210,12 +210,15 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
           hitTestExtent: headerPaintExtent,
           hasVisualOverflow: headerExtent > headerPaintExtent);
     } else {
+      double overlap = constraints.overlap;
+      if (overlap > 0 && !_overlapsContent) {
+        overlap = math.max(0.0, constraints.overlap - headerPaintExtent);
+      }
       sliverChild!.layout(
         constraints.copyWith(
           scrollOffset: math.max(0, constraints.scrollOffset - headerExtent),
           cacheOrigin: math.min(0, constraints.cacheOrigin + headerExtent),
-          overlap: math.min(headerExtent, constraints.scrollOffset) +
-              (_sticky ? constraints.overlap : 0),
+          overlap: overlap,
           remainingPaintExtent:
               constraints.remainingPaintExtent - headerPaintExtent,
           remainingCacheExtent:
