@@ -1,10 +1,15 @@
+## 1.1.8
+
+* [chore] - totally rewrite of render layer according to flutter frameworks component
+* [fix] - more accurate hitTest for click on header
+
 ## 1.1.7
 
-* [feature] - update render layer according to framework's RenderSliverPadding
+* [chore] - update render layer according to framework's RenderSliverPadding
 
 ## 1.1.6
 
-* [feature] - update render layer according to framework's RenderSliverPadding
+* [chore] - update render layer according to framework's RenderSliverPadding
 
 ## 1.1.5
 

@@ -24,7 +24,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 
     ```yaml
     dependencies:
-      sliver_sticky_collapsable_panel: ^1.1.7
+      sliver_sticky_collapsable_panel: ^1.1.8
     ```
 
 - In your library add the following import:
