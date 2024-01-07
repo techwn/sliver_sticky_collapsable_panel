@@ -106,8 +106,7 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
   State<StatefulWidget> createState() => SliverStickyCollapsablePanelState();
 }
 
-class SliverStickyCollapsablePanelState
-    extends State<SliverStickyCollapsablePanel> {
+class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePanel> {
   late bool isExpanded;
 
   @override
@@ -125,8 +124,7 @@ class SliverStickyCollapsablePanelState
             setState(() {
               isExpanded = !isExpanded;
               if (constraints.value.isPinned) {
-                widget.scrollController
-                    .jumpTo(widget.panelController.precedingScrollExtent);
+                widget.scrollController.jumpTo(widget.panelController.precedingScrollExtent);
               }
             });
             widget.expandCallback?.call(isExpanded);
@@ -139,9 +137,7 @@ class SliverStickyCollapsablePanelState
     return _SliverStickyCollapsablePanel(
       header: header,
       sliver: SliverPadding(
-        padding: isExpandedNow
-            ? widget.paddingBeforeCollapse
-            : widget.paddingAfterCollapse,
+        padding: isExpandedNow ? widget.paddingBeforeCollapse : widget.paddingAfterCollapse,
         sliver: isExpandedNow ? widget.sliver : null,
       ),
       overlapsContent: widget.overlapsContent,
@@ -239,16 +235,12 @@ enum _Slot {
   sliverSlot,
 }
 
-class _SliverStickyCollapsablePanelRenderObjectElement
-    extends RenderObjectElement {
+class _SliverStickyCollapsablePanelRenderObjectElement extends RenderObjectElement {
   /// Creates an element that uses the given widget as its configuration.
-  _SliverStickyCollapsablePanelRenderObjectElement(
-      _SliverStickyCollapsablePanel widget)
-      : super(widget);
+  _SliverStickyCollapsablePanelRenderObjectElement(_SliverStickyCollapsablePanel widget) : super(widget);
 
   @override
-  _SliverStickyCollapsablePanel get widget =>
-      super.widget as _SliverStickyCollapsablePanel;
+  _SliverStickyCollapsablePanel get widget => super.widget as _SliverStickyCollapsablePanel;
 
   Element? _header;
 
@@ -294,20 +286,19 @@ class _SliverStickyCollapsablePanelRenderObjectElement
         renderObject.headerChild = child as RenderBox;
         break;
       case _Slot.sliverSlot:
-        renderObject.sliverChild = child as RenderSliver;
+        renderObject.panelChild = child as RenderSliver;
         break;
     }
   }
 
   @override
   void moveRenderObjectChild(RenderObject child, oldSlot, newSlot) {
-    assert(false,
-        '_SliverStickyCollapsablePanelRenderObjectElement.moveRenderObjectChild should never called');
+    assert(false, '_SliverStickyCollapsablePanelRenderObjectElement.moveRenderObjectChild should never called');
   }
 
   @override
   void removeRenderObjectChild(RenderObject child, slot) {
     if (renderObject.headerChild == child) renderObject.headerChild = null;
-    if (renderObject.sliverChild == child) renderObject.sliverChild = null;
+    if (renderObject.panelChild == child) renderObject.panelChild = null;
   }
 }
