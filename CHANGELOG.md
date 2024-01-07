@@ -1,3 +1,6 @@
+## 1.1.9
+* [chore] - more strict assert for non-null child for render layer
+
 ## 1.1.8
 
 * [chore] - totally rewrite of render layer according to flutter frameworks component
