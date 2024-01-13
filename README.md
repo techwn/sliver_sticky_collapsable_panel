@@ -1,6 +1,9 @@
 # sliver_sticky_collapsable_panel
-[![pub](https://img.shields.io/badge/sliver_sticky_collapsable_panel-1.1.10-blue)](https://pub.dev/packages/sliver_sticky_collapsable_panel)
-[![license](https://img.shields.io/badge/license-MIT-green)](https://github.com/techwn/sliver_sticky_collapsable_panel/blob/main/LICENSE)
+[![pub](https://img.shields.io/badge/pub-1.1.11-blue)](https://pub.dev/packages/sliver_sticky_collapsable_panel)
+[![license](https://img.shields.io/badge/license-MIT-orange)](https://github.com/techwn/sliver_sticky_collapsable_panel/blob/main/LICENSE)
+[![build status](https://img.shields.io/badge/build-passing-green?logo=github&logoColor=white)](https://github.com/techwn/sliver_sticky_collapsable_panel)
+[![flutter compatibility](https://img.shields.io/badge/flutter-3.3+-blue)](https://flutter.dev/)
+[![dart compatibility](https://img.shields.io/badge/dart-2.18+-blue)](https://dart.dev/)
 
 A Sliver implementation of sticky collapsable panel, with a box header rebuild on status and a sliver child as panel content.
 
@@ -27,7 +30,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 
     ```yaml
     dependencies:
-      sliver_sticky_collapsable_panel: ^1.1.10
+      sliver_sticky_collapsable_panel: ^1.1.11
     ```
 
 - In your library add the following import:

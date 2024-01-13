@@ -1,3 +1,6 @@
+## 1.1.11
+* [chore] - update README for better readability
+
 ## 1.1.10
 * [chore] - deprecated named constructor: SliverStickyCollapsablePanel.builder 
 * [chore] - provide simper SliverStickyCollapsablePanel constructor as replacement
