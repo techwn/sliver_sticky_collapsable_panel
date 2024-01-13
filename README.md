@@ -1,4 +1,7 @@
 # sliver_sticky_collapsable_panel
+[![pub](https://img.shields.io/badge/sliver_sticky_collapsable_panel-1.1.10-blue)](https://pub.dev/packages/sliver_sticky_collapsable_panel)
+[![license](https://img.shields.io/badge/license-MIT-green)](https://github.com/techwn/sliver_sticky_collapsable_panel/blob/main/LICENSE)
+
 A Sliver implementation of sticky collapsable panel, with a box header rebuild on status and a sliver child as panel content.
 
 ## Snap Shot
