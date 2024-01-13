@@ -17,23 +17,23 @@ void main() {
           body: CustomScrollView(
             cacheExtent: 0,
             slivers: <Widget>[
-              SliverStickyCollapsablePanel.builder(
+              SliverStickyCollapsablePanel(
                 headerBuilder: (_, status) => const _Header(index: 0),
                 controller: stickyCollapsablePanelController,
                 scrollController: scrollController,
-                sliver: const _Sliver(),
+                sliverPanel: const _Sliver(),
               ),
-              SliverStickyCollapsablePanel.builder(
+              SliverStickyCollapsablePanel(
                 headerBuilder: (_, status) => const _Header(index: 1),
                 controller: stickyCollapsablePanelController,
                 scrollController: scrollController,
-                sliver: const _Sliver(),
+                sliverPanel: const _Sliver(),
               ),
-              SliverStickyCollapsablePanel.builder(
+              SliverStickyCollapsablePanel(
                 headerBuilder: (_, status) => const _Header(index: 2),
                 controller: stickyCollapsablePanelController,
                 scrollController: scrollController,
-                sliver: const _Sliver(),
+                sliverPanel: const _Sliver(),
               ),
             ],
           ),
@@ -103,21 +103,21 @@ void main() {
             cacheExtent: 0,
             reverse: true,
             slivers: <Widget>[
-              SliverStickyCollapsablePanel.builder(
+              SliverStickyCollapsablePanel(
                 headerBuilder: (_, status) => const _Header(index: 0),
-                sliver: const _Sliver(),
+                sliverPanel: const _Sliver(),
                 controller: stickyCollapsablePanelController,
                 scrollController: scrollController,
               ),
-              SliverStickyCollapsablePanel.builder(
+              SliverStickyCollapsablePanel(
                 headerBuilder: (_, status) => const _Header(index: 1),
-                sliver: const _Sliver(),
+                sliverPanel: const _Sliver(),
                 controller: stickyCollapsablePanelController,
                 scrollController: scrollController,
               ),
-              SliverStickyCollapsablePanel.builder(
+              SliverStickyCollapsablePanel(
                 headerBuilder: (_, status) => const _Header(index: 2),
-                sliver: const _Sliver(),
+                sliverPanel: const _Sliver(),
                 controller: stickyCollapsablePanelController,
                 scrollController: scrollController,
               ),
@@ -188,35 +188,35 @@ void main() {
           body: CustomScrollView(
             cacheExtent: 0,
             slivers: <Widget>[
-              SliverStickyCollapsablePanel.builder(
+              SliverStickyCollapsablePanel(
                 headerBuilder: (_, status) => const _HierarchyHeader(hierarchy: '1'),
                 controller: stickyCollapsablePanelController,
                 scrollController: scrollController,
-                sliver: MultiSliver(
+                sliverPanel: MultiSliver(
                   children: [
-                    SliverStickyCollapsablePanel.builder(
+                    SliverStickyCollapsablePanel(
                       headerBuilder: (_, status) => const _HierarchyHeader(hierarchy: '1.1'),
                       controller: stickyCollapsablePanelController,
                       scrollController: scrollController,
-                      sliver: const _Sliver100(),
+                      sliverPanel: const _Sliver100(),
                     ),
-                    SliverStickyCollapsablePanel.builder(
+                    SliverStickyCollapsablePanel(
                       headerBuilder: (_, status) => const _HierarchyHeader(hierarchy: '1.2'),
                       controller: stickyCollapsablePanelController,
                       scrollController: scrollController,
-                      sliver: MultiSliver(
+                      sliverPanel: MultiSliver(
                         children: [
-                          SliverStickyCollapsablePanel.builder(
+                          SliverStickyCollapsablePanel(
                             headerBuilder: (_, status) => const _HierarchyHeader(hierarchy: '1.2.1'),
                             controller: stickyCollapsablePanelController,
                             scrollController: scrollController,
-                            sliver: const _Sliver100(),
+                            sliverPanel: const _Sliver100(),
                           ),
-                          SliverStickyCollapsablePanel.builder(
+                          SliverStickyCollapsablePanel(
                             headerBuilder: (_, status) => const _HierarchyHeader(hierarchy: '1.2.2'),
                             controller: stickyCollapsablePanelController,
                             scrollController: scrollController,
-                            sliver: const _Sliver100(),
+                            sliverPanel: const _Sliver100(),
                           ),
                         ],
                       ),
@@ -224,29 +224,29 @@ void main() {
                   ],
                 ),
               ),
-              SliverStickyCollapsablePanel.builder(
+              SliverStickyCollapsablePanel(
                 headerBuilder: (_, status) => const _HierarchyHeader(hierarchy: '2'),
                 controller: stickyCollapsablePanelController,
                 scrollController: scrollController,
-                sliver: const _Sliver100(),
+                sliverPanel: const _Sliver100(),
               ),
-              SliverStickyCollapsablePanel.builder(
+              SliverStickyCollapsablePanel(
                 headerBuilder: (_, status) => const _HierarchyHeader(hierarchy: '3'),
                 controller: stickyCollapsablePanelController,
                 scrollController: scrollController,
-                sliver: MultiSliver(
+                sliverPanel: MultiSliver(
                   children: [
-                    SliverStickyCollapsablePanel.builder(
+                    SliverStickyCollapsablePanel(
                       headerBuilder: (_, status) => const _HierarchyHeader(hierarchy: '3.1'),
                       controller: stickyCollapsablePanelController,
                       scrollController: scrollController,
-                      sliver: const _Sliver100(),
+                      sliverPanel: const _Sliver100(),
                     ),
-                    SliverStickyCollapsablePanel.builder(
+                    SliverStickyCollapsablePanel(
                       headerBuilder: (_, status) => const _HierarchyHeader(hierarchy: '3.2'),
                       controller: stickyCollapsablePanelController,
                       scrollController: scrollController,
-                      sliver: const _Sliver100(),
+                      sliverPanel: const _Sliver100(),
                     ),
                   ],
                 ),

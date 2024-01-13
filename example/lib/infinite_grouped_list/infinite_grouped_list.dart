@@ -583,7 +583,7 @@ class InfiniteGroupedListState<Cell, GroupBy, Group> extends State<InfiniteGroup
                         .map<int, Widget>((index, title) {
                           return MapEntry(
                             index,
-                            SliverStickyCollapsablePanel.builder(
+                            SliverStickyCollapsablePanel(
                               iOSStyleSticky: false,
                               scrollController: _scrollController,
                               paddingAfterCollapse: const EdgeInsets.only(bottom: 10),
@@ -607,7 +607,7 @@ class InfiniteGroupedListState<Cell, GroupBy, Group> extends State<InfiniteGroup
                                   status.scrollPercentage,
                                 );
                               },
-                              sliver: widget.listStyle == ListStyle.listView
+                              sliverPanel: widget.listStyle == ListStyle.listView
                                   ? SliverList(
                                       delegate: SliverChildBuilderDelegate(
                                         (context, index) {

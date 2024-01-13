@@ -24,7 +24,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 
     ```yaml
     dependencies:
-      sliver_sticky_collapsable_panel: ^1.1.9
+      sliver_sticky_collapsable_panel: ^1.1.10
     ```
 
 - In your library add the following import:
@@ -38,17 +38,17 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
     CustomScrollView(
       controller: _scrollController,
       slivers: [
-        SliverStickyCollapsablePanel.builder(
+        SliverStickyCollapsablePanel(
           scrollController: _scrollController,
           controller: StickyCollapsablePanelController(key:'key_1'),
           headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
-          sliver: SliverList.list(children: [...]),
+          sliverPanel: SliverList.list(children: [...]),
         ),
-        SliverStickyCollapsablePanel.builder(
+        SliverStickyCollapsablePanel(
           scrollController: _scrollController,
           controller: StickyCollapsablePanelController(key:'key_2'),
           headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
-          sliver: SliverList.list(children: [...]),
+          sliverPanel: SliverList.list(children: [...]),
         ),
         ...,
       ],
@@ -57,7 +57,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 
 - For simple right side header arrow hint `^`, you can build with widget in flutter framework like `AnimatedRotation`:
     ```dart
-    SliverStickyCollapsablePanel.builder(
+    SliverStickyCollapsablePanel(
       scrollController: _scrollController,
       controller: StickyCollapsablePanelController(key:'key_1'),
       headerBuilder: (context, status) => Container(
@@ -77,7 +77,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
           ],
         ),
       ),
-      sliver: SliverList.list(children: [...]),
+      sliverPanel: SliverList.list(children: [...]),
     ),
     ```
 ---
@@ -88,12 +88,12 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
     CustomScrollView(
       controller: _scrollController,
       slivers: [
-        SliverStickyCollapsablePanel.builder(
+        SliverStickyCollapsablePanel(
           scrollController: _scrollController,
           controller: StickyCollapsablePanelController(key:'key_1'),
           headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
           disableCollapsable = true
-          sliver: SliverList.list(children: [...]),
+          sliverPanel: SliverList.list(children: [...]),
         ),
         ...,
       ],
@@ -105,12 +105,12 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
     CustomScrollView(
       controller: _scrollController,
       slivers: [
-        SliverStickyCollapsablePanel.builder(
+        SliverStickyCollapsablePanel(
           scrollController: _scrollController,
           controller: StickyCollapsablePanelController(key:'key_1'),
           iOSStyleSticky: true,
           headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
-          sliver: SliverList.list(children: [...]),
+          sliverPanel: SliverList.list(children: [...]),
         ),
         ...,
       ],
@@ -124,13 +124,13 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
     CustomScrollView(
       controller: _scrollController,
       slivers: [
-        SliverStickyCollapsablePanel.builder(
+        SliverStickyCollapsablePanel(
           scrollController: _scrollController,
           controller: StickyCollapsablePanelController(key:'key_1'),
           paddingBeforeCollapse: const EdgeInsets.all(16),
           paddingAfterCollapse: const EdgeInsets.only(bottom: 10),
           headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
-          sliver: SliverList.list(children: [...]),
+          sliverPanel: SliverList.list(children: [...]),
         ),
         ...,
       ],

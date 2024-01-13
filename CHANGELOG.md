@@ -1,3 +1,8 @@
+## 1.1.10
+* [chore] - deprecated named constructor: SliverStickyCollapsablePanel.builder 
+* [chore] - provide simper SliverStickyCollapsablePanel constructor as replacement
+* [chore] - rename some parameter for better readability
+
 ## 1.1.9
 * [chore] - more strict assert for non-null child for render layer
 
@@ -26,7 +31,7 @@
 
 ## 1.1.3
 
-* [feature] - update ValueLayoutBuilder according to framework's LayoutBuilder
+* [chore] - update ValueLayoutBuilder according to framework's LayoutBuilder
 
 ## 1.1.2
 
