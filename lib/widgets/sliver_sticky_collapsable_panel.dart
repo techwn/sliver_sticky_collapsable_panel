@@ -246,7 +246,7 @@ class _SliverStickyCollapsablePanel extends RenderObjectWidget {
         controller: controller,
         isExpanded: isExpanded,
         iOSStyleSticky: iOSStyleSticky,
-        devicePixelRatio: MediaQuery.devicePixelRatioOf(context));
+        devicePixelRatio: MediaQuery.of(context).devicePixelRatio);
   }
 
   @override
@@ -260,7 +260,7 @@ class _SliverStickyCollapsablePanel extends RenderObjectWidget {
       ..controller = controller
       ..isExpanded = isExpanded
       ..iOSStyleSticky = iOSStyleSticky
-      ..devicePixelRatio = MediaQuery.devicePixelRatioOf(context);
+      ..devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
   }
 }
 
