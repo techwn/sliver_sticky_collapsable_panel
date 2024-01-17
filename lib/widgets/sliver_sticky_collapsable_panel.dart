@@ -241,12 +241,12 @@ class _SliverStickyCollapsablePanel extends RenderObjectWidget {
   @override
   RenderSliverStickyCollapsablePanel createRenderObject(BuildContext context) {
     return RenderSliverStickyCollapsablePanel(
-      overlapsContent: overlapsContent,
-      sticky: sticky,
-      controller: controller,
-      isExpanded: isExpanded,
-      iOSStyleSticky: iOSStyleSticky,
-    );
+        overlapsContent: overlapsContent,
+        sticky: sticky,
+        controller: controller,
+        isExpanded: isExpanded,
+        iOSStyleSticky: iOSStyleSticky,
+        devicePixelRatio: MediaQuery.devicePixelRatioOf(context));
   }
 
   @override
@@ -259,7 +259,8 @@ class _SliverStickyCollapsablePanel extends RenderObjectWidget {
       ..sticky = sticky
       ..controller = controller
       ..isExpanded = isExpanded
-      ..iOSStyleSticky = iOSStyleSticky;
+      ..iOSStyleSticky = iOSStyleSticky
+      ..devicePixelRatio = MediaQuery.devicePixelRatioOf(context);
   }
 }
 

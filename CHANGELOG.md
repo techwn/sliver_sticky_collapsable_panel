@@ -1,3 +1,6 @@
+## 1.1.12
+* [chore] - according to scroll physics, use more reasonable tolerance for calibration
+
 ## 1.1.11
 * [chore] - update README for better readability
 

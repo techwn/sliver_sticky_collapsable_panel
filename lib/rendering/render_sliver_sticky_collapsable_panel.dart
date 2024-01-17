@@ -19,11 +19,13 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver with RenderSliverH
     required StickyCollapsablePanelController controller,
     required bool isExpanded,
     required bool iOSStyleSticky,
+    required double devicePixelRatio,
   })  : _overlapsContent = overlapsContent,
         _sticky = sticky,
         _isExpanded = isExpanded,
         _iOSStyleSticky = iOSStyleSticky,
-        _controller = controller {
+        _controller = controller,
+        _tolerance = 1.0 / devicePixelRatio {
     this.headerChild = headerChild;
     this.panelChild = panelChild;
   }
@@ -76,6 +78,15 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver with RenderSliverH
     if (_controller == value) return;
     value.precedingScrollExtent = _controller.precedingScrollExtent;
     _controller = value;
+  }
+
+  double _tolerance;
+
+  set devicePixelRatio(double value) {
+    final tolerance = 1 / value;
+    if (_tolerance == tolerance) return;
+    _tolerance = tolerance;
+    markNeedsLayout();
   }
 
   RenderBox? _headerChild;
@@ -224,9 +235,9 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver with RenderSliverH
     updateIsPinned();
     final headerPosition = childMainAxisPosition(headerChild!);
     double headerScrollRatio = (((headerPosition - constraints.overlap).abs() / _headerExtent)).clamp(0, 1);
-    if (nearZero(headerScrollRatio, Tolerance.defaultTolerance.distance)) {
+    if (nearZero(headerScrollRatio, _tolerance)) {
       headerScrollRatio = 0;
-    } else if (nearEqual(1.0, headerScrollRatio, Tolerance.defaultTolerance.distance)) {
+    } else if (nearEqual(1.0, headerScrollRatio, _tolerance)) {
       headerScrollRatio = 1.0;
     }
     if (_controller.precedingScrollExtent != constraints.precedingScrollExtent) {
