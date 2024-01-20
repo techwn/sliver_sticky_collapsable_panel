@@ -1,3 +1,6 @@
+## 1.1.13
+* [chore] - enable/test Impeller preview for android example , it works even better on render precise
+
 ## 1.1.12
 * [chore] - according to scroll physics, use more reasonable tolerance for calibration
 
