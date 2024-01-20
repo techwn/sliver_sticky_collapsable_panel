@@ -25,7 +25,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver with RenderSliverH
         _isExpanded = isExpanded,
         _iOSStyleSticky = iOSStyleSticky,
         _controller = controller,
-        _tolerance = 1.0 / devicePixelRatio {
+        _tolerance = 1 / devicePixelRatio {
     this.headerChild = headerChild;
     this.panelChild = panelChild;
   }
