@@ -1,4 +1,4 @@
-package com.example.example
+package sliver.sticky.collapsable.panel
 
 import io.flutter.embedding.android.FlutterActivity
 

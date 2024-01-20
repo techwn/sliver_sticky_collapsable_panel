@@ -1,3 +1,8 @@
+## 1.1.14
+* [chore] - enable/test impeller for iOS example, it works even better on render precise, this will optimize default sticky effects between headers
+* [suggest] - since impeller for iOS stable from flutter 3.10, we suggest you upgrade and use it
+* [suggest] - since impeller for android not stable with latest flutter 3.16, we suggest wait for the stable version
+
 ## 1.1.13
 * [chore] - enable/test Impeller preview for android example , it works even better on render precise
 

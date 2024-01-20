@@ -4,11 +4,15 @@ import 'package:sliver_sticky_collapsable_panel/sliver_sticky_collapsable_panel.
 
 void main() {
   setUp(() {
-    WidgetsBinding.instance.renderView.configuration = TestViewConfiguration(size: const Size(400, 800));
+    WidgetsBinding.instance.renderView.configuration =
+        TestViewConfiguration(size: const Size(400, 800));
   });
 
-  testWidgets('stickyCollapsablePanelController.stickyCollapsablePanelScrollOffset', (WidgetTester tester) async {
-    final StickyCollapsablePanelController stickyCollapsablePanelController = StickyCollapsablePanelController();
+  testWidgets(
+      'stickyCollapsablePanelController.stickyCollapsablePanelScrollOffset',
+      (WidgetTester tester) async {
+    final StickyCollapsablePanelController stickyCollapsablePanelController =
+        StickyCollapsablePanelController();
     final ScrollController scrollController = ScrollController();
 
     await tester.pumpWidget(
@@ -94,9 +98,11 @@ void main() {
     expect(stickyCollapsablePanelController.precedingScrollExtent, equals(880));
   });
 
-  testWidgets('stickyCollapsablePanelController.stickyCollapsablePanelScrollOffset - reverse',
+  testWidgets(
+      'stickyCollapsablePanelController.stickyCollapsablePanelScrollOffset - reverse',
       (WidgetTester tester) async {
-    final StickyCollapsablePanelController stickyCollapsablePanelController = StickyCollapsablePanelController();
+    final StickyCollapsablePanelController stickyCollapsablePanelController =
+        StickyCollapsablePanelController();
     final ScrollController scrollController = ScrollController();
 
     await tester.pumpWidget(
