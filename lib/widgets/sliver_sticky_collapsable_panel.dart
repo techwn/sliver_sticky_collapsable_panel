@@ -106,8 +106,7 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
   State<StatefulWidget> createState() => SliverStickyCollapsablePanelState();
 }
 
-class SliverStickyCollapsablePanelState
-    extends State<SliverStickyCollapsablePanel> {
+class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePanel> {
   late bool isExpanded;
 
   @override
@@ -125,8 +124,7 @@ class SliverStickyCollapsablePanelState
             setState(() {
               isExpanded = !isExpanded;
               if (constraints.value.isPinned) {
-                widget.scrollController
-                    .jumpTo(widget.panelController.precedingScrollExtent);
+                widget.scrollController.jumpTo(widget.panelController.precedingScrollExtent);
               }
             });
             widget.expandCallback?.call(isExpanded);
@@ -139,9 +137,7 @@ class SliverStickyCollapsablePanelState
     return _SliverStickyCollapsablePanel(
       boxHeader: boxHeader,
       sliverPanel: SliverPadding(
-        padding: isExpandedNow
-            ? widget.paddingBeforeCollapse
-            : widget.paddingAfterCollapse,
+        padding: isExpandedNow ? widget.paddingBeforeCollapse : widget.paddingAfterCollapse,
         sliver: isExpandedNow ? widget.sliverPanel : null,
       ),
       overlapsContent: widget.overlapsContent,
@@ -157,8 +153,7 @@ class SliverStickyCollapsablePanelState
 /// The header scrolls off the viewport only when the sliver does.
 ///
 /// Place this widget inside a [CustomScrollView] or similar.
-class _SliverStickyCollapsablePanel
-    extends SlottedMultiChildRenderObjectWidget<Slot, RenderObject> {
+class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<Slot, RenderObject> {
   /// Creates a sliver that displays the [boxHeader] before its [sliverPanel], unless
   /// [overlapsContent] it's true.
   /// The [boxHeader] stays pinned when it hits the start of the viewport until

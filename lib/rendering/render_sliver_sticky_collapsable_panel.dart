@@ -12,9 +12,7 @@ import '../utils/utils.dart';
 /// The [headerChild] stays pinned when it hits the start of the viewport until
 /// the [panelChild] scrolls off the viewport.
 class RenderSliverStickyCollapsablePanel extends RenderSliver
-    with
-        SlottedContainerRenderObjectMixin<Slot, RenderObject>,
-        RenderSliverHelpers {
+    with SlottedContainerRenderObjectMixin<Slot, RenderObject>, RenderSliverHelpers {
   RenderSliverStickyCollapsablePanel({
     required bool overlapsContent,
     required bool sticky,
@@ -36,10 +34,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
   late bool _isPinned;
 
   void updateIsPinned() {
-    _isPinned = _sticky &&
-        geometry!.visible &&
-        constraints.scrollOffset > 0 &&
-        constraints.overlap == 0;
+    _isPinned = _sticky && geometry!.visible && constraints.scrollOffset > 0 && constraints.overlap == 0;
   }
 
   bool _overlapsContent;
@@ -115,49 +110,40 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
   @override
   void performLayout() {
     assert(headerChild != null && panelChild != null);
-    final axisDirection = applyGrowthDirectionToAxisDirection(
-        constraints.axisDirection, constraints.growthDirection);
+    final axisDirection = applyGrowthDirectionToAxisDirection(constraints.axisDirection, constraints.growthDirection);
     //layout header first(but not compute paint offset), so we can compute constraints of sliver child
     headerChild!.layout(
       BoxValueConstraints<SliverStickyCollapsablePanelStatus>(
-        value: _oldStatus ??
-            SliverStickyCollapsablePanelStatus(0, false, _isExpanded),
+        value: _oldStatus ?? SliverStickyCollapsablePanelStatus(0, false, _isExpanded),
         constraints: constraints.asBoxConstraints(),
       ),
       parentUsesSize: true,
     );
     _headerExtent = computeHeaderExtent();
-    final double headerAndOverlapPaintExtent = calculatePaintOffset(constraints,
-        from: 0, to: childScrollOffset(panelChild!));
-    final double headerAndOverlapCacheExtent = calculateCacheOffset(constraints,
-        from: 0, to: childScrollOffset(panelChild!));
+    final double headerAndOverlapPaintExtent =
+        calculatePaintOffset(constraints, from: 0, to: childScrollOffset(panelChild!));
+    final double headerAndOverlapCacheExtent =
+        calculateCacheOffset(constraints, from: 0, to: childScrollOffset(panelChild!));
     //layout sliver child, and compute paint offset
     panelChild!.layout(
       constraints.copyWith(
-        scrollOffset: math.max(
-            0, constraints.scrollOffset - childScrollOffset(panelChild!)),
-        cacheOrigin: math.min(
-            0, constraints.cacheOrigin + childScrollOffset(panelChild!)),
+        scrollOffset: math.max(0, constraints.scrollOffset - childScrollOffset(panelChild!)),
+        cacheOrigin: math.min(0, constraints.cacheOrigin + childScrollOffset(panelChild!)),
         overlap: 0,
-        remainingPaintExtent: math.max(
-            0, constraints.remainingPaintExtent - headerAndOverlapPaintExtent),
-        remainingCacheExtent: math.max(
-            0, constraints.remainingCacheExtent - headerAndOverlapCacheExtent),
-        precedingScrollExtent: math.max(0,
-            constraints.precedingScrollExtent + childScrollOffset(panelChild!)),
+        remainingPaintExtent: math.max(0, constraints.remainingPaintExtent - headerAndOverlapPaintExtent),
+        remainingCacheExtent: math.max(0, constraints.remainingCacheExtent - headerAndOverlapCacheExtent),
+        precedingScrollExtent: math.max(0, constraints.precedingScrollExtent + childScrollOffset(panelChild!)),
       ),
       parentUsesSize: true,
     );
     final SliverGeometry panelChildGeometry = panelChild!.geometry!;
     if (panelChildGeometry.scrollOffsetCorrection != null) {
-      geometry = SliverGeometry(
-          scrollOffsetCorrection: panelChildGeometry.scrollOffsetCorrection);
+      geometry = SliverGeometry(scrollOffsetCorrection: panelChildGeometry.scrollOffsetCorrection);
       return;
     }
     geometry = SliverGeometry(
       paintOrigin: panelChildGeometry.paintOrigin,
-      scrollExtent:
-          childScrollOffset(panelChild!) + panelChildGeometry.scrollExtent,
+      scrollExtent: childScrollOffset(panelChild!) + panelChildGeometry.scrollExtent,
       paintExtent: math.min(
         headerAndOverlapPaintExtent + panelChildGeometry.paintExtent,
         constraints.remainingPaintExtent,
@@ -166,8 +152,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
         headerAndOverlapCacheExtent + panelChildGeometry.cacheExtent,
         constraints.remainingCacheExtent,
       ),
-      maxPaintExtent:
-          childScrollOffset(panelChild!) + panelChildGeometry.maxPaintExtent,
+      maxPaintExtent: childScrollOffset(panelChild!) + panelChildGeometry.maxPaintExtent,
       hitTestExtent: math.max(
         headerAndOverlapPaintExtent + panelChildGeometry.paintExtent,
         headerAndOverlapPaintExtent + panelChildGeometry.hitTestExtent,
@@ -181,37 +166,29 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
         childParentData.paintOffset = Offset.zero;
         break;
       case AxisDirection.right:
-        childParentData.paintOffset = Offset(
-            calculatePaintOffset(constraints,
-                from: 0, to: childScrollOffset(panelChild!)),
-            0);
+        childParentData.paintOffset =
+            Offset(calculatePaintOffset(constraints, from: 0, to: childScrollOffset(panelChild!)), 0);
         break;
       case AxisDirection.down:
-        childParentData.paintOffset = Offset(
-            0,
-            calculatePaintOffset(constraints,
-                from: 0, to: childScrollOffset(panelChild!)));
+        childParentData.paintOffset =
+            Offset(0, calculatePaintOffset(constraints, from: 0, to: childScrollOffset(panelChild!)));
         break;
     }
     //update constraints of header if needed, update header paint Offset
     updateIsPinned();
     final headerPosition = childMainAxisPosition(headerChild!);
-    double headerScrollRatio =
-        (((headerPosition - constraints.overlap).abs() / _headerExtent))
-            .clamp(0, 1);
+    double headerScrollRatio = (((headerPosition - constraints.overlap).abs() / _headerExtent)).clamp(0, 1);
     if (nearZero(headerScrollRatio, _tolerance)) {
       headerScrollRatio = 0;
     } else if (nearEqual(1.0, headerScrollRatio, _tolerance)) {
       headerScrollRatio = 1.0;
     }
-    if (_controller.precedingScrollExtent !=
-        constraints.precedingScrollExtent) {
+    if (_controller.precedingScrollExtent != constraints.precedingScrollExtent) {
       _controller.precedingScrollExtent = constraints.precedingScrollExtent;
     }
-    if (headerChild is RenderConstrainedLayoutBuilder<
-        BoxValueConstraints<SliverStickyCollapsablePanelStatus>, RenderBox>) {
-      final status = SliverStickyCollapsablePanelStatus(
-          headerScrollRatio, _isPinned, _isExpanded);
+    if (headerChild
+        is RenderConstrainedLayoutBuilder<BoxValueConstraints<SliverStickyCollapsablePanelStatus>, RenderBox>) {
+      final status = SliverStickyCollapsablePanelStatus(headerScrollRatio, _isPinned, _isExpanded);
       if (_oldStatus != status) {
         _oldStatus = status;
         headerChild!.layout(
@@ -238,19 +215,16 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
         cacheExtent: geometry!.cacheExtent,
       );
     }
-    final headerParentData =
-        headerChild!.parentData as SliverPhysicalParentData;
+    final headerParentData = headerChild!.parentData as SliverPhysicalParentData;
     switch (axisDirection) {
       case AxisDirection.up:
-        headerParentData.paintOffset =
-            Offset(0, geometry!.paintExtent - headerPosition - _headerExtent);
+        headerParentData.paintOffset = Offset(0, geometry!.paintExtent - headerPosition - _headerExtent);
         break;
       case AxisDirection.down:
         headerParentData.paintOffset = Offset(0, headerPosition);
         break;
       case AxisDirection.left:
-        headerParentData.paintOffset =
-            Offset(geometry!.paintExtent - headerPosition - _headerExtent, 0);
+        headerParentData.paintOffset = Offset(geometry!.paintExtent - headerPosition - _headerExtent, 0);
         break;
       case AxisDirection.right:
         headerParentData.paintOffset = Offset(headerPosition, 0);
@@ -269,8 +243,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
       if (panelChild!.geometry!.hitTestExtent > 0) {
         return panelChild!.hitTest(
           result,
-          mainAxisPosition:
-              mainAxisPosition - childMainAxisPosition(panelChild!),
+          mainAxisPosition: mainAxisPosition - childMainAxisPosition(panelChild!),
           crossAxisPosition: crossAxisPosition,
         );
       }
@@ -303,15 +276,10 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     final panelScrollExtent = panelChild!.geometry!.scrollExtent;
     if (child == headerChild) {
       final double headerPosition = _iOSStyleSticky
-          ? (_isPinned
-              ? constraints.overlap
-              : -(constraints.scrollOffset - constraints.overlap))
+          ? (_isPinned ? constraints.overlap : -(constraints.scrollOffset - constraints.overlap))
           : (_isPinned
-              ? math.min(
-                  constraints.overlap,
-                  panelScrollExtent -
-                      constraints.scrollOffset -
-                      (_overlapsContent ? _headerExtent : 0))
+              ? math.min(constraints.overlap,
+                  panelScrollExtent - constraints.scrollOffset - (_overlapsContent ? _headerExtent : 0))
               : -(constraints.scrollOffset - constraints.overlap));
       return headerPosition;
     } else {
@@ -330,9 +298,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     if (child == headerChild) {
       return constraints.overlap;
     } else {
-      return _overlapsContent
-          ? constraints.overlap
-          : _headerExtent + constraints.overlap;
+      return _overlapsContent ? constraints.overlap : _headerExtent + constraints.overlap;
     }
   }
 
@@ -346,12 +312,10 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
   void paint(PaintingContext context, Offset offset) {
     if (geometry!.visible) {
       if (panelChild!.geometry!.visible) {
-        final panelParentData =
-            panelChild!.parentData as SliverPhysicalParentData;
+        final panelParentData = panelChild!.parentData as SliverPhysicalParentData;
         context.paintChild(panelChild!, offset + panelParentData.paintOffset);
       }
-      final headerParentData =
-          headerChild!.parentData as SliverPhysicalParentData;
+      final headerParentData = headerChild!.parentData as SliverPhysicalParentData;
       context.paintChild(headerChild!, offset + headerParentData.paintOffset);
     }
   }

@@ -7,8 +7,7 @@ class OverlapSliver extends SingleChildRenderObjectWidget {
   const OverlapSliver({
     super.key,
     super.child = const DecoratedBox(
-      decoration: BoxDecoration(
-          color: Colors.red, border: BorderDirectional(bottom: BorderSide())),
+      decoration: BoxDecoration(color: Colors.red, border: BorderDirectional(bottom: BorderSide())),
       child: SizedBox(
         width: double.infinity,
         height: 300,
@@ -23,8 +22,7 @@ class OverlapSliver extends SingleChildRenderObjectWidget {
   }
 }
 
-class RenderOverlapSliver extends RenderSliver
-    with RenderObjectWithChildMixin<RenderBox>, RenderSliverHelpers {
+class RenderOverlapSliver extends RenderSliver with RenderObjectWithChildMixin<RenderBox>, RenderSliverHelpers {
   @override
   void setupParentData(RenderObject child) {
     if (child.parentData is! SliverPhysicalParentData) {
@@ -33,17 +31,12 @@ class RenderOverlapSliver extends RenderSliver
   }
 
   @protected
-  void setChildParentData(RenderObject child, SliverConstraints constraints,
-      SliverGeometry geometry) {
-    final SliverPhysicalParentData childParentData =
-        child.parentData! as SliverPhysicalParentData;
-    switch (applyGrowthDirectionToAxisDirection(
-        constraints.axisDirection, constraints.growthDirection)) {
+  void setChildParentData(RenderObject child, SliverConstraints constraints, SliverGeometry geometry) {
+    final SliverPhysicalParentData childParentData = child.parentData! as SliverPhysicalParentData;
+    switch (applyGrowthDirectionToAxisDirection(constraints.axisDirection, constraints.growthDirection)) {
       case AxisDirection.up:
-        childParentData.paintOffset = Offset(
-            0.0,
-            -(geometry.scrollExtent -
-                (geometry.paintExtent + constraints.scrollOffset)));
+        childParentData.paintOffset =
+            Offset(0.0, -(geometry.scrollExtent - (geometry.paintExtent + constraints.scrollOffset)));
         break;
       case AxisDirection.right:
         childParentData.paintOffset = Offset(-constraints.scrollOffset, 0.0);
@@ -52,10 +45,8 @@ class RenderOverlapSliver extends RenderSliver
         childParentData.paintOffset = Offset(0.0, -constraints.scrollOffset);
         break;
       case AxisDirection.left:
-        childParentData.paintOffset = Offset(
-            -(geometry.scrollExtent -
-                (geometry.paintExtent + constraints.scrollOffset)),
-            0.0);
+        childParentData.paintOffset =
+            Offset(-(geometry.scrollExtent - (geometry.paintExtent + constraints.scrollOffset)), 0.0);
     }
   }
 
@@ -70,8 +61,7 @@ class RenderOverlapSliver extends RenderSliver
     assert(geometry!.hitTestExtent > 0.0);
     if (child != null) {
       return hitTestBoxChild(BoxHitTestResult.wrap(result), child!,
-          mainAxisPosition: mainAxisPosition,
-          crossAxisPosition: crossAxisPosition);
+          mainAxisPosition: mainAxisPosition, crossAxisPosition: crossAxisPosition);
     }
     return false;
   }
@@ -87,11 +77,9 @@ class RenderOverlapSliver extends RenderSliver
     child!.layout(constraints.asBoxConstraints(), parentUsesSize: false);
     const maxPaintExtent = 300.0;
     const childExtent = 200.0;
-    final paintExtent =
-        calculatePaintOffset(constraints, from: 0, to: maxPaintExtent);
+    final paintExtent = calculatePaintOffset(constraints, from: 0, to: maxPaintExtent);
     final layoutExtent = clampDouble(paintExtent - 100, 0, childExtent);
-    final cacheExtent =
-        calculateCacheOffset(constraints, from: 0, to: childExtent);
+    final cacheExtent = calculateCacheOffset(constraints, from: 0, to: childExtent);
     geometry = SliverGeometry(
       scrollExtent: layoutExtent,
       paintExtent: paintExtent,
@@ -106,8 +94,7 @@ class RenderOverlapSliver extends RenderSliver
   @override
   void paint(PaintingContext context, Offset offset) {
     if (geometry!.visible) {
-      final SliverPhysicalParentData childParentData =
-          child!.parentData! as SliverPhysicalParentData;
+      final SliverPhysicalParentData childParentData = child!.parentData! as SliverPhysicalParentData;
       context.paintChild(child!, offset + childParentData.paintOffset);
     }
   }

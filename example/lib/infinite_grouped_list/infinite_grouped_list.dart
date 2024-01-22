@@ -27,12 +27,9 @@ enum ListStyle {
 /// `GroupTitle` is the type of the group title. This is derived from GroupBy values.
 /// For example, you could have GroupBy be DateTime (representing user birthdays) and
 /// have GroupTitle be String, if you want to display the birthdays as string titles.
-class InfiniteGroupedList<ItemType, GroupBy, GroupTitle>
-    extends StatefulWidget {
+class InfiniteGroupedList<ItemType, GroupBy, GroupTitle> extends StatefulWidget {
   factory InfiniteGroupedList({
-    required Widget Function(
-            Map<GroupTitle, List<ItemType>> items, GroupTitle title, int index)
-        itemBuilder,
+    required Widget Function(Map<GroupTitle, List<ItemType>> items, GroupTitle title, int index) itemBuilder,
     required GroupBy Function(ItemType item) groupBy,
     required Widget Function(
       int index,
@@ -42,8 +39,7 @@ class InfiniteGroupedList<ItemType, GroupBy, GroupTitle>
       bool isExpanded,
       double scrollPercentage,
     ) groupTitleBuilder,
-    required Future<List<ItemType>> Function(PaginationInfo paginationInfo)
-        onLoadMore,
+    required Future<List<ItemType>> Function(PaginationInfo paginationInfo) onLoadMore,
     required GroupTitle Function(GroupBy) groupCreator,
     Function(ItemType)? sortGroupBy,
     Widget Function(ItemType)? separatorBuilder,
@@ -85,9 +81,7 @@ class InfiniteGroupedList<ItemType, GroupBy, GroupTitle>
   }
 
   factory InfiniteGroupedList.gridView({
-    required Widget Function(
-            Map<GroupTitle, List<ItemType>> items, GroupTitle title, int index)
-        itemBuilder,
+    required Widget Function(Map<GroupTitle, List<ItemType>> items, GroupTitle title, int index) itemBuilder,
     required GroupBy Function(ItemType item) groupBy,
     required Widget Function(
       int index,
@@ -97,8 +91,7 @@ class InfiniteGroupedList<ItemType, GroupBy, GroupTitle>
       bool isExpanded,
       double scrollPercentage,
     ) groupTitleBuilder,
-    required Future<List<ItemType>> Function(PaginationInfo paginationInfo)
-        onLoadMore,
+    required Future<List<ItemType>> Function(PaginationInfo paginationInfo) onLoadMore,
     required GroupTitle Function(GroupBy) groupCreator,
     Function(ItemType)? sortGroupBy,
     SliverGridDelegate? gridDelegate,
@@ -221,13 +214,10 @@ class InfiniteGroupedList<ItemType, GroupBy, GroupTitle>
   /// If an error occurs while fetching the items (for example, due to network
   /// issues), the function should throw an exception. The widget will catch this
   /// exception and call the [loadMoreItemsErrorWidget] builder.
-  final Future<List<ItemType>> Function(PaginationInfo paginationInfo)
-      onLoadMore;
+  final Future<List<ItemType>> Function(PaginationInfo paginationInfo) onLoadMore;
 
   /// The item builder is used to build the item.
-  final Widget Function(
-          Map<GroupTitle, List<ItemType>>, GroupTitle groupTitle, int index)
-      itemBuilder;
+  final Widget Function(Map<GroupTitle, List<ItemType>>, GroupTitle groupTitle, int index) itemBuilder;
 
   /// The separator builder is used to build the separator between items.
   final Widget Function(ItemType item)? separatorBuilder;
@@ -300,22 +290,19 @@ class InfiniteGroupedList<ItemType, GroupBy, GroupTitle>
   /// - Get the items in the list.
   /// - Retry the last failed load more call.
   /// - Refresh the list.
-  final InfiniteGroupedListController<ItemType, GroupBy, GroupTitle>?
-      controller;
+  final InfiniteGroupedListController<ItemType, GroupBy, GroupTitle>? controller;
 
   @override
-  InfiniteGroupedListState<ItemType, GroupBy, GroupTitle> createState() =>
-      InfiniteGroupedListState();
+  InfiniteGroupedListState<ItemType, GroupBy, GroupTitle> createState() => InfiniteGroupedListState();
 }
 
-class InfiniteGroupedListState<Cell, GroupBy, Group>
-    extends State<InfiniteGroupedList<Cell, GroupBy, Group>> {
+class InfiniteGroupedListState<Cell, GroupBy, Group> extends State<InfiniteGroupedList<Cell, GroupBy, Group>> {
   bool loading = true;
   bool hasError = false;
 
   bool stillHasItems = true;
-  final _InfiniteGroupedListInternalController<Cell, GroupBy, Group>
-      _pageInformationController = _InfiniteGroupedListInternalController();
+  final _InfiniteGroupedListInternalController<Cell, GroupBy, Group> _pageInformationController =
+      _InfiniteGroupedListInternalController();
 
   late final ScrollController _scrollController;
 
@@ -462,10 +449,8 @@ class InfiniteGroupedListState<Cell, GroupBy, Group>
   }
 
   Future<void> _loadMore() async {
-    if ((_scrollController.offset >=
-                _scrollController.position.maxScrollExtent - 100 ||
-            _scrollController.position.maxScrollExtent <
-                _scrollController.position.viewportDimension) &&
+    if ((_scrollController.offset >= _scrollController.position.maxScrollExtent - 100 ||
+            _scrollController.position.maxScrollExtent < _scrollController.position.viewportDimension) &&
         widget.isPaged) {
       if (!loading && stillHasItems && mounted) {
         setState(() {
@@ -583,9 +568,7 @@ class InfiniteGroupedListState<Cell, GroupBy, Group>
               )
             : Listener(
                 onPointerMove: (PointerMoveEvent event) {
-                  if (event.delta.dy < 0 &&
-                      _scrollController.offset ==
-                          _scrollController.position.maxScrollExtent) {
+                  if (event.delta.dy < 0 && _scrollController.offset == _scrollController.position.maxScrollExtent) {
                     _loadMore();
                   }
                 },
@@ -603,10 +586,8 @@ class InfiniteGroupedListState<Cell, GroupBy, Group>
                             SliverStickyCollapsablePanel(
                               iOSStyleSticky: false,
                               scrollController: _scrollController,
-                              paddingAfterCollapse:
-                                  const EdgeInsets.only(bottom: 10),
-                              controller: StickyCollapsablePanelController(
-                                  key: title.toString()),
+                              paddingAfterCollapse: const EdgeInsets.only(bottom: 10),
+                              controller: StickyCollapsablePanelController(key: title.toString()),
                               sticky: widget.stickyGroups,
                               disableCollapsable: (index % 2) == 1,
                               expandCallback: (isExpanded) {
@@ -626,20 +607,16 @@ class InfiniteGroupedListState<Cell, GroupBy, Group>
                                   status.scrollPercentage,
                                 );
                               },
-                              sliverPanel: widget.listStyle ==
-                                      ListStyle.listView
+                              sliverPanel: widget.listStyle == ListStyle.listView
                                   ? SliverList(
                                       delegate: SliverChildBuilderDelegate(
                                         (context, index) {
                                           final items = groupedItems[title]!;
                                           return Column(
                                             children: [
-                                              widget.itemBuilder(
-                                                  groupedItems, title, index),
-                                              if (widget.separatorBuilder !=
-                                                  null)
-                                                widget.separatorBuilder!(
-                                                    items[index]),
+                                              widget.itemBuilder(groupedItems, title, index),
+                                              if (widget.separatorBuilder != null)
+                                                widget.separatorBuilder!(items[index]),
                                             ],
                                           );
                                         },
@@ -657,12 +634,9 @@ class InfiniteGroupedListState<Cell, GroupBy, Group>
                                           final items = groupedItems[title]!;
                                           return Column(
                                             children: [
-                                              widget.itemBuilder(
-                                                  groupedItems, title, index),
-                                              if (widget.separatorBuilder !=
-                                                  null)
-                                                widget.separatorBuilder!(
-                                                    items[index]),
+                                              widget.itemBuilder(groupedItems, title, index),
+                                              if (widget.separatorBuilder != null)
+                                                widget.separatorBuilder!(items[index]),
                                             ],
                                           );
                                         },
@@ -719,15 +693,11 @@ class InfiniteGroupedListState<Cell, GroupBy, Group>
       groupedItems.forEach((key, value) {
         if (widget.groupSortOrder == SortOrder.ascending) {
           value.sort((a, b) {
-            return (widget.sortGroupBy!(a) as Comparable?)
-                    ?.compareTo(widget.sortGroupBy!(b) as Comparable?) ??
-                0;
+            return (widget.sortGroupBy!(a) as Comparable?)?.compareTo(widget.sortGroupBy!(b) as Comparable?) ?? 0;
           });
         } else {
           value.sort((a, b) {
-            return (widget.sortGroupBy!(b) as Comparable?)
-                    ?.compareTo(widget.sortGroupBy!(a) as Comparable?) ??
-                0;
+            return (widget.sortGroupBy!(b) as Comparable?)?.compareTo(widget.sortGroupBy!(a) as Comparable?) ?? 0;
           });
         }
       });
