@@ -1,3 +1,8 @@
+## 2.0.0
+* [framework consistency] - use framework's SlottedMultiChildRenderObjectWidget to maintain widget tree structure, this will benefit us from framework upgrade
+* [break change] - bump min flutter 3.10.0, min dart 3.0.0 since SlottedMultiChildRenderObjectWidget force need this min version
+* [chore] - remove deprecated named constructor: SliverStickyCollapsablePanel.builder
+
 ## 1.1.15
 * [chore] - update topics for hint iOS style sticky
 
@@ -10,13 +15,13 @@
 * [chore] - enable/test Impeller preview for android example , it works even better on render precise
 
 ## 1.1.12
-* [chore] - according to scroll physics, use more reasonable tolerance for calibration
+* [framework consistency] - according to scroll physics, use more reasonable tolerance for calibration
 
 ## 1.1.11
 * [chore] - update README for better readability
 
 ## 1.1.10
-* [chore] - deprecated named constructor: SliverStickyCollapsablePanel.builder 
+* [api deprecation] - deprecated named constructor: SliverStickyCollapsablePanel.builder 
 * [chore] - provide simper SliverStickyCollapsablePanel constructor as replacement
 * [chore] - rename some parameter for better readability
 
@@ -25,7 +30,7 @@
 
 ## 1.1.8
 
-* [chore] - totally rewrite of render layer according to flutter frameworks component
+* [framework consistency] - totally rewrite of render layer according to flutter frameworks component
 * [fix] - more accurate hitTest for click on header
 
 ## 1.1.7
@@ -48,7 +53,7 @@
 
 ## 1.1.3
 
-* [chore] - update ValueLayoutBuilder according to framework's LayoutBuilder
+* [framework consistency] - update ValueLayoutBuilder according to framework's LayoutBuilder
 
 ## 1.1.2
 

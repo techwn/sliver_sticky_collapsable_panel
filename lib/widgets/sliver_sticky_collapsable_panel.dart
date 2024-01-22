@@ -1,8 +1,8 @@
-import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 import '../rendering/render_sliver_sticky_collapsable_panel.dart';
 import '../sliver_sticky_collapsable_panel.dart';
+import '../utils/slot.dart';
 
 /// Callback used by [SliverStickyCollapsablePanel] to notify when the panel expand status change
 typedef ExpandCallback = void Function(bool isExpanded);
@@ -39,39 +39,6 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
           panelController: controller,
           headerBuilder: headerBuilder,
           sliverPanel: sliverPanel,
-          sticky: sticky,
-          overlapsContent: overlapsContent,
-          defaultExpanded: defaultExpanded,
-          expandCallback: expandCallback,
-          disableCollapsable: disableCollapsable,
-          iOSStyleSticky: iOSStyleSticky,
-          paddingBeforeCollapse: paddingBeforeCollapse,
-          paddingAfterCollapse: paddingAfterCollapse,
-        );
-
-  @Deprecated('Use simpler SliverStickyCollapsablePanel constructor instead.'
-      'This named constructor is lengthy and unnecessary, deprecated from version 1.1.10'
-      'And this will be removed in the future feature release 1.2.z')
-  const SliverStickyCollapsablePanel.builder({
-    Key? key,
-    required ScrollController scrollController,
-    required StickyCollapsablePanelController controller,
-    required HeaderBuilder headerBuilder,
-    Widget? sliver,
-    bool sticky = true,
-    bool overlapsContent = false,
-    bool defaultExpanded = true,
-    ExpandCallback? expandCallback,
-    bool disableCollapsable = false,
-    bool iOSStyleSticky = false,
-    EdgeInsetsGeometry paddingBeforeCollapse = const EdgeInsets.only(),
-    EdgeInsetsGeometry paddingAfterCollapse = const EdgeInsets.only(),
-  }) : this._(
-          key: key,
-          scrollController: scrollController,
-          panelController: controller,
-          headerBuilder: headerBuilder,
-          sliverPanel: sliver,
           sticky: sticky,
           overlapsContent: overlapsContent,
           defaultExpanded: defaultExpanded,
@@ -186,7 +153,7 @@ class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePan
 /// The header scrolls off the viewport only when the sliver does.
 ///
 /// Place this widget inside a [CustomScrollView] or similar.
-class _SliverStickyCollapsablePanel extends RenderObjectWidget {
+class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<Slot, RenderObject> {
   /// Creates a sliver that displays the [boxHeader] before its [sliverPanel], unless
   /// [overlapsContent] it's true.
   /// The [boxHeader] stays pinned when it hits the start of the viewport until
@@ -235,8 +202,17 @@ class _SliverStickyCollapsablePanel extends RenderObjectWidget {
   final bool iOSStyleSticky;
 
   @override
-  _SliverStickyCollapsablePanelRenderObjectElement createElement() =>
-      _SliverStickyCollapsablePanelRenderObjectElement(this);
+  Iterable<Slot> get slots => Slot.values;
+
+  @override
+  Widget childForSlot(Slot slot) {
+    switch (slot) {
+      case Slot.headerSlot:
+        return boxHeader;
+      case Slot.panelSlot:
+        return sliverPanel;
+    }
+  }
 
   @override
   RenderSliverStickyCollapsablePanel createRenderObject(BuildContext context) {
@@ -261,78 +237,5 @@ class _SliverStickyCollapsablePanel extends RenderObjectWidget {
       ..isExpanded = isExpanded
       ..iOSStyleSticky = iOSStyleSticky
       ..devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-  }
-}
-
-enum _Slot {
-  headerSlot,
-  panelSlot,
-}
-
-class _SliverStickyCollapsablePanelRenderObjectElement extends RenderObjectElement {
-  /// Creates an element that uses the given widget as its configuration.
-  _SliverStickyCollapsablePanelRenderObjectElement(_SliverStickyCollapsablePanel widget) : super(widget);
-
-  @override
-  _SliverStickyCollapsablePanel get widget => super.widget as _SliverStickyCollapsablePanel;
-
-  Element? _boxHeader;
-
-  Element? _sliverPanel;
-
-  @override
-  void visitChildren(ElementVisitor visitor) {
-    if (_boxHeader != null) visitor(_boxHeader!);
-    if (_sliverPanel != null) visitor(_sliverPanel!);
-  }
-
-  @override
-  void forgetChild(Element child) {
-    assert(child == _boxHeader || child == _sliverPanel);
-    if (child == _boxHeader) _boxHeader = null;
-    if (child == _sliverPanel) _sliverPanel = null;
-    super.forgetChild(child);
-  }
-
-  @override
-  void mount(Element? parent, dynamic newSlot) {
-    super.mount(parent, newSlot);
-    _boxHeader = updateChild(_boxHeader, widget.boxHeader, _Slot.headerSlot);
-    _sliverPanel = updateChild(_sliverPanel, widget.sliverPanel, _Slot.panelSlot);
-  }
-
-  @override
-  void update(_SliverStickyCollapsablePanel newWidget) {
-    super.update(newWidget);
-    _boxHeader = updateChild(_boxHeader, widget.boxHeader, _Slot.headerSlot);
-    _sliverPanel = updateChild(_sliverPanel, widget.sliverPanel, _Slot.panelSlot);
-  }
-
-  @override
-  RenderSliverStickyCollapsablePanel get renderObject {
-    return super.renderObject as RenderSliverStickyCollapsablePanel;
-  }
-
-  @override
-  void insertRenderObjectChild(RenderObject child, _Slot slot) {
-    switch (slot) {
-      case _Slot.headerSlot:
-        renderObject.headerChild = child as RenderBox;
-        break;
-      case _Slot.panelSlot:
-        renderObject.panelChild = child as RenderSliver;
-        break;
-    }
-  }
-
-  @override
-  void moveRenderObjectChild(RenderObject child, oldSlot, newSlot) {
-    assert(false, '_SliverStickyCollapsablePanelRenderObjectElement.moveRenderObjectChild should never called');
-  }
-
-  @override
-  void removeRenderObjectChild(RenderObject child, slot) {
-    if (renderObject.headerChild == child) renderObject.headerChild = null;
-    if (renderObject.panelChild == child) renderObject.panelChild = null;
   }
 }

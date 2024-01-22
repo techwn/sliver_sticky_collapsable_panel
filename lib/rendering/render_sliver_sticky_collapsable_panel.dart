@@ -4,16 +4,16 @@ import 'package:flutter/physics.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import '../utils/slot.dart';
 import '../utils/utils.dart';
 
 /// A sliver with a [RenderBox] as header and a [RenderSliver] as child.
 ///
 /// The [headerChild] stays pinned when it hits the start of the viewport until
 /// the [panelChild] scrolls off the viewport.
-class RenderSliverStickyCollapsablePanel extends RenderSliver with RenderSliverHelpers {
+class RenderSliverStickyCollapsablePanel extends RenderSliver
+    with SlottedContainerRenderObjectMixin<Slot, RenderObject>, RenderSliverHelpers {
   RenderSliverStickyCollapsablePanel({
-    RenderBox? headerChild,
-    RenderSliver? panelChild,
     required bool overlapsContent,
     required bool sticky,
     required StickyCollapsablePanelController controller,
@@ -25,10 +25,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver with RenderSliverH
         _isExpanded = isExpanded,
         _iOSStyleSticky = iOSStyleSticky,
         _controller = controller,
-        _tolerance = 1 / devicePixelRatio {
-    this.headerChild = headerChild;
-    this.panelChild = panelChild;
-  }
+        _tolerance = 1.0 / devicePixelRatio;
 
   SliverStickyCollapsablePanelStatus? _oldStatus;
 
@@ -38,22 +35,6 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver with RenderSliverH
 
   void updateIsPinned() {
     _isPinned = _sticky && geometry!.visible && constraints.scrollOffset > 0 && constraints.overlap == 0;
-  }
-
-  bool _iOSStyleSticky;
-
-  set iOSStyleSticky(bool value) {
-    if (value == _iOSStyleSticky) return;
-    _iOSStyleSticky = value;
-    markNeedsLayout();
-  }
-
-  bool _isExpanded;
-
-  set isExpanded(bool value) {
-    if (_isExpanded == value) return;
-    _isExpanded = value;
-    markNeedsLayout();
   }
 
   bool _overlapsContent;
@@ -80,6 +61,22 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver with RenderSliverH
     _controller = value;
   }
 
+  bool _isExpanded;
+
+  set isExpanded(bool value) {
+    if (_isExpanded == value) return;
+    _isExpanded = value;
+    markNeedsLayout();
+  }
+
+  bool _iOSStyleSticky;
+
+  set iOSStyleSticky(bool value) {
+    if (value == _iOSStyleSticky) return;
+    _iOSStyleSticky = value;
+    markNeedsLayout();
+  }
+
   double _tolerance;
 
   set devicePixelRatio(double value) {
@@ -89,69 +86,15 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver with RenderSliverH
     markNeedsLayout();
   }
 
-  RenderBox? _headerChild;
+  RenderBox? get headerChild => childForSlot(Slot.headerSlot) as RenderBox?;
 
-  RenderBox? get headerChild => _headerChild;
-
-  set headerChild(RenderBox? value) {
-    if (_headerChild != null) dropChild(_headerChild!);
-    _headerChild = value;
-    if (_headerChild != null) adoptChild(_headerChild!);
-  }
-
-  RenderSliver? _panelChild;
-
-  RenderSliver? get panelChild => _panelChild;
-
-  set panelChild(RenderSliver? value) {
-    if (_panelChild != null) dropChild(_panelChild!);
-    _panelChild = value;
-    if (_panelChild != null) adoptChild(_panelChild!);
-  }
+  RenderSliver? get panelChild => childForSlot(Slot.panelSlot) as RenderSliver?;
 
   @override
   void setupParentData(RenderObject child) {
     if (child.parentData is! SliverPhysicalParentData) {
       child.parentData = SliverPhysicalParentData();
     }
-  }
-
-  @override
-  void attach(PipelineOwner owner) {
-    super.attach(owner);
-    headerChild?.attach(owner);
-    panelChild?.attach(owner);
-  }
-
-  @override
-  void detach() {
-    super.detach();
-    headerChild?.detach();
-    panelChild?.detach();
-  }
-
-  @override
-  void redepthChildren() {
-    if (headerChild != null) redepthChild(headerChild!);
-    if (panelChild != null) redepthChild(panelChild!);
-  }
-
-  @override
-  void visitChildren(RenderObjectVisitor visitor) {
-    if (headerChild != null) visitor(headerChild!);
-    if (panelChild != null) visitor(panelChild!);
-  }
-
-  @override
-  List<DiagnosticsNode> debugDescribeChildren() {
-    List<DiagnosticsNode> result = <DiagnosticsNode>[];
-    if (headerChild != null) {
-      result.add(headerChild!.toDiagnosticsNode(name: 'headerChild'));
-    }
-    if (panelChild != null) {
-      result.add(panelChild!.toDiagnosticsNode(name: 'panelChild'));
-    }
-    return result;
   }
 
   double computeHeaderExtent() {
