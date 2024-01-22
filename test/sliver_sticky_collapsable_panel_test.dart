@@ -4,12 +4,9 @@ import 'package:sliver_sticky_collapsable_panel/sliver_sticky_collapsable_panel.
 import 'package:sliver_tools/sliver_tools.dart';
 
 void main() {
-  setUp(() {
-    WidgetsBinding.instance.renderView.configuration = TestViewConfiguration(size: const Size(400, 800));
-  });
-
   testWidgets('Mix sticky and not sticky headers', (WidgetTester tester) async {
-    final StickyCollapsablePanelController stickyCollapsablePanelController = StickyCollapsablePanelController();
+    final StickyCollapsablePanelController stickyCollapsablePanelController =
+        StickyCollapsablePanelController();
     final ScrollController scrollController = ScrollController();
     await tester.pumpWidget(
       MaterialApp(
@@ -93,8 +90,10 @@ void main() {
     expect(header02Finder, findsNothing);
   });
 
-  testWidgets('Mix sticky and not sticky headers - reverse', (WidgetTester tester) async {
-    final StickyCollapsablePanelController stickyCollapsablePanelController = StickyCollapsablePanelController();
+  testWidgets('Mix sticky and not sticky headers - reverse',
+      (WidgetTester tester) async {
+    final StickyCollapsablePanelController stickyCollapsablePanelController =
+        StickyCollapsablePanelController();
     final ScrollController scrollController = ScrollController();
     await tester.pumpWidget(
       MaterialApp(
@@ -175,12 +174,14 @@ void main() {
 
     expect(header00Finder, findsNothing);
     // Header #1 is in the tree (because the sliver is onstage).
-    expect(tester.getRect(header01Finder), const Rect.fromLTRB(0, 720, 400, 800));
+    expect(
+        tester.getRect(header01Finder), const Rect.fromLTRB(0, 720, 400, 800));
     expect(header02Finder, findsNothing);
   });
 
   testWidgets('Testing multi-depth sticky headers', (tester) async {
-    final StickyCollapsablePanelController stickyCollapsablePanelController = StickyCollapsablePanelController();
+    final StickyCollapsablePanelController stickyCollapsablePanelController =
+        StickyCollapsablePanelController();
     final ScrollController scrollController = ScrollController();
     await tester.pumpWidget(
       MaterialApp(
@@ -189,31 +190,36 @@ void main() {
             cacheExtent: 0,
             slivers: <Widget>[
               SliverStickyCollapsablePanel(
-                headerBuilder: (_, status) => const _HierarchyHeader(hierarchy: '1'),
+                headerBuilder: (_, status) =>
+                    const _HierarchyHeader(hierarchy: '1'),
                 controller: stickyCollapsablePanelController,
                 scrollController: scrollController,
                 sliverPanel: MultiSliver(
                   children: [
                     SliverStickyCollapsablePanel(
-                      headerBuilder: (_, status) => const _HierarchyHeader(hierarchy: '1.1'),
+                      headerBuilder: (_, status) =>
+                          const _HierarchyHeader(hierarchy: '1.1'),
                       controller: stickyCollapsablePanelController,
                       scrollController: scrollController,
                       sliverPanel: const _Sliver100(),
                     ),
                     SliverStickyCollapsablePanel(
-                      headerBuilder: (_, status) => const _HierarchyHeader(hierarchy: '1.2'),
+                      headerBuilder: (_, status) =>
+                          const _HierarchyHeader(hierarchy: '1.2'),
                       controller: stickyCollapsablePanelController,
                       scrollController: scrollController,
                       sliverPanel: MultiSliver(
                         children: [
                           SliverStickyCollapsablePanel(
-                            headerBuilder: (_, status) => const _HierarchyHeader(hierarchy: '1.2.1'),
+                            headerBuilder: (_, status) =>
+                                const _HierarchyHeader(hierarchy: '1.2.1'),
                             controller: stickyCollapsablePanelController,
                             scrollController: scrollController,
                             sliverPanel: const _Sliver100(),
                           ),
                           SliverStickyCollapsablePanel(
-                            headerBuilder: (_, status) => const _HierarchyHeader(hierarchy: '1.2.2'),
+                            headerBuilder: (_, status) =>
+                                const _HierarchyHeader(hierarchy: '1.2.2'),
                             controller: stickyCollapsablePanelController,
                             scrollController: scrollController,
                             sliverPanel: const _Sliver100(),
@@ -225,25 +231,29 @@ void main() {
                 ),
               ),
               SliverStickyCollapsablePanel(
-                headerBuilder: (_, status) => const _HierarchyHeader(hierarchy: '2'),
+                headerBuilder: (_, status) =>
+                    const _HierarchyHeader(hierarchy: '2'),
                 controller: stickyCollapsablePanelController,
                 scrollController: scrollController,
                 sliverPanel: const _Sliver100(),
               ),
               SliverStickyCollapsablePanel(
-                headerBuilder: (_, status) => const _HierarchyHeader(hierarchy: '3'),
+                headerBuilder: (_, status) =>
+                    const _HierarchyHeader(hierarchy: '3'),
                 controller: stickyCollapsablePanelController,
                 scrollController: scrollController,
                 sliverPanel: MultiSliver(
                   children: [
                     SliverStickyCollapsablePanel(
-                      headerBuilder: (_, status) => const _HierarchyHeader(hierarchy: '3.1'),
+                      headerBuilder: (_, status) =>
+                          const _HierarchyHeader(hierarchy: '3.1'),
                       controller: stickyCollapsablePanelController,
                       scrollController: scrollController,
                       sliverPanel: const _Sliver100(),
                     ),
                     SliverStickyCollapsablePanel(
-                      headerBuilder: (_, status) => const _HierarchyHeader(hierarchy: '3.2'),
+                      headerBuilder: (_, status) =>
+                          const _HierarchyHeader(hierarchy: '3.2'),
                       controller: stickyCollapsablePanelController,
                       scrollController: scrollController,
                       sliverPanel: const _Sliver100(),
@@ -297,9 +307,8 @@ void main() {
 
 class _HierarchyHeader extends StatelessWidget {
   const _HierarchyHeader({
-    Key? key,
     required this.hierarchy,
-  }) : super(key: key);
+  });
 
   final String hierarchy;
 
@@ -314,9 +323,7 @@ class _HierarchyHeader extends StatelessWidget {
 }
 
 class _Sliver100 extends StatelessWidget {
-  const _Sliver100({
-    Key? key,
-  }) : super(key: key);
+  const _Sliver100();
 
   @override
   Widget build(BuildContext context) {
@@ -328,9 +335,8 @@ class _Sliver100 extends StatelessWidget {
 
 class _Header extends StatelessWidget {
   const _Header({
-    Key? key,
     required this.index,
-  }) : super(key: key);
+  });
 
   final int index;
 
@@ -345,9 +351,7 @@ class _Header extends StatelessWidget {
 }
 
 class _Sliver extends StatelessWidget {
-  const _Sliver({
-    Key? key,
-  }) : super(key: key);
+  const _Sliver();
 
   @override
   Widget build(BuildContext context) {
@@ -361,9 +365,7 @@ class _Sliver extends StatelessWidget {
 }
 
 class _SliverItem extends StatelessWidget {
-  const _SliverItem({
-    Key? key,
-  }) : super(key: key);
+  const _SliverItem();
 
   @override
   Widget build(BuildContext context) {

@@ -3,12 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sliver_sticky_collapsable_panel/sliver_sticky_collapsable_panel.dart';
 
 void main() {
-  setUp(() {
-    WidgetsBinding.instance.renderView.configuration = TestViewConfiguration(size: const Size(400, 800));
-  });
-
-  testWidgets('stickyCollapsablePanelController.stickyCollapsablePanelScrollOffset', (WidgetTester tester) async {
-    final StickyCollapsablePanelController stickyCollapsablePanelController = StickyCollapsablePanelController();
+  testWidgets(
+      'stickyCollapsablePanelController.stickyCollapsablePanelScrollOffset',
+      (WidgetTester tester) async {
+    final StickyCollapsablePanelController stickyCollapsablePanelController =
+        StickyCollapsablePanelController();
     final ScrollController scrollController = ScrollController();
 
     await tester.pumpWidget(
@@ -94,9 +93,11 @@ void main() {
     expect(stickyCollapsablePanelController.precedingScrollExtent, equals(880));
   });
 
-  testWidgets('stickyCollapsablePanelController.stickyCollapsablePanelScrollOffset - reverse',
+  testWidgets(
+      'stickyCollapsablePanelController.stickyCollapsablePanelScrollOffset - reverse',
       (WidgetTester tester) async {
-    final StickyCollapsablePanelController stickyCollapsablePanelController = StickyCollapsablePanelController();
+    final StickyCollapsablePanelController stickyCollapsablePanelController =
+        StickyCollapsablePanelController();
     final ScrollController scrollController = ScrollController();
 
     await tester.pumpWidget(
@@ -173,9 +174,8 @@ void main() {
 
 class _Header extends StatelessWidget {
   const _Header({
-    Key? key,
     required this.index,
-  }) : super(key: key);
+  });
 
   final int index;
 
@@ -190,9 +190,7 @@ class _Header extends StatelessWidget {
 }
 
 class _Sliver extends StatelessWidget {
-  const _Sliver({
-    Key? key,
-  }) : super(key: key);
+  const _Sliver();
 
   @override
   Widget build(BuildContext context) {
@@ -206,9 +204,7 @@ class _Sliver extends StatelessWidget {
 }
 
 class _SliverItem extends StatelessWidget {
-  const _SliverItem({
-    Key? key,
-  }) : super(key: key);
+  const _SliverItem();
 
   @override
   Widget build(BuildContext context) {

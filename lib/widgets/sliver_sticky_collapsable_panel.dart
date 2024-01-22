@@ -50,7 +50,7 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
         );
 
   const SliverStickyCollapsablePanel._({
-    Key? key,
+    super.key,
     required this.scrollController,
     required this.panelController,
     required this.headerBuilder,
@@ -63,7 +63,7 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
     required this.iOSStyleSticky,
     required this.paddingBeforeCollapse,
     required this.paddingAfterCollapse,
-  }) : super(key: key);
+  });
 
   final ScrollController scrollController;
 
@@ -106,7 +106,8 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
   State<StatefulWidget> createState() => SliverStickyCollapsablePanelState();
 }
 
-class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePanel> {
+class SliverStickyCollapsablePanelState
+    extends State<SliverStickyCollapsablePanel> {
   late bool isExpanded;
 
   @override
@@ -124,7 +125,8 @@ class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePan
             setState(() {
               isExpanded = !isExpanded;
               if (constraints.value.isPinned) {
-                widget.scrollController.jumpTo(widget.panelController.precedingScrollExtent);
+                widget.scrollController
+                    .jumpTo(widget.panelController.precedingScrollExtent);
               }
             });
             widget.expandCallback?.call(isExpanded);
@@ -137,7 +139,9 @@ class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePan
     return _SliverStickyCollapsablePanel(
       boxHeader: boxHeader,
       sliverPanel: SliverPadding(
-        padding: isExpandedNow ? widget.paddingBeforeCollapse : widget.paddingAfterCollapse,
+        padding: isExpandedNow
+            ? widget.paddingBeforeCollapse
+            : widget.paddingAfterCollapse,
         sliver: isExpandedNow ? widget.sliverPanel : null,
       ),
       overlapsContent: widget.overlapsContent,
@@ -153,7 +157,8 @@ class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePan
 /// The header scrolls off the viewport only when the sliver does.
 ///
 /// Place this widget inside a [CustomScrollView] or similar.
-class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<Slot, RenderObject> {
+class _SliverStickyCollapsablePanel
+    extends SlottedMultiChildRenderObjectWidget<Slot, RenderObject> {
   /// Creates a sliver that displays the [boxHeader] before its [sliverPanel], unless
   /// [overlapsContent] it's true.
   /// The [boxHeader] stays pinned when it hits the start of the viewport until
@@ -164,7 +169,6 @@ class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<
   /// If a [StickyCollapsablePanelController] is not provided, then the value of
   /// [DefaultStickyCollapsablePanelController.of] will be used.
   const _SliverStickyCollapsablePanel({
-    Key? key,
     required this.boxHeader,
     required this.sliverPanel,
     required this.controller,
@@ -172,7 +176,7 @@ class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<
     this.sticky = true,
     this.isExpanded = true,
     this.iOSStyleSticky = false,
-  }) : super(key: key);
+  });
 
   /// The header to display before the sliver.
   final Widget boxHeader;

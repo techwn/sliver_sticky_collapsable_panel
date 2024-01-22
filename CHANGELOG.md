@@ -1,6 +1,6 @@
 ## 2.0.0
-* [framework consistency] - use framework's SlottedMultiChildRenderObjectWidget to maintain widget tree structure, this will benefit us from framework upgrade
-* [break change] - bump min flutter 3.10.0, min dart 3.0.0 since SlottedMultiChildRenderObjectWidget force need this min version
+* [framework consistency] - use framework's SlottedMultiChildRenderObjectWidget to maintain tree structure, this will benefit us from leverage framework upgrade
+* [break change] - bump min flutter 3.13, min dart 3.1 which is required by SlottedMultiChildRenderObjectWidget
 * [chore] - remove deprecated named constructor: SliverStickyCollapsablePanel.builder
 
 ## 1.1.15
