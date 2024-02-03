@@ -1,5 +1,5 @@
 name: sliver_sticky_collapsable_panel
-version: 2.0.0
+version: 2.0.1
 description: "A Sliver implementation of sticky collapsable panel, with a box header rebuild on status and a sliver child as panel content."
 topics:
   - ios

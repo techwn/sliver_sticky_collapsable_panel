@@ -201,19 +201,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
       }
     }
     if (_iOSStyleSticky) {
-      geometry = SliverGeometry(
-        scrollExtent: geometry!.scrollExtent,
-        paintExtent: geometry!.paintExtent,
-        paintOrigin: geometry!.paintOrigin,
-        layoutExtent: geometry!.layoutExtent,
-        maxPaintExtent: geometry!.maxPaintExtent,
-        maxScrollObstructionExtent: geometry!.maxScrollObstructionExtent,
-        hitTestExtent: geometry!.hitTestExtent + childScrollOffset(panelChild!),
-        visible: geometry!.visible,
-        hasVisualOverflow: geometry!.hasVisualOverflow,
-        scrollOffsetCorrection: geometry!.scrollOffsetCorrection,
-        cacheExtent: geometry!.cacheExtent,
-      );
+      geometry = geometry!.copyWith(hitTestExtent: geometry!.hitTestExtent + childScrollOffset(panelChild!));
     }
     final headerParentData = headerChild!.parentData as SliverPhysicalParentData;
     switch (axisDirection) {

@@ -1,3 +1,6 @@
+## 2.0.1
+* [chore] - use geometry.copyWith to simplify source code
+
 ## 2.0.0
 * [framework consistency] - use framework's SlottedMultiChildRenderObjectWidget to maintain tree structure, this will benefit us from leverage framework upgrade
 * [break change] - bump min flutter 3.13, min dart 3.1 which is required by SlottedMultiChildRenderObjectWidget
@@ -68,7 +71,7 @@
 
 * [feature] - support add padding for sliver child (with `paddingBeforeCollapse` parameter)
 * [feature] - support add padding after the header even the panel collapsed (with `paddingAfterCollapse` parameter)
-* [break change] - upgrade min flutter 3.3.0 since padding works wrong with lower flutter, we don't use version 2.0.0
+* [break change] - upgrade min flutter 3.3.0 since padding works wrong with lower flutter, we don't use version 2.0.1
   since api is compatible and its not convenient for users who are using newer flutter, users who use older flutter just
   lock your version in yaml
 * [chore] - update readme for more gif effects and better readability
