@@ -1,3 +1,7 @@
+## 2.0.2
+* [chore] - regenerate example with flutter 3.13
+* [chore] - verify compatibility with flutter 3.19
+
 ## 2.0.1
 * [chore] - use geometry.copyWith to simplify source code
 
