@@ -164,15 +164,12 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
       case AxisDirection.up:
       case AxisDirection.left:
         childParentData.paintOffset = Offset.zero;
-        break;
       case AxisDirection.right:
         childParentData.paintOffset =
             Offset(calculatePaintOffset(constraints, from: 0, to: childScrollOffset(panelChild!)), 0);
-        break;
       case AxisDirection.down:
         childParentData.paintOffset =
             Offset(0, calculatePaintOffset(constraints, from: 0, to: childScrollOffset(panelChild!)));
-        break;
     }
     //update constraints of header if needed, update header paint Offset
     updateIsPinned();
@@ -207,16 +204,12 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     switch (axisDirection) {
       case AxisDirection.up:
         headerParentData.paintOffset = Offset(0, geometry!.paintExtent - headerPosition - _headerExtent);
-        break;
       case AxisDirection.down:
         headerParentData.paintOffset = Offset(0, headerPosition);
-        break;
       case AxisDirection.left:
         headerParentData.paintOffset = Offset(geometry!.paintExtent - headerPosition - _headerExtent, 0);
-        break;
       case AxisDirection.right:
         headerParentData.paintOffset = Offset(headerPosition, 0);
-        break;
     }
   }
 

@@ -37,13 +37,10 @@ class RenderOverlapSliver extends RenderSliver with RenderObjectWithChildMixin<R
       case AxisDirection.up:
         childParentData.paintOffset =
             Offset(0.0, -(geometry.scrollExtent - (geometry.paintExtent + constraints.scrollOffset)));
-        break;
       case AxisDirection.right:
         childParentData.paintOffset = Offset(-constraints.scrollOffset, 0.0);
-        break;
       case AxisDirection.down:
         childParentData.paintOffset = Offset(0.0, -constraints.scrollOffset);
-        break;
       case AxisDirection.left:
         childParentData.paintOffset =
             Offset(-(geometry.scrollExtent - (geometry.paintExtent + constraints.scrollOffset)), 0.0);
