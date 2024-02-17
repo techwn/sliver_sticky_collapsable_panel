@@ -1,3 +1,7 @@
+## 2.0.3
+* [chore] - non-null type constraints child for render layer
+* [chore] - performance optimization for too frequently access constraints property
+
 ## 2.0.2
 * [chore] - regenerate example with flutter 3.13
 * [chore] - verify compatibility with flutter 3.19

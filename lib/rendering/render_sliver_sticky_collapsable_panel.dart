@@ -107,6 +107,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
 
   @override
   void performLayout() {
+    final SliverConstraints constraints = this.constraints;
     final axisDirection = applyGrowthDirectionToAxisDirection(constraints.axisDirection, constraints.growthDirection);
     //layout header first(but not compute paint offset), so we can compute constraints of sliver child
     headerChild.layout(
@@ -240,6 +241,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
 
   @override
   double childMainAxisPosition(RenderObject child) {
+    final SliverConstraints constraints = this.constraints;
     assert(child == headerChild || child == panelChild);
     final panelScrollExtent = panelChild.geometry!.scrollExtent;
     return switch (child) {
