@@ -99,12 +99,10 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
 
   double computeHeaderExtent() {
     assert(headerChild!.hasSize);
-    switch (constraints.axis) {
-      case Axis.vertical:
-        return headerChild!.size.height;
-      case Axis.horizontal:
-        return headerChild!.size.width;
-    }
+    return switch (constraints.axis) {
+      Axis.vertical => headerChild!.size.height,
+      Axis.horizontal => headerChild!.size.width,
+    };
   }
 
   @override
@@ -160,17 +158,11 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
       hasVisualOverflow: panelChildGeometry.hasVisualOverflow,
     );
     final childParentData = panelChild!.parentData as SliverPhysicalParentData;
-    switch (axisDirection) {
-      case AxisDirection.up:
-      case AxisDirection.left:
-        childParentData.paintOffset = Offset.zero;
-      case AxisDirection.right:
-        childParentData.paintOffset =
-            Offset(calculatePaintOffset(constraints, from: 0, to: childScrollOffset(panelChild!)), 0);
-      case AxisDirection.down:
-        childParentData.paintOffset =
-            Offset(0, calculatePaintOffset(constraints, from: 0, to: childScrollOffset(panelChild!)));
-    }
+    childParentData.paintOffset = switch (axisDirection) {
+      AxisDirection.up || AxisDirection.left => Offset.zero,
+      AxisDirection.right => Offset(calculatePaintOffset(constraints, from: 0, to: childScrollOffset(panelChild!)), 0),
+      AxisDirection.down => Offset(0, calculatePaintOffset(constraints, from: 0, to: childScrollOffset(panelChild!))),
+    };
     //update constraints of header if needed, update header paint Offset
     updateIsPinned();
     final headerPosition = childMainAxisPosition(headerChild!);
@@ -201,16 +193,12 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
       geometry = geometry!.copyWith(hitTestExtent: geometry!.hitTestExtent + childScrollOffset(panelChild!));
     }
     final headerParentData = headerChild!.parentData as SliverPhysicalParentData;
-    switch (axisDirection) {
-      case AxisDirection.up:
-        headerParentData.paintOffset = Offset(0, geometry!.paintExtent - headerPosition - _headerExtent);
-      case AxisDirection.down:
-        headerParentData.paintOffset = Offset(0, headerPosition);
-      case AxisDirection.left:
-        headerParentData.paintOffset = Offset(geometry!.paintExtent - headerPosition - _headerExtent, 0);
-      case AxisDirection.right:
-        headerParentData.paintOffset = Offset(headerPosition, 0);
-    }
+    headerParentData.paintOffset = switch (axisDirection) {
+      AxisDirection.up => Offset(0, geometry!.paintExtent - headerPosition - _headerExtent),
+      AxisDirection.down => Offset(0, headerPosition),
+      AxisDirection.left => Offset(geometry!.paintExtent - headerPosition - _headerExtent, 0),
+      AxisDirection.right => Offset(headerPosition, 0),
+    };
   }
 
   @override

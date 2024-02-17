@@ -205,12 +205,10 @@ class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<
 
   @override
   Widget childForSlot(Slot slot) {
-    switch (slot) {
-      case Slot.headerSlot:
-        return boxHeader;
-      case Slot.panelSlot:
-        return sliverPanel;
-    }
+    return switch (slot) {
+      Slot.headerSlot => boxHeader,
+      Slot.panelSlot => sliverPanel,
+    };
   }
 
   @override

@@ -33,18 +33,13 @@ class RenderOverlapSliver extends RenderSliver with RenderObjectWithChildMixin<R
   @protected
   void setChildParentData(RenderObject child, SliverConstraints constraints, SliverGeometry geometry) {
     final SliverPhysicalParentData childParentData = child.parentData! as SliverPhysicalParentData;
-    switch (applyGrowthDirectionToAxisDirection(constraints.axisDirection, constraints.growthDirection)) {
-      case AxisDirection.up:
-        childParentData.paintOffset =
-            Offset(0.0, -(geometry.scrollExtent - (geometry.paintExtent + constraints.scrollOffset)));
-      case AxisDirection.right:
-        childParentData.paintOffset = Offset(-constraints.scrollOffset, 0.0);
-      case AxisDirection.down:
-        childParentData.paintOffset = Offset(0.0, -constraints.scrollOffset);
-      case AxisDirection.left:
-        childParentData.paintOffset =
-            Offset(-(geometry.scrollExtent - (geometry.paintExtent + constraints.scrollOffset)), 0.0);
-    }
+    childParentData.paintOffset =
+        switch (applyGrowthDirectionToAxisDirection(constraints.axisDirection, constraints.growthDirection)) {
+      AxisDirection.up => Offset(0.0, -(geometry.scrollExtent - (geometry.paintExtent + constraints.scrollOffset))),
+      AxisDirection.right => Offset(-constraints.scrollOffset, 0.0),
+      AxisDirection.down => Offset(0.0, -constraints.scrollOffset),
+      AxisDirection.left => Offset(-(geometry.scrollExtent - (geometry.paintExtent + constraints.scrollOffset)), 0.0),
+    };
   }
 
   @override
