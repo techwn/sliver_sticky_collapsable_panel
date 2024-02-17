@@ -576,6 +576,24 @@ class InfiniteGroupedListState<Cell, GroupBy, Group> extends State<InfiniteGroup
                   physics: const ClampingScrollPhysics(),
                   controller: _scrollController,
                   slivers: [
+                    // SliverAppBar(
+                    //     expandedHeight: 150.0,
+                    //     floating: true,
+                    //     snap: true,
+                    //     backgroundColor: Colors.yellow,
+                    //     pinned: false,
+                    //     flexibleSpace: const FlexibleSpaceBar(
+                    //       title: Text('Available seats'),
+                    //       background: ColoredBox(color: Colors.blue),
+                    //     ),
+                    //     actions: <Widget>[
+                    //       IconButton(
+                    //         icon: const Icon(Icons.add_circle),
+                    //         tooltip: 'Add new entry',
+                    //         onPressed: () { /* ... */ },
+                    //       ),
+                    //     ]
+                    // ),
                     // const OverlapSliver(),
                     ...groupedItems.keys
                         .toList()
