@@ -223,10 +223,7 @@ class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<
   }
 
   @override
-  void updateRenderObject(
-    BuildContext context,
-    RenderSliverStickyCollapsablePanel renderObject,
-  ) {
+  void updateRenderObject(BuildContext context, RenderSliverStickyCollapsablePanel renderObject) {
     renderObject
       ..overlapsContent = overlapsContent
       ..sticky = sticky

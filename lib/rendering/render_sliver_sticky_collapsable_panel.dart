@@ -175,19 +175,16 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     if (_controller.precedingScrollExtent != constraints.precedingScrollExtent) {
       _controller.precedingScrollExtent = constraints.precedingScrollExtent;
     }
-    if (headerChild
-        is RenderConstrainedLayoutBuilder<BoxValueConstraints<SliverStickyCollapsablePanelStatus>, RenderBox>) {
-      final status = SliverStickyCollapsablePanelStatus(headerScrollRatio, _isPinned, _isExpanded);
-      if (_oldStatus != status) {
-        _oldStatus = status;
-        headerChild.layout(
-          BoxValueConstraints<SliverStickyCollapsablePanelStatus>(
-            value: _oldStatus!,
-            constraints: constraints.asBoxConstraints(),
-          ),
-          parentUsesSize: true,
-        );
-      }
+    final status = SliverStickyCollapsablePanelStatus(headerScrollRatio, _isPinned, _isExpanded);
+    if (_oldStatus != status) {
+      _oldStatus = status;
+      headerChild.layout(
+        BoxValueConstraints<SliverStickyCollapsablePanelStatus>(
+          value: _oldStatus!,
+          constraints: constraints.asBoxConstraints(),
+        ),
+        parentUsesSize: true,
+      );
     }
     if (_iOSStyleSticky) {
       geometry = geometry!.copyWith(hitTestExtent: geometry!.hitTestExtent + childScrollOffset(panelChild));
