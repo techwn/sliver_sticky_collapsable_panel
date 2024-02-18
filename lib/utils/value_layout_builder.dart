@@ -49,7 +49,6 @@ class BoxValueConstraints<T> extends BoxConstraints {
 /// See also:
 ///
 ///  * [LayoutBuilder].
-///  * [SliverValueLayoutBuilder], the sliver version of this widget.
 class ValueLayoutBuilder<T> extends ConstrainedLayoutBuilder<BoxValueConstraints<T>> {
   /// Creates a widget that defers its building until layout.
   const ValueLayoutBuilder({
