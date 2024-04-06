@@ -157,8 +157,8 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
       ),
       hasVisualOverflow: panelChildGeometry.hasVisualOverflow,
     );
-    final childParentData = panelChild.parentData as SliverPhysicalParentData;
-    childParentData.paintOffset = switch (axisDirection) {
+    final panelParentData = panelChild.parentData as SliverPhysicalParentData;
+    panelParentData.paintOffset = switch (axisDirection) {
       AxisDirection.up || AxisDirection.left => Offset.zero,
       AxisDirection.right => Offset(calculatePaintOffset(constraints, from: 0, to: childScrollOffset(panelChild)), 0),
       AxisDirection.down => Offset(0, calculatePaintOffset(constraints, from: 0, to: childScrollOffset(panelChild))),
@@ -204,7 +204,6 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     required double mainAxisPosition,
     required double crossAxisPosition,
   }) {
-    assert(geometry!.hitTestExtent > 0);
     bool tryHitTestPanelChild() {
       if (panelChild.geometry!.hitTestExtent > 0) {
         return panelChild.hitTest(
@@ -215,7 +214,6 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
       }
       return false;
     }
-
     double headerPosition = childMainAxisPosition(headerChild);
     if ((mainAxisPosition - headerPosition) <= _headerExtent) {
       final didHitHeader = hitTestBoxChild(
@@ -238,8 +236,8 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
 
   @override
   double childMainAxisPosition(RenderObject child) {
-    final SliverConstraints constraints = this.constraints;
     assert(child == headerChild || child == panelChild);
+    final SliverConstraints constraints = this.constraints;
     final panelScrollExtent = panelChild.geometry!.scrollExtent;
     return switch (child) {
       RenderBox _ => _iOSStyleSticky
