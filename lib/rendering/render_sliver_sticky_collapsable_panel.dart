@@ -26,7 +26,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
         _isExpanded = isExpanded,
         _iOSStyleSticky = iOSStyleSticky,
         _controller = controller,
-        _tolerance = 1.0 / devicePixelRatio,
+        _tolerance = 1 / devicePixelRatio,
         _headerSize = headerSize;
 
   SliverStickyCollapsablePanelStatus? _oldStatus;
@@ -190,8 +190,8 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     double headerScrollRatio = (((headerPosition - constraints.overlap).abs() / _headerExtent)).clamp(0, 1);
     if (nearZero(headerScrollRatio, _tolerance)) {
       headerScrollRatio = 0;
-    } else if (nearEqual(1.0, headerScrollRatio, _tolerance)) {
-      headerScrollRatio = 1.0;
+    } else if (nearEqual(1, headerScrollRatio, _tolerance)) {
+      headerScrollRatio = 1;
     }
     if (_controller.precedingScrollExtent != constraints.precedingScrollExtent) {
       _controller.precedingScrollExtent = constraints.precedingScrollExtent;

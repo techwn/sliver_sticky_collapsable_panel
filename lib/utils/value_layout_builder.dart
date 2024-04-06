@@ -65,25 +65,25 @@ class RenderValueLayoutBuilder<T> extends RenderBox
   @override
   double computeMinIntrinsicWidth(double height) {
     assert(_debugThrowIfNotCheckingIntrinsics());
-    return 0.0;
+    return 0;
   }
 
   @override
   double computeMaxIntrinsicWidth(double height) {
     assert(_debugThrowIfNotCheckingIntrinsics());
-    return 0.0;
+    return 0;
   }
 
   @override
   double computeMinIntrinsicHeight(double width) {
     assert(_debugThrowIfNotCheckingIntrinsics());
-    return 0.0;
+    return 0;
   }
 
   @override
   double computeMaxIntrinsicHeight(double width) {
     assert(_debugThrowIfNotCheckingIntrinsics());
-    return 0.0;
+    return 0;
   }
 
   @override
