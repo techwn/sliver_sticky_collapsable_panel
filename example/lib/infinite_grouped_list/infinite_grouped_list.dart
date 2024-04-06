@@ -625,6 +625,7 @@ class InfiniteGroupedListState<Cell, GroupBy, Group> extends State<InfiniteGroup
                                   status.scrollPercentage,
                                 );
                               },
+                              headerSize: Size(MediaQuery.of(context).size.width, 50),
                               sliverPanel: widget.listStyle == ListStyle.listView
                                   ? SliverList(
                                       delegate: SliverChildBuilderDelegate(

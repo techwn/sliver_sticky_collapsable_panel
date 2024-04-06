@@ -20,12 +20,14 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     required bool isExpanded,
     required bool iOSStyleSticky,
     required double devicePixelRatio,
+    required Size? headerSize,
   })  : _overlapsContent = overlapsContent,
         _sticky = sticky,
         _isExpanded = isExpanded,
         _iOSStyleSticky = iOSStyleSticky,
         _controller = controller,
-        _tolerance = 1.0 / devicePixelRatio;
+        _tolerance = 1.0 / devicePixelRatio,
+        _headerSize = headerSize;
 
   SliverStickyCollapsablePanelStatus? _oldStatus;
 
@@ -72,7 +74,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
   bool _iOSStyleSticky;
 
   set iOSStyleSticky(bool value) {
-    if (value == _iOSStyleSticky) return;
+    if (_iOSStyleSticky == value) return;
     _iOSStyleSticky = value;
     markNeedsLayout();
   }
@@ -83,6 +85,14 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     final tolerance = 1 / value;
     if (_tolerance == tolerance) return;
     _tolerance = tolerance;
+    markNeedsLayout();
+  }
+
+  Size? _headerSize;
+
+  set headerSize(Size? value) {
+    if (_headerSize == value) return;
+    _headerSize = value;
     markNeedsLayout();
   }
 
@@ -98,11 +108,18 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
   }
 
   double computeHeaderExtent() {
-    assert(headerChild.hasSize);
-    return switch (constraints.axis) {
-      Axis.vertical => headerChild.size.height,
-      Axis.horizontal => headerChild.size.width,
-    };
+    if (_headerSize != null) {
+      return switch (constraints.axis) {
+        Axis.vertical => _headerSize!.height,
+        Axis.horizontal => _headerSize!.width,
+      };
+    } else {
+      assert(headerChild.hasSize);
+      return switch (constraints.axis) {
+        Axis.vertical => headerChild.size.height,
+        Axis.horizontal => headerChild.size.width,
+      };
+    }
   }
 
   @override
@@ -110,13 +127,15 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     final SliverConstraints constraints = this.constraints;
     final axisDirection = applyGrowthDirectionToAxisDirection(constraints.axisDirection, constraints.growthDirection);
     //layout header first(but not compute paint offset), so we can compute constraints of sliver child
-    headerChild.layout(
-      BoxValueConstraints<SliverStickyCollapsablePanelStatus>(
-        value: _oldStatus ?? SliverStickyCollapsablePanelStatus(0, false, _isExpanded),
-        constraints: constraints.asBoxConstraints(),
-      ),
-      parentUsesSize: true,
-    );
+    if (_headerSize == null) {
+      headerChild.layout(
+        BoxValueConstraints<SliverStickyCollapsablePanelStatus>(
+          value: _oldStatus ?? SliverStickyCollapsablePanelStatus(0, false, _isExpanded),
+          constraints: constraints.asBoxConstraints(),
+        ),
+        parentUsesSize: true,
+      );
+    }
     _headerExtent = computeHeaderExtent();
     final double headerAndOverlapPaintExtent =
         calculatePaintOffset(constraints, from: 0, to: childScrollOffset(panelChild));
@@ -178,14 +197,14 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
       _controller.precedingScrollExtent = constraints.precedingScrollExtent;
     }
     final status = SliverStickyCollapsablePanelStatus(headerScrollRatio, _isPinned, _isExpanded);
-    if (_oldStatus != status) {
+    if (_oldStatus != status || _headerSize != null) {
       _oldStatus = status;
       headerChild.layout(
         BoxValueConstraints<SliverStickyCollapsablePanelStatus>(
           value: _oldStatus!,
           constraints: constraints.asBoxConstraints(),
         ),
-        parentUsesSize: true,
+        parentUsesSize: false,
       );
     }
     if (_iOSStyleSticky) {

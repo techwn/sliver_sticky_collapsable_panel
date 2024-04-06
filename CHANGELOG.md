@@ -1,3 +1,6 @@
+## 2.0.5
+* [performance] add optional parameter `headerSize` to speed up the layout process
+
 ## 2.0.4
 * [fix] - more accurate configuration for layoutExtent of sliver geometry
 

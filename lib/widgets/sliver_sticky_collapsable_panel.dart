@@ -33,6 +33,7 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
     bool iOSStyleSticky = false,
     EdgeInsetsGeometry paddingBeforeCollapse = const EdgeInsets.only(),
     EdgeInsetsGeometry paddingAfterCollapse = const EdgeInsets.only(),
+    Size? headerSize,
   }) : this._(
           key: key,
           scrollController: scrollController,
@@ -47,6 +48,7 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
           iOSStyleSticky: iOSStyleSticky,
           paddingBeforeCollapse: paddingBeforeCollapse,
           paddingAfterCollapse: paddingAfterCollapse,
+          headerSize: headerSize,
         );
 
   const SliverStickyCollapsablePanel._({
@@ -63,6 +65,7 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
     required this.iOSStyleSticky,
     required this.paddingBeforeCollapse,
     required this.paddingAfterCollapse,
+    this.headerSize,
   });
 
   final ScrollController scrollController;
@@ -101,6 +104,9 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
 
   /// Padding used for sliver child after collapse, it means even it's collapsed, Padding still exist between headers
   final EdgeInsetsGeometry paddingAfterCollapse;
+
+  /// Size of Header, this is used for optimize layout speed
+  final Size? headerSize;
 
   @override
   State<StatefulWidget> createState() => SliverStickyCollapsablePanelState();
@@ -145,6 +151,7 @@ class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePan
       controller: widget.panelController,
       isExpanded: isExpandedNow,
       iOSStyleSticky: widget.iOSStyleSticky,
+      headerSize: widget.headerSize,
     );
   }
 }
@@ -171,6 +178,7 @@ class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<
     this.sticky = true,
     this.isExpanded = true,
     this.iOSStyleSticky = false,
+    this.headerSize,
   });
 
   /// The header to display before the sliver.
@@ -200,6 +208,9 @@ class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<
   /// Like the iOS contact, header replace another header when it reaches the viewport edge
   final bool iOSStyleSticky;
 
+  /// Size of Header, this is used for optimize layout speed
+  final Size? headerSize;
+
   @override
   Iterable<Slot> get slots => Slot.values;
 
@@ -214,12 +225,14 @@ class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<
   @override
   RenderSliverStickyCollapsablePanel createRenderObject(BuildContext context) {
     return RenderSliverStickyCollapsablePanel(
-        overlapsContent: overlapsContent,
-        sticky: sticky,
-        controller: controller,
-        isExpanded: isExpanded,
-        iOSStyleSticky: iOSStyleSticky,
-        devicePixelRatio: MediaQuery.of(context).devicePixelRatio);
+      overlapsContent: overlapsContent,
+      sticky: sticky,
+      controller: controller,
+      isExpanded: isExpanded,
+      iOSStyleSticky: iOSStyleSticky,
+      devicePixelRatio: MediaQuery.of(context).devicePixelRatio,
+      headerSize: headerSize,
+    );
   }
 
   @override
@@ -230,6 +243,7 @@ class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<
       ..controller = controller
       ..isExpanded = isExpanded
       ..iOSStyleSticky = iOSStyleSticky
-      ..devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+      ..devicePixelRatio = MediaQuery.of(context).devicePixelRatio
+      ..headerSize = headerSize;
   }
 }
