@@ -147,7 +147,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
       paintOrigin: panelChildGeometry.paintOrigin,
       scrollExtent: childScrollOffset(panelChild) + panelChildGeometry.scrollExtent,
       paintExtent: paintExtent,
-      layoutExtent: math.min(paintExtent + panelChildGeometry.layoutExtent, paintExtent),
+      layoutExtent: math.min(headerAndOverlapPaintExtent + panelChildGeometry.layoutExtent, paintExtent),
       cacheExtent: math.min(
         headerAndOverlapCacheExtent + panelChildGeometry.cacheExtent,
         constraints.remainingCacheExtent,
