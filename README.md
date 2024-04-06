@@ -148,7 +148,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 ## Performance configuration
 - You can use optional parameter `headerSize` to speed up the layout process
   - headerSize means width and height of your header，it should keep unchanged during scrolling
-      ```dart
+    ```dart
     CustomScrollView(
       controller: _scrollController,
       slivers: [
