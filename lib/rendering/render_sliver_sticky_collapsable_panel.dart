@@ -139,13 +139,15 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
       geometry = SliverGeometry(scrollOffsetCorrection: panelChildGeometry.scrollOffsetCorrection);
       return;
     }
+    final paintExtent = math.min(
+      headerAndOverlapPaintExtent + panelChildGeometry.paintExtent,
+      constraints.remainingPaintExtent,
+    );
     geometry = SliverGeometry(
       paintOrigin: panelChildGeometry.paintOrigin,
       scrollExtent: childScrollOffset(panelChild) + panelChildGeometry.scrollExtent,
-      paintExtent: math.min(
-        headerAndOverlapPaintExtent + panelChildGeometry.paintExtent,
-        constraints.remainingPaintExtent,
-      ),
+      paintExtent: paintExtent,
+      layoutExtent: math.min(paintExtent + panelChildGeometry.layoutExtent, paintExtent),
       cacheExtent: math.min(
         headerAndOverlapCacheExtent + panelChildGeometry.cacheExtent,
         constraints.remainingCacheExtent,
