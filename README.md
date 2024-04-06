@@ -145,6 +145,10 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
     <img src="https://raw.githubusercontent.com/techwn/files/main/imgs/sliver_sticky_collapsable_pannel/padding.gif" width=360 alt="simple Shot">
 
 ---
+## Performance configuration
+- You can use optional parameter `headerSize` to speed up the layout process
+  - headerSize means width and height of your header，it should keep unchanged during scrolling
+---
 ## Thanks
 - Thanks to [letsar](https://github.com/letsar) with
 it's [flutter_sticky_header](https://github.com/letsar/flutter_sticky_header) which provide solid foundation and inspire me for this project.
