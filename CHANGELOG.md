@@ -1,3 +1,6 @@
+## 2.0.4
+* [fix] - more accurate configuration for layoutExtent of sliver geometry
+
 ## 2.0.3
 * [chore] - non-null type constraints child for render layer
 * [chore] - performance optimization for too frequently access constraints property
