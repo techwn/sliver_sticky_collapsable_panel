@@ -214,6 +214,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
       }
       return false;
     }
+
     double headerPosition = childMainAxisPosition(headerChild);
     if ((mainAxisPosition - headerPosition) <= _headerExtent) {
       final didHitHeader = hitTestBoxChild(
