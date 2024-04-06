@@ -1,3 +1,6 @@
+## 2.0.6
+* [chore] - update readme for demo of `headerSize` configuration
+
 ## 2.0.5
 * [performance] add optional parameter `headerSize` to speed up the layout process
 

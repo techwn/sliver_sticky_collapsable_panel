@@ -1,5 +1,5 @@
 # sliver_sticky_collapsable_panel
-[![pub](https://img.shields.io/badge/pub-2.0.5-blue)](https://pub.dev/packages/sliver_sticky_collapsable_panel)
+[![pub](https://img.shields.io/badge/pub-2.0.6-blue)](https://pub.dev/packages/sliver_sticky_collapsable_panel)
 [![license](https://img.shields.io/badge/license-MIT-orange)](https://github.com/techwn/sliver_sticky_collapsable_panel/blob/main/LICENSE)
 [![build status](https://img.shields.io/badge/build-passing-green?logo=github&logoColor=white)](https://github.com/techwn/sliver_sticky_collapsable_panel)
 [![flutter compatibility](https://img.shields.io/badge/flutter-3.13+-blue)](https://flutter.dev/)
@@ -30,7 +30,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 
     ```yaml
     dependencies:
-      sliver_sticky_collapsable_panel: ^2.0.5
+      sliver_sticky_collapsable_panel: ^2.0.6
     ```
 
 - In your library add the following import:
@@ -148,6 +148,22 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 ## Performance configuration
 - You can use optional parameter `headerSize` to speed up the layout process
   - headerSize means width and height of your header，it should keep unchanged during scrolling
+      ```dart
+    CustomScrollView(
+      controller: _scrollController,
+      slivers: [
+        SliverStickyCollapsablePanel(
+          scrollController: _scrollController,
+          controller: StickyCollapsablePanelController(key:'key_1'),
+          iOSStyleSticky: true,
+          headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
+          headerSize: Size(MediaQuery.of(context).size.width, 48),
+          sliverPanel: SliverList.list(children: [...]),
+        ),
+        ...,
+      ],
+    );
+    ```
 ---
 ## Thanks
 - Thanks to [letsar](https://github.com/letsar) with
