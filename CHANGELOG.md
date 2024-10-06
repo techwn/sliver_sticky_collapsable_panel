@@ -1,3 +1,6 @@
+## 2.0.7
+* [chore] - regenerate example with Flutter 3.24 for Android Studio Ladybug compatible
+
 ## 2.0.6
 * [chore] - update readme for demo of `headerSize` configuration
 
