@@ -1,3 +1,7 @@
+## 2.1.0
+* [feature] - added `toggleExpanded` in the Sticker Header component
+* [feature] - added `isExpanded`,`isPinned`,`isDisabled` in the Sticker Header component to set and get these properties
+
 ## 2.0.7
 * [chore] - regenerate example with Flutter 3.24 for Android Studio Ladybug compatible
 
