@@ -49,7 +49,8 @@ class BoxValueConstraints<T> extends BoxConstraints {
 /// See also:
 ///
 ///  * [LayoutBuilder].
-class ValueLayoutBuilder<T> extends ConstrainedLayoutBuilder<BoxValueConstraints<T>> {
+class ValueLayoutBuilder<T>
+    extends ConstrainedLayoutBuilder<BoxValueConstraints<T>> {
   /// Creates a widget that defers its building until layout.
   const ValueLayoutBuilder({
     super.key,
@@ -57,11 +58,14 @@ class ValueLayoutBuilder<T> extends ConstrainedLayoutBuilder<BoxValueConstraints
   });
 
   @override
-  RenderValueLayoutBuilder<T> createRenderObject(BuildContext context) => RenderValueLayoutBuilder<T>();
+  RenderValueLayoutBuilder<T> createRenderObject(BuildContext context) =>
+      RenderValueLayoutBuilder<T>();
 }
 
 class RenderValueLayoutBuilder<T> extends RenderBox
-    with RenderObjectWithChildMixin<RenderBox>, RenderConstrainedLayoutBuilder<BoxValueConstraints<T>, RenderBox> {
+    with
+        RenderObjectWithChildMixin<RenderBox>,
+        RenderConstrainedLayoutBuilder<BoxValueConstraints<T>, RenderBox> {
   @override
   double computeMinIntrinsicWidth(double height) {
     assert(_debugThrowIfNotCheckingIntrinsics());
@@ -89,7 +93,8 @@ class RenderValueLayoutBuilder<T> extends RenderBox
   @override
   Size computeDryLayout(BoxConstraints constraints) {
     assert(debugCannotComputeDryLayout(
-      reason: 'Calculating the dry layout would require running the layout callback '
+      reason:
+          'Calculating the dry layout would require running the layout callback '
           'speculatively, which might mutate the live render object tree.',
     ));
     return Size.zero;
@@ -128,7 +133,8 @@ class RenderValueLayoutBuilder<T> extends RenderBox
   bool _debugThrowIfNotCheckingIntrinsics() {
     assert(() {
       if (!RenderObject.debugCheckingIntrinsics) {
-        throw FlutterError('ValueLayoutBuilder does not support returning intrinsic dimensions.\n'
+        throw FlutterError(
+            'ValueLayoutBuilder does not support returning intrinsic dimensions.\n'
             'Calculating the intrinsic dimensions would require running the layout '
             'callback speculatively, which might mutate the live render object tree.');
       }

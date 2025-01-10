@@ -22,6 +22,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 - Support iOS style sticky header, just like iOS's system contact app (with `iOSStyleSticky = true` parameter).
 - Support add padding for sliver child (with `paddingBeforeCollapse` parameter).
 - Support add padding after the header even the panel collapsed (with `paddingAfterCollapse` parameter).
+- Support setting/getting the collapsable panel expansion, pinned, and disabled status using `isExpanded`, `isPinned`, and `isDisabled` properties of the controller.
 
 ---
 ## Getting started
@@ -30,7 +31,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 
     ```yaml
     dependencies:
-      sliver_sticky_collapsable_panel: ^2.0.7
+      sliver_sticky_collapsable_panel: ^2.1.0
     ```
 
 - In your library add the following import:
@@ -88,6 +89,13 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
     ```
 ---
 ## More Advanced Feature:
+
+- You can use the controller to set/get the status of the panel through `isExpanded`,`isPinned`,`isDisabled`.
+    ```dart
+    final StickyCollapsablePanelController panelController = StickyCollapsablePanelController(key:'key_1');
+    ...
+    panelController.isExpanded = true; // or panelController.toggleExpanded();
+    ```
 
 - You can disable collapse for any sliver you wanted, just add `disableCollapsable = true`.
     ```dart
