@@ -112,47 +112,45 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
   State<StatefulWidget> createState() => SliverStickyCollapsablePanelState();
 }
 
-class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePanel> {
-  late bool isExpanded;
+class SliverStickyCollapsablePanelState
+    extends State<SliverStickyCollapsablePanel> {
 
   @override
   void initState() {
     super.initState();
-    isExpanded = widget.defaultExpanded;
+    widget.panelController.isExpanded = widget.defaultExpanded;
+    widget.panelController.isDisabled = widget.disableCollapsable;
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget boxHeader = ValueLayoutBuilder<SliverStickyCollapsablePanelStatus>(
-      builder: (context, constraints) => GestureDetector(
-        onTap: () {
-          if (!widget.disableCollapsable) {
-            setState(() {
-              isExpanded = !isExpanded;
-              if (constraints.value.isPinned) {
-                widget.scrollController.jumpTo(widget.panelController.precedingScrollExtent);
-              }
-            });
-            widget.expandCallback?.call(isExpanded);
-          }
-        },
-        child: widget.headerBuilder(context, constraints.value),
-      ),
-    );
-    final isExpandedNow = (widget.disableCollapsable || isExpanded);
-    return _SliverStickyCollapsablePanel(
-      boxHeader: boxHeader,
-      sliverPanel: SliverPadding(
-        padding: isExpandedNow ? widget.paddingBeforeCollapse : widget.paddingAfterCollapse,
-        sliver: isExpandedNow ? widget.sliverPanel : null,
-      ),
-      overlapsContent: widget.overlapsContent,
-      sticky: widget.sticky,
-      controller: widget.panelController,
-      isExpanded: isExpandedNow,
-      iOSStyleSticky: widget.iOSStyleSticky,
-      headerSize: widget.headerSize,
-    );
+    return ListenableBuilder(
+        listenable: widget.panelController,
+        builder: (context, _) {
+          Widget boxHeader =
+              ValueLayoutBuilder<SliverStickyCollapsablePanelStatus>(
+                          builder: (context, constraints) =>
+                widget.headerBuilder(context, constraints.value),
+                        );
+
+          final isExpandedNow = (widget.panelController.isDisabled ||
+              widget.panelController.isExpanded);
+          return _SliverStickyCollapsablePanel(
+            boxHeader: boxHeader,
+            sliverPanel: SliverPadding(
+              padding: isExpandedNow
+                  ? widget.paddingBeforeCollapse
+                  : widget.paddingAfterCollapse,
+              sliver: isExpandedNow ? widget.sliverPanel : null,
+            ),
+            overlapsContent: widget.overlapsContent,
+            sticky: widget.sticky,
+            controller: widget.panelController,
+            isExpanded: isExpandedNow,
+            iOSStyleSticky: widget.iOSStyleSticky,
+            headerSize: widget.headerSize,
+          );
+        });
   }
 }
 
@@ -160,7 +158,8 @@ class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePan
 /// The header scrolls off the viewport only when the sliver does.
 ///
 /// Place this widget inside a [CustomScrollView] or similar.
-class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<Slot, RenderObject> {
+class _SliverStickyCollapsablePanel
+    extends SlottedMultiChildRenderObjectWidget<Slot, RenderObject> {
   /// Creates a sliver that displays the [boxHeader] before its [sliverPanel], unless
   /// [overlapsContent] it's true.
   /// The [boxHeader] stays pinned when it hits the start of the viewport until
@@ -236,7 +235,8 @@ class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<
   }
 
   @override
-  void updateRenderObject(BuildContext context, RenderSliverStickyCollapsablePanel renderObject) {
+  void updateRenderObject(
+      BuildContext context, RenderSliverStickyCollapsablePanel renderObject) {
     renderObject
       ..overlapsContent = overlapsContent
       ..sticky = sticky
