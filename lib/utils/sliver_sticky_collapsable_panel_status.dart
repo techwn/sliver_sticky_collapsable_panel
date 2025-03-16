@@ -19,7 +19,9 @@ class SliverStickyCollapsablePanelStatus {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! SliverStickyCollapsablePanelStatus) return false;
-    return scrollPercentage == other.scrollPercentage && isPinned == other.isPinned && isExpanded == other.isExpanded;
+    return scrollPercentage == other.scrollPercentage &&
+        isPinned == other.isPinned &&
+        isExpanded == other.isExpanded;
   }
 
   @override
