@@ -132,23 +132,6 @@ class InfiniteGroupedList<ItemType, GroupBy, GroupTitle> extends StatefulWidget 
     );
   }
 
-  /// Constructs an instance of InfiniteGroupedList.
-  ///
-  /// This requires several callback parameters:
-  /// * [onLoadMore]: Fetches more items to be added to the list. This function is
-  ///   expected to return a Future that completes with a List<ItemType>.
-  /// * [itemBuilder]: Builds the widget for each item in the list.
-  /// * [separatorBuilder]: Builds the separator widget between items.
-  /// * [groupTitleBuilder]: Builds the widget for the title of each group.
-  /// * [groupBy]: Determines the GroupBy value for each item.
-  /// * [groupCreator]: Determines the GroupTitle for each group.
-  /// * [sortGroupBy]: Determines the sorting of items within each group.
-  ///
-  /// The list behavior can be further customized with optional parameters like
-  /// [controller], [onRefresh], [padding], [noItemsFoundWidget],
-  /// [initialItemsErrorWidget], [loadMoreItemsErrorWidget], [groupSortOrder],
-  /// [loadingWidget], [refreshIndicatorColor], and
-  /// [refreshIndicatorBackgroundColor].
   const InfiniteGroupedList._({
     required this.onLoadMore,
     required this.itemBuilder,
@@ -176,40 +159,6 @@ class InfiniteGroupedList<ItemType, GroupBy, GroupTitle> extends StatefulWidget 
   final SliverGridDelegate? gridDelegate;
   final ListStyle listStyle;
 
-  /// The function to call when the list needs to load more items.
-  ///
-  /// The function should take a PaginationInfo parameter representing the current
-  /// offset and page, for pagination.
-  ///
-  /// The widget will automatically increment the offset and page each time this function
-  /// is called, so your function just needs to use the provided PaginationInfo to fetch
-  /// the appropriate items.
-  ///
-  /// The function should return a Future that completes with a list of new items
-  /// to be added to the list. The function is expected to return an empty list
-  /// when there are no more items to load, signaling the end of the available data.
-  ///
-  /// #### Example usage (with an API that uses offset-based pagination):
-  ///
-  /// ```dart
-  /// onLoadMore: (paginationInfo) {
-  ///   // fetch 10 items starting from 'paginationInfo.offset'
-  ///   return myApi.getItems(offset: paginationInfo.offset, limit: 10);
-  /// }
-  /// ```
-  ///
-  /// #### Example usage (with an API that uses page-based pagination):
-  ///
-  /// ```dart
-  /// onLoadMore: (paginationInfo) {
-  ///   // fetch 10 items starting from 'paginationInfo.page'
-  ///   return myApi.getItems(page: paginationInfo.page, limit: 10);
-  /// }
-  /// ```
-  ///
-  /// If an error occurs while fetching the items (for example, due to network
-  /// issues), the function should throw an exception. The widget will catch this
-  /// exception and call the [loadMoreItemsErrorWidget] builder.
   final Future<List<ItemType>> Function(PaginationInfo paginationInfo) onLoadMore;
 
   /// The item builder is used to build the item.
