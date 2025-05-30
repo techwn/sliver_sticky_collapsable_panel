@@ -1,4 +1,1 @@
-enum Slot {
-  headerSlot,
-  panelSlot,
-}
+enum Slot { headerSlot, panelSlot }

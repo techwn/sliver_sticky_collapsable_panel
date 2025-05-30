@@ -2,21 +2,16 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 /// The signature of the [ValueLayoutBuilder] builder function.
-typedef ValueLayoutWidgetBuilder<T> = Widget Function(
-  BuildContext context,
-  BoxValueConstraints<T> constraints,
-);
+typedef ValueLayoutWidgetBuilder<T> = Widget Function(BuildContext context, BoxValueConstraints<T> constraints);
 
 class BoxValueConstraints<T> extends BoxConstraints {
-  BoxValueConstraints({
-    required this.value,
-    required BoxConstraints constraints,
-  }) : super(
-          minWidth: constraints.minWidth,
-          maxWidth: constraints.maxWidth,
-          minHeight: constraints.minHeight,
-          maxHeight: constraints.maxHeight,
-        );
+  BoxValueConstraints({required this.value, required BoxConstraints constraints})
+    : super(
+        minWidth: constraints.minWidth,
+        maxWidth: constraints.maxWidth,
+        minHeight: constraints.minHeight,
+        maxHeight: constraints.maxHeight,
+      );
 
   final T value;
 
@@ -51,17 +46,17 @@ class BoxValueConstraints<T> extends BoxConstraints {
 ///  * [LayoutBuilder].
 class ValueLayoutBuilder<T> extends ConstrainedLayoutBuilder<BoxValueConstraints<T>> {
   /// Creates a widget that defers its building until layout.
-  const ValueLayoutBuilder({
-    super.key,
-    required super.builder,
-  });
+  const ValueLayoutBuilder({super.key, required super.builder});
 
   @override
   RenderValueLayoutBuilder<T> createRenderObject(BuildContext context) => RenderValueLayoutBuilder<T>();
 }
 
 class RenderValueLayoutBuilder<T> extends RenderBox
-    with RenderObjectWithChildMixin<RenderBox>, RenderConstrainedLayoutBuilder<BoxValueConstraints<T>, RenderBox> {
+    with
+        RenderObjectWithChildMixin<RenderBox>,
+        RenderObjectWithLayoutCallbackMixin,
+        RenderAbstractLayoutBuilderMixin<BoxValueConstraints<T>, RenderBox> {
   @override
   double computeMinIntrinsicWidth(double height) {
     assert(_debugThrowIfNotCheckingIntrinsics());
@@ -88,17 +83,32 @@ class RenderValueLayoutBuilder<T> extends RenderBox
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-    assert(debugCannotComputeDryLayout(
-      reason: 'Calculating the dry layout would require running the layout callback '
-          'speculatively, which might mutate the live render object tree.',
-    ));
+    assert(
+      debugCannotComputeDryLayout(
+        reason:
+            'Calculating the dry layout would require running the layout callback '
+            'speculatively, which might mutate the live render object tree.',
+      ),
+    );
     return Size.zero;
+  }
+
+  @override
+  double? computeDryBaseline(BoxConstraints constraints, TextBaseline baseline) {
+    assert(
+      debugCannotComputeDryLayout(
+        reason:
+            'Calculating the dry baseline would require running the layout callback '
+            'speculatively, which might mutate the live render object tree.',
+      ),
+    );
+    return null;
   }
 
   @override
   void performLayout() {
     final BoxConstraints constraints = this.constraints;
-    rebuildIfNecessary();
+    runLayoutCallback();
     if (child != null) {
       child!.layout(constraints, parentUsesSize: true);
       size = constraints.constrain(child!.size);
@@ -109,10 +119,7 @@ class RenderValueLayoutBuilder<T> extends RenderBox
 
   @override
   double? computeDistanceToActualBaseline(TextBaseline baseline) {
-    if (child != null) {
-      return child!.getDistanceToActualBaseline(baseline);
-    }
-    return super.computeDistanceToActualBaseline(baseline);
+    return child?.getDistanceToActualBaseline(baseline) ?? super.computeDistanceToActualBaseline(baseline);
   }
 
   @override
@@ -122,15 +129,19 @@ class RenderValueLayoutBuilder<T> extends RenderBox
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    if (child != null) context.paintChild(child!, offset);
+    if (child != null) {
+      context.paintChild(child!, offset);
+    }
   }
 
   bool _debugThrowIfNotCheckingIntrinsics() {
     assert(() {
       if (!RenderObject.debugCheckingIntrinsics) {
-        throw FlutterError('ValueLayoutBuilder does not support returning intrinsic dimensions.\n'
-            'Calculating the intrinsic dimensions would require running the layout '
-            'callback speculatively, which might mutate the live render object tree.');
+        throw FlutterError(
+          'ValueLayoutBuilder does not support returning intrinsic dimensions.\n'
+          'Calculating the intrinsic dimensions would require running the layout '
+          'callback speculatively, which might mutate the live render object tree.',
+        );
       }
       return true;
     }());

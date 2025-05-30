@@ -3,11 +3,7 @@ import 'package:flutter/widgets.dart';
 /// Status describing how a sticky header is rendered.
 @immutable
 class SliverStickyCollapsablePanelStatus {
-  const SliverStickyCollapsablePanelStatus(
-    this.scrollPercentage,
-    this.isPinned,
-    this.isExpanded,
-  );
+  const SliverStickyCollapsablePanelStatus(this.scrollPercentage, this.isPinned, this.isExpanded);
 
   final double scrollPercentage;
 

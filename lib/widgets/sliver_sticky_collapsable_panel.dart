@@ -9,10 +9,7 @@ typedef ExpandCallback = void Function(bool isExpanded);
 
 /// Signature used by [SliverStickyCollapsablePanel] to build the header
 /// when the sticky header status has changed.
-typedef HeaderBuilder = Widget Function(
-  BuildContext context,
-  SliverStickyCollapsablePanelStatus status,
-);
+typedef HeaderBuilder = Widget Function(BuildContext context, SliverStickyCollapsablePanelStatus status);
 
 /// A sliver that displays a header before its sliver and can allow click to collapse.
 /// The header scrolls off the viewport only when the sliver does.
@@ -35,21 +32,21 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
     EdgeInsetsGeometry paddingAfterCollapse = const EdgeInsets.only(),
     Size? headerSize,
   }) : this._(
-          key: key,
-          scrollController: scrollController,
-          panelController: controller,
-          headerBuilder: headerBuilder,
-          sliverPanel: sliverPanel,
-          sticky: sticky,
-          overlapsContent: overlapsContent,
-          defaultExpanded: defaultExpanded,
-          expandCallback: expandCallback,
-          disableCollapsable: disableCollapsable,
-          iOSStyleSticky: iOSStyleSticky,
-          paddingBeforeCollapse: paddingBeforeCollapse,
-          paddingAfterCollapse: paddingAfterCollapse,
-          headerSize: headerSize,
-        );
+         key: key,
+         scrollController: scrollController,
+         panelController: controller,
+         headerBuilder: headerBuilder,
+         sliverPanel: sliverPanel,
+         sticky: sticky,
+         overlapsContent: overlapsContent,
+         defaultExpanded: defaultExpanded,
+         expandCallback: expandCallback,
+         disableCollapsable: disableCollapsable,
+         iOSStyleSticky: iOSStyleSticky,
+         paddingBeforeCollapse: paddingBeforeCollapse,
+         paddingAfterCollapse: paddingAfterCollapse,
+         headerSize: headerSize,
+       );
 
   const SliverStickyCollapsablePanel._({
     super.key,

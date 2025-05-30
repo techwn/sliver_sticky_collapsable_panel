@@ -1,6 +1,6 @@
-# example
+# sliver_sticky_collapsable_panel_example
 
-A new Flutter project.
+Demonstrates how to use the sliver_sticky_collapsable_panel plugin.
 
 ## Getting Started
 

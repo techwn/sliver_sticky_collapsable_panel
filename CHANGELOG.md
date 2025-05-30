@@ -1,5 +1,12 @@
+## 3.0.0
+* [break change] - Adaptation for Flutter 3.32 framework break change. This change not affect the user api.
+  * RenderConstrainedLayoutBuilder replaced by RenderAbstractLayoutBuilderMixin
+  * RenderObjectWithLayoutCallbackMixin added for layout callback
+* [break change] - bump min flutter to 3.32, min dart to 3.8 
+* [chore] - regenerate example with Flutter 3.32
+
 ## 2.0.7
-* [chore] - regenerate example with Flutter 3.24 for Android Studio Ladybug compatible
+* [chore] - regenerate example with Flutter 3.24
 
 ## 2.0.6
 * [chore] - update readme for demo of `headerSize` configuration

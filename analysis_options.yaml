@@ -5,6 +5,6 @@ include: package:flutter_lints/flutter.yaml
 
 linter:
   rules:
-    lines_longer_than_80_chars: true
+    avoid_futureor_void: true
 formatter:
   page_width: 120

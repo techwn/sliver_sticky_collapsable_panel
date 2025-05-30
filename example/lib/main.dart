@@ -5,14 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'infinite_grouped_list/infinite_grouped_list.dart';
 
-enum TransactionType {
-  transport,
-  food,
-  shopping,
-  entertainment,
-  health,
-  other,
-}
+enum TransactionType { transport, food, shopping, entertainment, health, other }
 
 class Transaction {
   final String name;
@@ -20,12 +13,7 @@ class Transaction {
   final double amount;
   final TransactionType type;
 
-  Transaction({
-    required this.name,
-    required this.dateTime,
-    required this.amount,
-    required this.type,
-  });
+  Transaction({required this.name, required this.dateTime, required this.amount, required this.type});
 
   @override
   String toString() {
@@ -45,9 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: const MyHomePage(title: 'Sliver Sticky collapsable Panel'),
     );
   }
@@ -75,19 +61,16 @@ class _MyHomePageState extends State<MyHomePage> {
     if (index++ == 2) {
       throw 'error in load more';
     }
-    return List<Transaction>.generate(
-      29,
-      (index) {
-        final tempDate = baseDate;
-        baseDate = baseDate.subtract(const Duration(hours: 28));
-        return Transaction(
-          name: 'Transaction num #$index',
-          dateTime: tempDate,
-          amount: Random().nextDouble() * 1000,
-          type: TransactionType.values[Random().nextInt(6)],
-        );
-      },
-    );
+    return List<Transaction>.generate(29, (index) {
+      final tempDate = baseDate;
+      baseDate = baseDate.subtract(const Duration(hours: 28));
+      return Transaction(
+        name: 'Transaction num #$index',
+        dateTime: tempDate,
+        amount: Random().nextDouble() * 1000,
+        type: TransactionType.values[Random().nextInt(6)],
+      );
+    });
   }
 
   @override
@@ -99,9 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: Text(widget.title)),
       body: InfiniteGroupedList<Transaction, DateTime, String>(
         groupBy: (item) => item.dateTime,
         sortGroupBy: (item) => item.dateTime,
@@ -116,26 +97,21 @@ class _MyHomePageState extends State<MyHomePage> {
                   alignment: Alignment.centerLeft,
                   child: Padding(
                     padding: const EdgeInsetsDirectional.only(start: 16),
-                    child: Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   ),
                 ),
                 if (index % 2 == 0)
                   Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: const EdgeInsetsDirectional.only(end: 16),
-                        child: AnimatedRotation(
-                          duration: const Duration(milliseconds: 0),
-                          turns: isExpanded ? 0 : 0.5,
-                          child: const Icon(Icons.expand_more),
-                        ),
-                      ))
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.only(end: 16),
+                      child: AnimatedRotation(
+                        duration: const Duration(milliseconds: 0),
+                        turns: isExpanded ? 0 : 0.5,
+                        child: const Icon(Icons.expand_more),
+                      ),
+                    ),
+                  ),
               ],
             ),
           );
@@ -154,20 +130,17 @@ class _MyHomePageState extends State<MyHomePage> {
               leading: item.type == TransactionType.transport
                   ? const Icon(Icons.directions_bus)
                   : item.type == TransactionType.food
-                      ? const Icon(Icons.fastfood)
-                      : item.type == TransactionType.shopping
-                          ? const Icon(Icons.shopping_bag)
-                          : item.type == TransactionType.entertainment
-                              ? const Icon(Icons.movie)
-                              : item.type == TransactionType.health
-                                  ? const Icon(Icons.medical_services)
-                                  : const Icon(Icons.money),
+                  ? const Icon(Icons.fastfood)
+                  : item.type == TransactionType.shopping
+                  ? const Icon(Icons.shopping_bag)
+                  : item.type == TransactionType.entertainment
+                  ? const Icon(Icons.movie)
+                  : item.type == TransactionType.health
+                  ? const Icon(Icons.medical_services)
+                  : const Icon(Icons.money),
               trailing: Text(
                 '${item.amount.toStringAsFixed(2)}€',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               subtitle: Text(item.dateTime.toIso8601String()),
             ),

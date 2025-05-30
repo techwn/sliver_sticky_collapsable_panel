@@ -21,13 +21,13 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     required bool iOSStyleSticky,
     required double devicePixelRatio,
     required Size? headerSize,
-  })  : _overlapsContent = overlapsContent,
-        _sticky = sticky,
-        _isExpanded = isExpanded,
-        _iOSStyleSticky = iOSStyleSticky,
-        _controller = controller,
-        _tolerance = 1 / devicePixelRatio,
-        _headerSize = headerSize;
+  }) : _overlapsContent = overlapsContent,
+       _sticky = sticky,
+       _isExpanded = isExpanded,
+       _iOSStyleSticky = iOSStyleSticky,
+       _controller = controller,
+       _tolerance = 1 / devicePixelRatio,
+       _headerSize = headerSize;
 
   SliverStickyCollapsablePanelStatus? _oldStatus;
 
@@ -137,10 +137,16 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
       );
     }
     _headerExtent = computeHeaderExtent();
-    final double headerAndOverlapPaintExtent =
-        calculatePaintOffset(constraints, from: 0, to: childScrollOffset(panelChild));
-    final double headerAndOverlapCacheExtent =
-        calculateCacheOffset(constraints, from: 0, to: childScrollOffset(panelChild));
+    final double headerAndOverlapPaintExtent = calculatePaintOffset(
+      constraints,
+      from: 0,
+      to: childScrollOffset(panelChild),
+    );
+    final double headerAndOverlapCacheExtent = calculateCacheOffset(
+      constraints,
+      from: 0,
+      to: childScrollOffset(panelChild),
+    );
     //layout sliver child, and compute paint offset
     panelChild.layout(
       constraints.copyWith(
@@ -262,17 +268,16 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     final SliverConstraints constraints = this.constraints;
     final panelScrollExtent = panelChild.geometry!.scrollExtent;
     return switch (child) {
-      RenderBox _ => _iOSStyleSticky
-          ? (_isPinned ? constraints.overlap : -(constraints.scrollOffset - constraints.overlap))
-          : (_isPinned
-              ? math.min(constraints.overlap,
-                  panelScrollExtent - constraints.scrollOffset - (_overlapsContent ? _headerExtent : 0))
-              : -(constraints.scrollOffset - constraints.overlap)),
-      _ => calculatePaintOffset(
-          constraints,
-          from: 0,
-          to: childScrollOffset(panelChild),
-        ),
+      RenderBox _ =>
+        _iOSStyleSticky
+            ? (_isPinned ? constraints.overlap : -(constraints.scrollOffset - constraints.overlap))
+            : (_isPinned
+                  ? math.min(
+                      constraints.overlap,
+                      panelScrollExtent - constraints.scrollOffset - (_overlapsContent ? _headerExtent : 0),
+                    )
+                  : -(constraints.scrollOffset - constraints.overlap)),
+      _ => calculatePaintOffset(constraints, from: 0, to: childScrollOffset(panelChild)),
     };
   }
 

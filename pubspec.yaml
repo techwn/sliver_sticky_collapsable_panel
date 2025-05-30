@@ -1,8 +1,8 @@
 name: sliver_sticky_collapsable_panel
-version: 2.0.7
+version: 3.0.0
 description: "A Sliver implementation of sticky collapsable panel, with a box header rebuild on status and a sliver child as panel content."
 topics:
-  - ios
+  - sliver
   - sticky
   - collapsable
   - expandable
@@ -10,8 +10,8 @@ topics:
 repository: https://github.com/techwn/sliver_sticky_collapsable_panel
 
 environment:
-  sdk: '>=3.1.0 <4.0.0'
-  flutter: ">=3.13.0"
+  sdk: ^3.8.0
+  flutter: ^3.32.0
 
 dependencies:
   flutter:
@@ -20,8 +20,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.1
-  sliver_tools: ^0.2.12
+  flutter_lints: ^6.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

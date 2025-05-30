@@ -38,7 +38,8 @@ class InfiniteGroupedList<ItemType, GroupBy, GroupTitle> extends StatefulWidget 
       bool isPinned,
       bool isExpanded,
       double scrollPercentage,
-    ) groupTitleBuilder,
+    )
+    groupTitleBuilder,
     required Future<List<ItemType>> Function(PaginationInfo paginationInfo) onLoadMore,
     required GroupTitle Function(GroupBy) groupCreator,
     Function(ItemType)? sortGroupBy,
@@ -51,9 +52,7 @@ class InfiniteGroupedList<ItemType, GroupBy, GroupTitle> extends StatefulWidget 
     Widget? loadMoreItemsErrorWidget,
     SortOrder groupSortOrder = SortOrder.descending,
     bool stickyGroups = true,
-    Widget loadingWidget = const Center(
-      child: CircularProgressIndicator(),
-    ),
+    Widget loadingWidget = const Center(child: CircularProgressIndicator()),
     Color? refreshIndicatorColor,
     Color? refreshIndicatorBackgroundColor,
   }) {
@@ -90,7 +89,8 @@ class InfiniteGroupedList<ItemType, GroupBy, GroupTitle> extends StatefulWidget 
       bool isPinned,
       bool isExpanded,
       double scrollPercentage,
-    ) groupTitleBuilder,
+    )
+    groupTitleBuilder,
     required Future<List<ItemType>> Function(PaginationInfo paginationInfo) onLoadMore,
     required GroupTitle Function(GroupBy) groupCreator,
     Function(ItemType)? sortGroupBy,
@@ -104,9 +104,7 @@ class InfiniteGroupedList<ItemType, GroupBy, GroupTitle> extends StatefulWidget 
     Widget? loadMoreItemsErrorWidget,
     SortOrder groupSortOrder = SortOrder.descending,
     bool stickyGroups = true,
-    Widget loadingWidget = const Center(
-      child: CircularProgressIndicator(),
-    ),
+    Widget loadingWidget = const Center(child: CircularProgressIndicator()),
     Color? refreshIndicatorColor,
     Color? refreshIndicatorBackgroundColor,
   }) {
@@ -168,9 +166,7 @@ class InfiniteGroupedList<ItemType, GroupBy, GroupTitle> extends StatefulWidget 
     this.loadMoreItemsErrorWidget,
     this.groupSortOrder = SortOrder.descending,
     this.stickyGroups = true,
-    this.loadingWidget = const Center(
-      child: CircularProgressIndicator(),
-    ),
+    this.loadingWidget = const Center(child: CircularProgressIndicator()),
     this.refreshIndicatorColor,
     this.refreshIndicatorBackgroundColor,
     this.gridDelegate,
@@ -241,7 +237,8 @@ class InfiniteGroupedList<ItemType, GroupBy, GroupTitle> extends StatefulWidget 
     bool isPinned,
     bool isExpanded,
     double scrollPercentage,
-  ) groupTitleBuilder;
+  )
+  groupTitleBuilder;
 
   /// The widget to show when the list is loading.
   final Widget loadingWidget;
@@ -317,10 +314,7 @@ class InfiniteGroupedListState<Cell, GroupBy, Group> extends State<InfiniteGroup
     }
     try {
       final items = await widget.onLoadMore(
-        PaginationInfo(
-          offset: _pageInformationController.currentOffset,
-          page: _pageInformationController.currentPage,
-        ),
+        PaginationInfo(offset: _pageInformationController.currentOffset, page: _pageInformationController.currentPage),
       );
 
       // Increment the offset after a successful fetch
@@ -367,10 +361,7 @@ class InfiniteGroupedListState<Cell, GroupBy, Group> extends State<InfiniteGroup
     _pageInformationController.currentPage = 1;
     try {
       final items = await widget.onLoadMore(
-        PaginationInfo(
-          offset: _pageInformationController.currentOffset,
-          page: _pageInformationController.currentPage,
-        ),
+        PaginationInfo(offset: _pageInformationController.currentOffset, page: _pageInformationController.currentPage),
       );
 
       // Increment the offset after a successful fetch
@@ -413,10 +404,7 @@ class InfiniteGroupedListState<Cell, GroupBy, Group> extends State<InfiniteGroup
     }
     try {
       final items = await widget.onLoadMore(
-        PaginationInfo(
-          offset: _pageInformationController.currentOffset,
-          page: _pageInformationController.currentPage,
-        ),
+        PaginationInfo(offset: _pageInformationController.currentOffset, page: _pageInformationController.currentPage),
       );
 
       // Increment the offset after a successful fetch
@@ -536,163 +524,143 @@ class InfiniteGroupedListState<Cell, GroupBy, Group> extends State<InfiniteGroup
     return loading && groupedItems.isEmpty
         ? widget.loadingWidget
         : groupedItems.keys.isEmpty
-            ? CustomScrollView(
-                physics: const ClampingScrollPhysics(),
-                slivers: [
-                  SliverFillRemaining(
-                    child: Center(
-                      child: hasError
-                          ? widget.initialItemsErrorWidget ??
-                              const Center(
-                                child: Text(
-                                  'Something went wrong while fetching items',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              )
-                          : widget.noItemsFoundWidget ??
-                              const Text(
-                                'No items found',
+        ? CustomScrollView(
+            physics: const ClampingScrollPhysics(),
+            slivers: [
+              SliverFillRemaining(
+                child: Center(
+                  child: hasError
+                      ? widget.initialItemsErrorWidget ??
+                            const Center(
+                              child: Text(
+                                'Something went wrong while fetching items',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                ),
+                                style: TextStyle(color: Colors.black, fontSize: 20),
                               ),
-                    ),
-                  )
-                ],
-              )
-            : Listener(
-                onPointerMove: (PointerMoveEvent event) {
-                  if (event.delta.dy < 0 && _scrollController.offset == _scrollController.position.maxScrollExtent) {
-                    _loadMore();
-                  }
-                },
-                child: CustomScrollView(
-                  physics: const ClampingScrollPhysics(),
-                  controller: _scrollController,
-                  slivers: [
-                    // SliverAppBar(
-                    //     expandedHeight: 150.0,
-                    //     floating: true,
-                    //     snap: true,
-                    //     backgroundColor: Colors.yellow,
-                    //     pinned: false,
-                    //     flexibleSpace: const FlexibleSpaceBar(
-                    //       title: Text('Available seats'),
-                    //       background: ColoredBox(color: Colors.blue),
-                    //     ),
-                    //     actions: <Widget>[
-                    //       IconButton(
-                    //         icon: const Icon(Icons.add_circle),
-                    //         tooltip: 'Add new entry',
-                    //         onPressed: () { /* ... */ },
-                    //       ),
-                    //     ]
-                    // ),
-                    // const OverlapSliver(),
-                    ...groupedItems.keys
-                        .toList()
-                        .asMap()
-                        .map<int, Widget>((index, title) {
-                          return MapEntry(
-                            index,
-                            SliverStickyCollapsablePanel(
-                              iOSStyleSticky: false,
-                              scrollController: _scrollController,
-                              paddingAfterCollapse: const EdgeInsets.only(bottom: 10),
-                              controller: StickyCollapsablePanelController(key: title.toString()),
-                              sticky: widget.stickyGroups,
-                              disableCollapsable: (index % 2) == 1,
-                              expandCallback: (isExpanded) {
-                                if (!isExpanded) {
-                                  _loadMore();
-                                }
-                              },
-                              headerBuilder: (context, status) {
-                                return widget.groupTitleBuilder(
-                                  index,
-                                  title,
-                                  widget.groupBy(
-                                    groupedItems[title]!.first,
-                                  ),
-                                  status.isPinned,
-                                  status.isExpanded,
-                                  status.scrollPercentage,
-                                );
-                              },
-                              headerSize: Size(MediaQuery.of(context).size.width, 50),
-                              sliverPanel: widget.listStyle == ListStyle.listView
-                                  ? SliverList(
-                                      delegate: SliverChildBuilderDelegate(
-                                        (context, index) {
-                                          final items = groupedItems[title]!;
-                                          return Column(
-                                            children: [
-                                              widget.itemBuilder(groupedItems, title, index),
-                                              if (widget.separatorBuilder != null)
-                                                widget.separatorBuilder!(items[index]),
-                                            ],
-                                          );
-                                        },
-                                        childCount: groupedItems[title]!.length,
-                                      ),
-                                    )
-                                  : SliverGrid(
-                                      gridDelegate: widget.gridDelegate ??
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 3,
-                                            childAspectRatio: 2,
-                                          ),
-                                      delegate: SliverChildBuilderDelegate(
-                                        (context, index) {
-                                          final items = groupedItems[title]!;
-                                          return Column(
-                                            children: [
-                                              widget.itemBuilder(groupedItems, title, index),
-                                              if (widget.separatorBuilder != null)
-                                                widget.separatorBuilder!(items[index]),
-                                            ],
-                                          );
-                                        },
-                                        childCount: groupedItems[title]!.length,
-                                      ),
-                                    ),
+                            )
+                      : widget.noItemsFoundWidget ??
+                            const Text(
+                              'No items found',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.black, fontSize: 20),
                             ),
-                          );
-                        })
-                        .values
-                        .toList()
-                      ..addAll([
-                        if (loading)
-                          SliverToBoxAdapter(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                bottom: 14.0,
-                                top: 5.0,
-                              ),
-                              child: widget.loadingWidget,
-                            ),
-                          ),
-                        if (hasError)
-                          SliverToBoxAdapter(
-                            child: widget.loadMoreItemsErrorWidget ??
-                                const Text(
-                                  'Oops something went wrong !',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                          ),
-                      ])
-                  ],
                 ),
-              );
+              ),
+            ],
+          )
+        : Listener(
+            onPointerMove: (PointerMoveEvent event) {
+              if (event.delta.dy < 0 && _scrollController.offset == _scrollController.position.maxScrollExtent) {
+                _loadMore();
+              }
+            },
+            child: CustomScrollView(
+              physics: const ClampingScrollPhysics(),
+              controller: _scrollController,
+              slivers: [
+                // SliverAppBar(
+                //     expandedHeight: 150.0,
+                //     floating: true,
+                //     snap: true,
+                //     backgroundColor: Colors.yellow,
+                //     pinned: false,
+                //     flexibleSpace: const FlexibleSpaceBar(
+                //       title: Text('Available seats'),
+                //       background: ColoredBox(color: Colors.blue),
+                //     ),
+                //     actions: <Widget>[
+                //       IconButton(
+                //         icon: const Icon(Icons.add_circle),
+                //         tooltip: 'Add new entry',
+                //         onPressed: () { /* ... */ },
+                //       ),
+                //     ]
+                // ),
+                // const OverlapSliver(),
+                ...groupedItems.keys
+                    .toList()
+                    .asMap()
+                    .map<int, Widget>((index, title) {
+                      return MapEntry(
+                        index,
+                        SliverStickyCollapsablePanel(
+                          iOSStyleSticky: false,
+                          scrollController: _scrollController,
+                          paddingAfterCollapse: const EdgeInsets.only(bottom: 10),
+                          controller: StickyCollapsablePanelController(key: title.toString()),
+                          sticky: widget.stickyGroups,
+                          disableCollapsable: (index % 2) == 1,
+                          expandCallback: (isExpanded) {
+                            if (!isExpanded) {
+                              _loadMore();
+                            }
+                          },
+                          headerBuilder: (context, status) {
+                            return widget.groupTitleBuilder(
+                              index,
+                              title,
+                              widget.groupBy(groupedItems[title]!.first),
+                              status.isPinned,
+                              status.isExpanded,
+                              status.scrollPercentage,
+                            );
+                          },
+                          headerSize: Size(MediaQuery.of(context).size.width, 50),
+                          sliverPanel: widget.listStyle == ListStyle.listView
+                              ? SliverList(
+                                  delegate: SliverChildBuilderDelegate((context, index) {
+                                    final items = groupedItems[title]!;
+                                    return Column(
+                                      children: [
+                                        widget.itemBuilder(groupedItems, title, index),
+                                        if (widget.separatorBuilder != null) widget.separatorBuilder!(items[index]),
+                                      ],
+                                    );
+                                  }, childCount: groupedItems[title]!.length),
+                                )
+                              : SliverGrid(
+                                  gridDelegate:
+                                      widget.gridDelegate ??
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        childAspectRatio: 2,
+                                      ),
+                                  delegate: SliverChildBuilderDelegate((context, index) {
+                                    final items = groupedItems[title]!;
+                                    return Column(
+                                      children: [
+                                        widget.itemBuilder(groupedItems, title, index),
+                                        if (widget.separatorBuilder != null) widget.separatorBuilder!(items[index]),
+                                      ],
+                                    );
+                                  }, childCount: groupedItems[title]!.length),
+                                ),
+                        ),
+                      );
+                    })
+                    .values
+                    .toList()
+                  ..addAll([
+                    if (loading)
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 14.0, top: 5.0),
+                          child: widget.loadingWidget,
+                        ),
+                      ),
+                    if (hasError)
+                      SliverToBoxAdapter(
+                        child:
+                            widget.loadMoreItemsErrorWidget ??
+                            const Text(
+                              'Oops something went wrong !',
+                              style: TextStyle(color: Colors.black, fontSize: 20),
+                            ),
+                      ),
+                  ]),
+              ],
+            ),
+          );
   }
 
   /// Function to group items based on [GroupBy]
