@@ -8,7 +8,6 @@ topics:
   - expandable
   - header
 repository: https://github.com/techwn/sliver_sticky_collapsable_panel
-publish_to: https://pub.dev/
 
 environment:
   sdk: ^3.8.0
