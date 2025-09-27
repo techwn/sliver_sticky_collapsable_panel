@@ -1,5 +1,5 @@
 # sliver_sticky_collapsable_panel
-[![pub](https://img.shields.io/badge/pub-3.0.0-blue)](https://pub.dev/packages/sliver_sticky_collapsable_panel)
+[![pub](https://img.shields.io/badge/pub-3.0.1-blue)](https://pub.dev/packages/sliver_sticky_collapsable_panel)
 [![license](https://img.shields.io/badge/license-MIT-orange)](https://github.com/techwn/sliver_sticky_collapsable_panel/blob/main/LICENSE)
 [![build status](https://img.shields.io/badge/build-passing-green?logo=github&logoColor=white)](https://github.com/techwn/sliver_sticky_collapsable_panel)
 [![flutter compatibility](https://img.shields.io/badge/flutter-3.32+-blue)](https://flutter.dev/)
@@ -12,7 +12,8 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 
 ---
 ## Features
-- Relying solely on the Flutter framework itself.
+- Relying solely on the Flutter framework itself, no any other dependencies.
+- Pure Dart implementation, running on any platform who supports Flutter.
 - Accept one box child as header and one sliver child as panel content.
 - Header can overlap panel content (useful for sticky side header for example).
 - Notify and rebuild the header when status changed (scroll outside the viewport for example).
@@ -30,7 +31,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 
     ```yaml
     dependencies:
-      sliver_sticky_collapsable_panel: ^2.0.7
+      sliver_sticky_collapsable_panel: ^3.0.1
     ```
 
 - In your library add the following import:

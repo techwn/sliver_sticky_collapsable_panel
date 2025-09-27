@@ -1,5 +1,9 @@
+## 3.0.1
+* [chore] - regenerate example with flutter 3.35
+* [chore] - update README for better demo
+
 ## 3.0.0
-* [break change] - Adaptation for Flutter 3.32 framework break change. This change not affect the user api.
+* [framework consistency] - Adaptation for Flutter 3.32 framework break change. This change not affect the user api.
   * RenderConstrainedLayoutBuilder replaced by RenderAbstractLayoutBuilderMixin
   * RenderObjectWithLayoutCallbackMixin added for layout callback
 * [break change] - bump min flutter to 3.32, min dart to 3.8 
