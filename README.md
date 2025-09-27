@@ -31,17 +31,17 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 
     ```yaml
     dependencies:
-      sliver_sticky_collapsable_panel: ^3.0.2
+      sliver_sticky_collapsable_panel: ^3.0.1
     ```
 
 - In your library add the following import:
 
-    ```dart
+    ```
     import 'package:sliver_sticky_collapsable_panel/sliver_sticky_collapsable_panel.dart';
     ```
 
 - In your code, use the sliver like this:
-    ```dart
+    ```
     CustomScrollView(
       controller: _scrollController,
       slivers: [
@@ -63,7 +63,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
     ```
 
 - For simple right side header arrow hint `^`, you can build with widget in flutter framework like `AnimatedRotation`:
-    ```dart
+    ```
     SliverStickyCollapsablePanel(
       scrollController: _scrollController,
       controller: StickyCollapsablePanelController(key:'key_1'),
@@ -91,7 +91,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 ## More Advanced Feature:
 
 - You can disable collapse for any sliver you wanted, just add `disableCollapsable = true`.
-    ```dart
+    ```
     CustomScrollView(
       controller: _scrollController,
       slivers: [
@@ -108,7 +108,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
     ```
 ---
 - You can enable iOS style sticky header, just like the system's contact app with just one parameter `iOSStyleSticky = true`.
-    ```dart
+    ```
     CustomScrollView(
       controller: _scrollController,
       slivers: [
@@ -127,7 +127,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 
 ---
 - You can add padding for sliver child (with `paddingBeforeCollapse`), even if the panel is collapsed, the padding still work between headers with  `paddingAfterCollapse`.
-    ```dart
+    ```
     CustomScrollView(
       controller: _scrollController,
       slivers: [
@@ -149,7 +149,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 ## Performance configuration
 - You can use optional parameter `headerSize` to speed up the layout process
   - headerSize means width and height of your header，it should keep unchanged during scrolling
-    ```dart
+    ```
     CustomScrollView(
       controller: _scrollController,
       slivers: [
