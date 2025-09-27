@@ -1,3 +1,6 @@
+## 3.0.2
+* [chore] - update README for better readability
+
 ## 3.0.1
 * [chore] - regenerate example with flutter 3.35
 * [chore] - update README for better demo
