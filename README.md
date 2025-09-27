@@ -8,7 +8,7 @@
 A Sliver implementation of sticky collapsable panel, with a box header rebuild on status and a sliver child as panel content.
 
 ## Snap Shot
-<img src="https://raw.githubusercontent.com/techwn/files/main/imgs/sliver_sticky_collapsable_pannel/simple_demo.gif" width=360 alt="simple Shot">
+<img src="https://raw.githubusercontent.com/techwn/files/main/imgs/sliver_sticky_collapsable_pannel/simple_demo.gif" width=180 alt="simple Shot">
 
 ---
 ## Features
@@ -123,7 +123,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
       ],
     );
     ```
-    <img src="https://raw.githubusercontent.com/techwn/files/main/imgs/sliver_sticky_collapsable_pannel/ios_style_sticky.gif" width=360 alt="simple Shot">
+    <img src="https://raw.githubusercontent.com/techwn/files/main/imgs/sliver_sticky_collapsable_pannel/ios_style_sticky.gif" width=180 alt="simple Shot">
 
 ---
 - You can add padding for sliver child (with `paddingBeforeCollapse`), even if the panel is collapsed, the padding still work between headers with  `paddingAfterCollapse`.
@@ -143,7 +143,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
       ],
     );
     ```
-    <img src="https://raw.githubusercontent.com/techwn/files/main/imgs/sliver_sticky_collapsable_pannel/padding.gif" width=360 alt="simple Shot">
+    <img src="https://raw.githubusercontent.com/techwn/files/main/imgs/sliver_sticky_collapsable_pannel/padding.gif" width=180 alt="simple Shot">
 
 ---
 ## Performance configuration
