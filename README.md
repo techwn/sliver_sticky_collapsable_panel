@@ -1,5 +1,5 @@
 # sliver_sticky_collapsable_panel
-[![pub](https://img.shields.io/badge/pub-3.0.4-blue)](https://pub.dev/packages/sliver_sticky_collapsable_panel)
+[![pub](https://img.shields.io/badge/pub-4.0.0-blue)](https://pub.dev/packages/sliver_sticky_collapsable_panel)
 [![license](https://img.shields.io/badge/license-MIT-orange)](https://github.com/techwn/sliver_sticky_collapsable_panel/blob/main/LICENSE)
 [![build status](https://img.shields.io/badge/build-passing-green?logo=github&logoColor=white)](https://github.com/techwn/sliver_sticky_collapsable_panel)
 [![flutter compatibility](https://img.shields.io/badge/flutter-3.32+-blue)](https://flutter.dev/)
@@ -14,12 +14,13 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 ## Features
 - Relying solely on the Flutter framework itself, no any other dependencies.
 - Pure Dart implementation, running on any platform who supports Flutter.
+- Command style support for expand/collpase the panel.(it's still compatible with declarative style)
 - Accept one box child as header and one sliver child as panel content.
 - Header can overlap panel content (useful for sticky side header for example).
 - Notify and rebuild the header when status changed (scroll outside the viewport for example).
 - Support not sticky headers (with `sticky: false` parameter).
 - Support a controller which notifies the scroll offset of the current sticky header.
-- Support click the header to collapse the panel, or disable collapse (with `disableCollapsable = true` parameter).
+- Support click the header to collapse the panel, or disable collapse (with `disableCollapsable = true` parameter in panelController).
 - Support iOS style sticky header, just like iOS's system contact app (with `iOSStyleSticky = true` parameter).
 - Support add padding for sliver child (with `paddingBeforeCollapse` parameter).
 - Support add padding after the header even the panel collapsed (with `paddingAfterCollapse` parameter).
@@ -31,7 +32,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 
     ```yaml
     dependencies:
-      sliver_sticky_collapsable_panel: ^3.0.4
+      sliver_sticky_collapsable_panel: ^4.0.0
     ```
 
 - In your library add the following import:
@@ -47,13 +48,13 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
       slivers: [
         SliverStickyCollapsablePanel(
           scrollController: _scrollController,
-          controller: StickyCollapsablePanelController(key:'key_1'),
+          panelController: StickyCollapsablePanelController(key:'key_1'),
           headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
           sliverPanel: SliverList.list(children: [...]),
         ),
         SliverStickyCollapsablePanel(
           scrollController: _scrollController,
-          controller: StickyCollapsablePanelController(key:'key_2'),
+          panelController: StickyCollapsablePanelController(key:'key_2'),
           headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
           sliverPanel: SliverList.list(children: [...]),
         ),
@@ -66,7 +67,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
     ```
     SliverStickyCollapsablePanel(
       scrollController: _scrollController,
-      controller: StickyCollapsablePanelController(key:'key_1'),
+      panelController: StickyCollapsablePanelController(key:'key_1'),
       headerBuilder: (context, status) => Container(
         width: double.infinity,
         height: 48,
@@ -97,9 +98,8 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
       slivers: [
         SliverStickyCollapsablePanel(
           scrollController: _scrollController,
-          controller: StickyCollapsablePanelController(key:'key_1'),
+          panelController: StickyCollapsablePanelController(key:'key_1',disableCollapsable: true),
           headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
-          disableCollapsable = true
           sliverPanel: SliverList.list(children: [...]),
         ),
         ...,
@@ -114,7 +114,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
       slivers: [
         SliverStickyCollapsablePanel(
           scrollController: _scrollController,
-          controller: StickyCollapsablePanelController(key:'key_1'),
+          panelController: StickyCollapsablePanelController(key:'key_1'),
           iOSStyleSticky: true,
           headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
           sliverPanel: SliverList.list(children: [...]),
@@ -133,7 +133,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
       slivers: [
         SliverStickyCollapsablePanel(
           scrollController: _scrollController,
-          controller: StickyCollapsablePanelController(key:'key_1'),
+          panelController: StickyCollapsablePanelController(key:'key_1'),
           paddingBeforeCollapse: const EdgeInsets.all(16),
           paddingAfterCollapse: const EdgeInsets.only(bottom: 10),
           headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
@@ -147,15 +147,15 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 
 ---
 ## Performance configuration
-- You can use optional parameter `headerSize` to speed up the layout process
-  - headerSize means width and height of your header，it should keep unchanged during scrolling
+- You can use optional parameter `headerSize` to speed up the layout process when the size not change
+  - if your header size maybe change, just keep this parameter null (which is the default)
     ```
     CustomScrollView(
       controller: _scrollController,
       slivers: [
         SliverStickyCollapsablePanel(
           scrollController: _scrollController,
-          controller: StickyCollapsablePanelController(key:'key_1'),
+          panelController: StickyCollapsablePanelController(key:'key_1'),
           iOSStyleSticky: true,
           headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
           headerSize: Size(MediaQuery.of(context).size.width, 48),

@@ -533,17 +533,19 @@ class InfiniteGroupedListState<Cell, GroupBy, Group> extends State<InfiniteGroup
                       return MapEntry(
                         index,
                         SliverStickyCollapsablePanel(
-                          iOSStyleSticky: false,
                           scrollController: _scrollController,
+                          panelController: StickyCollapsablePanelController(
+                            key: title.toString(),
+                            disableCollapsable: (index % 2) == 1,
+                          ),
                           paddingAfterCollapse: const EdgeInsets.only(bottom: 10),
-                          controller: StickyCollapsablePanelController(key: title.toString()),
                           sticky: widget.stickyGroups,
-                          disableCollapsable: (index % 2) == 1,
                           expandCallback: (isExpanded) {
                             if (!isExpanded) {
                               _loadMore();
                             }
                           },
+                          iOSStyleSticky: false,
                           headerBuilder: (context, status) {
                             return widget.groupTitleBuilder(
                               index,

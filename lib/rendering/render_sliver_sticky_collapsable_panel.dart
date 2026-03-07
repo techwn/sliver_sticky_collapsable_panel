@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 
 import '../utils/slot.dart';
 import '../utils/utils.dart';
+import '../widgets/sliver_sticky_collapsable_panel.dart';
 
 /// A sliver with a [RenderBox] as header and a [RenderSliver] as child.
 ///
@@ -28,7 +29,6 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
        _controller = controller,
        _tolerance = 1 / devicePixelRatio,
        _headerSize = headerSize;
-
   SliverStickyCollapsablePanelStatus? _oldStatus;
 
   double _headerExtent = 0;
