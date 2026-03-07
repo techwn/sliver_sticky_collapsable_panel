@@ -1,3 +1,6 @@
+## 3.0.4
+* [fix] - fix header expand/collapse state not sync when header size change #3
+
 ## 3.0.3
 * [chore] - regenerate example with flutter 3.41 with all platform
 
