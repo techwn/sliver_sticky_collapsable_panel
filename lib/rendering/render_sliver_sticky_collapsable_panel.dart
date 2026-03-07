@@ -68,6 +68,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
   set isExpanded(bool value) {
     if (_isExpanded == value) return;
     _isExpanded = value;
+    if (_oldStatus != null) _oldStatus = _oldStatus!.copyWith(isExpanded: _isExpanded);
     markNeedsLayout();
   }
 

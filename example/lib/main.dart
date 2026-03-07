@@ -13,12 +13,7 @@ class Transaction {
   final double amount;
   final TransactionType type;
 
-  Transaction({
-    required this.name,
-    required this.dateTime,
-    required this.amount,
-    required this.type,
-  });
+  Transaction({required this.name, required this.dateTime, required this.amount, required this.type});
 
   @override
   String toString() {
@@ -91,43 +86,36 @@ class _MyHomePageState extends State<MyHomePage> {
       body: InfiniteGroupedList<Transaction, DateTime, String>(
         groupBy: (item) => item.dateTime,
         sortGroupBy: (item) => item.dateTime,
-        groupTitleBuilder:
-            (index, title, groupBy, isPinned, isExpanded, scrollPercentage) {
-              return Container(
-                width: double.infinity,
-                height: 50,
-                color: Colors.blueGrey,
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsetsDirectional.only(start: 16),
-                        child: Text(
-                          title,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+        groupTitleBuilder: (index, title, groupBy, isPinned, isExpanded, scrollPercentage) {
+          return Container(
+            width: double.infinity,
+            height: 50,
+            color: Colors.blueGrey,
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.only(start: 16),
+                    child: Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  ),
+                ),
+                if (index % 2 == 0)
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.only(end: 16),
+                      child: AnimatedRotation(
+                        duration: const Duration(milliseconds: 0),
+                        turns: isExpanded ? 0 : 0.5,
+                        child: const Icon(Icons.expand_more),
                       ),
                     ),
-                    if (index % 2 == 0)
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: const EdgeInsetsDirectional.only(end: 16),
-                          child: AnimatedRotation(
-                            duration: const Duration(milliseconds: 0),
-                            turns: isExpanded ? 0 : 0.5,
-                            child: const Icon(Icons.expand_more),
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              );
-            },
+                  ),
+              ],
+            ),
+          );
+        },
         itemBuilder: (groups, title, index) {
           final item = groups[title]![index];
           return SizedBox(
@@ -135,9 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: ListTile(
               onTap: () {
                 if (kDebugMode) {
-                  print(
-                    'tap on item: name = ${item.name} date = ${item.dateTime}',
-                  );
+                  print('tap on item: name = ${item.name} date = ${item.dateTime}');
                 }
               },
               title: Text(item.name),
@@ -154,10 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   : const Icon(Icons.money),
               trailing: Text(
                 '${item.amount.toStringAsFixed(2)}€',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               subtitle: Text(item.dateTime.toIso8601String()),
             ),
@@ -171,19 +154,15 @@ class _MyHomePageState extends State<MyHomePage> {
           final lastWeek = today.subtract(const Duration(days: 7));
           final lastMonth = DateTime(today.year, today.month - 1, today.day);
 
-          if (today.day == dateTime.day &&
-              today.month == dateTime.month &&
-              today.year == dateTime.year) {
+          if (today.day == dateTime.day && today.month == dateTime.month && today.year == dateTime.year) {
             return 'Today';
           } else if (yesterday.day == dateTime.day &&
               yesterday.month == dateTime.month &&
               yesterday.year == dateTime.year) {
             return 'Yesterday';
-          } else if (lastWeek.isBefore(dateTime) &&
-              dateTime.isBefore(yesterday)) {
+          } else if (lastWeek.isBefore(dateTime) && dateTime.isBefore(yesterday)) {
             return 'Last Week';
-          } else if (lastMonth.isBefore(dateTime) &&
-              dateTime.isBefore(lastWeek)) {
+          } else if (lastMonth.isBefore(dateTime) && dateTime.isBefore(lastWeek)) {
             return 'Last Month';
           } else {
             // Convert the DateTime to a string for grouping

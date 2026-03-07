@@ -25,8 +25,7 @@ class OverlapSliver extends SingleChildRenderObjectWidget {
   }
 }
 
-class RenderOverlapSliver extends RenderSliver
-    with RenderObjectWithChildMixin<RenderBox>, RenderSliverHelpers {
+class RenderOverlapSliver extends RenderSliver with RenderObjectWithChildMixin<RenderBox>, RenderSliverHelpers {
   @override
   void setupParentData(RenderObject child) {
     if (child.parentData is! SliverPhysicalParentData) {
@@ -35,29 +34,16 @@ class RenderOverlapSliver extends RenderSliver
   }
 
   @protected
-  void setChildParentData(
-    RenderObject child,
-    SliverConstraints constraints,
-    SliverGeometry geometry,
-  ) {
-    final SliverPhysicalParentData childParentData =
-        child.parentData! as SliverPhysicalParentData;
+  void setChildParentData(RenderObject child, SliverConstraints constraints, SliverGeometry geometry) {
+    final SliverPhysicalParentData childParentData = child.parentData! as SliverPhysicalParentData;
     childParentData.paintOffset = switch (applyGrowthDirectionToAxisDirection(
       constraints.axisDirection,
       constraints.growthDirection,
     )) {
-      AxisDirection.up => Offset(
-        0.0,
-        -(geometry.scrollExtent -
-            (geometry.paintExtent + constraints.scrollOffset)),
-      ),
+      AxisDirection.up => Offset(0.0, -(geometry.scrollExtent - (geometry.paintExtent + constraints.scrollOffset))),
       AxisDirection.right => Offset(-constraints.scrollOffset, 0.0),
       AxisDirection.down => Offset(0.0, -constraints.scrollOffset),
-      AxisDirection.left => Offset(
-        -(geometry.scrollExtent -
-            (geometry.paintExtent + constraints.scrollOffset)),
-        0.0,
-      ),
+      AxisDirection.left => Offset(-(geometry.scrollExtent - (geometry.paintExtent + constraints.scrollOffset)), 0.0),
     };
   }
 
@@ -95,17 +81,9 @@ class RenderOverlapSliver extends RenderSliver
     child!.layout(constraints.asBoxConstraints(), parentUsesSize: false);
     const maxPaintExtent = 300.0;
     const childExtent = 200.0;
-    final paintExtent = calculatePaintOffset(
-      constraints,
-      from: 0,
-      to: maxPaintExtent,
-    );
+    final paintExtent = calculatePaintOffset(constraints, from: 0, to: maxPaintExtent);
     final layoutExtent = clampDouble(paintExtent - 100, 0, childExtent);
-    final cacheExtent = calculateCacheOffset(
-      constraints,
-      from: 0,
-      to: childExtent,
-    );
+    final cacheExtent = calculateCacheOffset(constraints, from: 0, to: childExtent);
     geometry = SliverGeometry(
       scrollExtent: layoutExtent,
       paintExtent: paintExtent,
@@ -120,8 +98,7 @@ class RenderOverlapSliver extends RenderSliver
   @override
   void paint(PaintingContext context, Offset offset) {
     if (geometry!.visible) {
-      final SliverPhysicalParentData childParentData =
-          child!.parentData! as SliverPhysicalParentData;
+      final SliverPhysicalParentData childParentData = child!.parentData! as SliverPhysicalParentData;
       context.paintChild(child!, offset + childParentData.paintOffset);
     }
   }

@@ -22,4 +22,12 @@ class SliverStickyCollapsablePanelStatus {
   int get hashCode {
     return Object.hash(scrollPercentage, isPinned, isExpanded);
   }
+
+  SliverStickyCollapsablePanelStatus copyWith({double? scrollPercentage, bool? isPinned, bool? isExpanded}) {
+    return SliverStickyCollapsablePanelStatus(
+      scrollPercentage ?? this.scrollPercentage,
+      isPinned ?? this.isPinned,
+      isExpanded ?? this.isExpanded,
+    );
+  }
 }
