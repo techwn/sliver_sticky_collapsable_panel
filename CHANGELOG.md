@@ -1,3 +1,14 @@
+## 5.0.0
+* [feature] enable animatable collaplse/expand with only one parameter `panelAnimationDuration`
+
+## 4.0.1
+* [fix] - status wrong when panelController.expandPanel called
+
+## 4.0.0
+* [enhance] - enhance StickyCollapsablePanelController for command style control of collapse/expand the panel
+* [break change] - move parameter `disableCollapsable` and `defaultExpanded` to panelController
+* [break change] - rename parameter `controller` to `panelController` for better readability
+
 ## 3.0.4
 * [fix] - fix header expand/collapse state not sync when header size change #3
 

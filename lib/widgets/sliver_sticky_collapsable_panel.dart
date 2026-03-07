@@ -11,6 +11,81 @@ typedef ExpandCallback = void Function(bool isExpanded);
 /// when the sticky header status has changed.
 typedef HeaderBuilder = Widget Function(BuildContext context, SliverStickyCollapsablePanelStatus status);
 
+/// Controller to manage Sticker Header
+class StickyCollapsablePanelController with ChangeNotifier {
+  StickyCollapsablePanelController({
+    this.key = 'default',
+    this.disableCollapsable = false,
+    this.defaultExpanded = true,
+  }) {
+    _isExpanded = defaultExpanded;
+  }
+
+  final String key;
+  final bool disableCollapsable;
+  final bool defaultExpanded;
+
+  ExpandCallback? _expandCallback;
+
+  void _register(ExpandCallback expandCallback) {
+    _expandCallback = expandCallback;
+  }
+
+  void _unregister() {
+    _expandCallback = null;
+  }
+
+  /// The offset used as calibration when collapse/expand the panel
+  double _precedingScrollExtent = 0;
+
+  double get precedingScrollExtent => _precedingScrollExtent;
+
+  set precedingScrollExtent(double value) {
+    if (_precedingScrollExtent != value) {
+      _precedingScrollExtent = value;
+      notifyListeners();
+    }
+  }
+
+  /// Layout-time update that avoids notification storms during scrolling.
+  void updatePrecedingScrollExtentFromLayout(double value) {
+    if (_precedingScrollExtent != value) {
+      _precedingScrollExtent = value;
+    }
+  }
+
+  bool _isExpanded = true;
+
+  bool get isExpanded => _isExpanded;
+
+  set isExpanded(bool value) {
+    if (_isExpanded != value) {
+      _isExpanded = value;
+      notifyListeners();
+    }
+  }
+
+  void collapsePanel() {
+    if (disableCollapsable == false && _expandCallback != null) {
+      _expandCallback?.call(false);
+      isExpanded = false;
+    }
+  }
+
+  void expandPanel() {
+    if (disableCollapsable == false && _expandCallback != null) {
+      _expandCallback?.call(true);
+      isExpanded = true;
+    }
+  }
+
+  @override
+  void dispose() {
+    _expandCallback = null;
+    super.dispose();
+  }
+}
+
 /// A sliver that displays a header before its sliver and can allow click to collapse.
 /// The header scrolls off the viewport only when the sliver does.
 ///
@@ -19,33 +94,31 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
   const SliverStickyCollapsablePanel({
     Key? key,
     required ScrollController scrollController,
-    required StickyCollapsablePanelController controller,
+    required StickyCollapsablePanelController panelController,
     required HeaderBuilder headerBuilder,
     Widget? sliverPanel,
     bool sticky = true,
     bool overlapsContent = false,
-    bool defaultExpanded = true,
     ExpandCallback? expandCallback,
-    bool disableCollapsable = false,
     bool iOSStyleSticky = false,
     EdgeInsetsGeometry paddingBeforeCollapse = const EdgeInsets.only(),
     EdgeInsetsGeometry paddingAfterCollapse = const EdgeInsets.only(),
     Size? headerSize,
+    Duration panelAnimationDuration = const Duration(milliseconds: 0),
   }) : this._(
          key: key,
          scrollController: scrollController,
-         panelController: controller,
+         panelController: panelController,
          headerBuilder: headerBuilder,
          sliverPanel: sliverPanel,
          sticky: sticky,
          overlapsContent: overlapsContent,
-         defaultExpanded: defaultExpanded,
          expandCallback: expandCallback,
-         disableCollapsable: disableCollapsable,
          iOSStyleSticky: iOSStyleSticky,
          paddingBeforeCollapse: paddingBeforeCollapse,
          paddingAfterCollapse: paddingAfterCollapse,
          headerSize: headerSize,
+         animationDuration: panelAnimationDuration,
        );
 
   const SliverStickyCollapsablePanel._({
@@ -56,21 +129,17 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
     this.sliverPanel,
     required this.sticky,
     required this.overlapsContent,
-    required this.defaultExpanded,
     this.expandCallback,
-    required this.disableCollapsable,
     required this.iOSStyleSticky,
     required this.paddingBeforeCollapse,
     required this.paddingAfterCollapse,
     this.headerSize,
+    required this.animationDuration,
   });
 
   final ScrollController scrollController;
 
-  /// The controller used to interact with this sliver.
-  ///
-  /// If a [StickyCollapsablePanelController] is not provided, then the value of [DefaultStickyCollapsablePanelController.of]
-  /// will be used.
+  /// Optional external controller. If null, the widget manages one internally.
   final StickyCollapsablePanelController panelController;
 
   /// The header to display before the sliver panel content.
@@ -87,11 +156,7 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
   /// instead of before.
   final bool overlapsContent;
 
-  final bool defaultExpanded;
-
   final ExpandCallback? expandCallback;
-
-  final bool disableCollapsable;
 
   /// Like the iOS contact, header replace another header when it reaches the edge
   final bool iOSStyleSticky;
@@ -105,51 +170,122 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
   /// Size of Header, this is used for optimize layout speed
   final Size? headerSize;
 
+  /// Duration of expand/collapse animation for panel sliver.
+  final Duration animationDuration;
+
   @override
   State<StatefulWidget> createState() => SliverStickyCollapsablePanelState();
 }
 
-class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePanel> {
+class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePanel>
+    with SingleTickerProviderStateMixin {
+  late StickyCollapsablePanelController _effectiveController;
   late bool isExpanded;
+  late AnimationController _expansionController;
+  late Animation<double> _expansionAnimation;
 
   @override
   void initState() {
     super.initState();
-    isExpanded = widget.defaultExpanded;
+    _bindController();
+    _expansionController = AnimationController(
+      vsync: this,
+      duration: widget.animationDuration,
+      value: isExpanded ? 1 : 0,
+    );
+    _expansionAnimation = CurvedAnimation(parent: _expansionController, curve: Curves.easeInOutCubic);
+  }
+
+  @override
+  void didUpdateWidget(SliverStickyCollapsablePanel oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.animationDuration != widget.animationDuration) {
+      _expansionController.duration = widget.animationDuration;
+    }
+    if (oldWidget.panelController != widget.panelController) {
+      _unbindController();
+      _bindController();
+      _animateToExpanded(isExpanded);
+    }
+  }
+
+  void _bindController() {
+    _effectiveController = widget.panelController;
+    isExpanded = _effectiveController.isExpanded;
+    _effectiveController._register(_expandPanel);
+  }
+
+  void _unbindController() {
+    _effectiveController._unregister();
+    _effectiveController.dispose();
+  }
+
+  void _jumpWhenPinned(SliverStickyCollapsablePanelStatus status) {
+    if (status.isPinned) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted || !widget.scrollController.hasClients) return;
+        widget.scrollController.jumpTo(_effectiveController.precedingScrollExtent);
+      });
+    }
+  }
+
+  void _animateToExpanded(bool expanded) {
+    _expansionController.animateTo(expanded ? 1 : 0, curve: Curves.easeInOutCubic);
+  }
+
+  void _expandPanel(bool isExpanded) {
+    if (mounted) {
+      setState(() {
+        this.isExpanded = isExpanded;
+      });
+    }
+    _animateToExpanded(isExpanded);
   }
 
   @override
   Widget build(BuildContext context) {
     Widget boxHeader = ValueLayoutBuilder<SliverStickyCollapsablePanelStatus>(
-      builder: (context, constraints) => GestureDetector(
-        onTap: () {
-          if (!widget.disableCollapsable) {
-            setState(() {
-              isExpanded = !isExpanded;
-              if (constraints.value.isPinned) {
-                widget.scrollController.jumpTo(widget.panelController.precedingScrollExtent);
+      builder: (context, constraints) {
+        return GestureDetector(
+          onTap: () {
+            if (!_effectiveController.disableCollapsable) {
+              if (mounted) {
+                setState(() {
+                  isExpanded = !isExpanded;
+                });
+                _jumpWhenPinned(constraints.value);
+                _animateToExpanded(isExpanded);
+                widget.expandCallback?.call(isExpanded);
+                _effectiveController.isExpanded = isExpanded;
               }
-            });
-            widget.expandCallback?.call(isExpanded);
-          }
-        },
-        child: widget.headerBuilder(context, constraints.value),
-      ),
+            }
+          },
+          child: widget.headerBuilder(context, constraints.value),
+        );
+      },
     );
-    final isExpandedNow = (widget.disableCollapsable || isExpanded);
+    final isExpandedNow = _effectiveController.disableCollapsable || isExpanded;
     return _SliverStickyCollapsablePanel(
       boxHeader: boxHeader,
       sliverPanel: SliverPadding(
         padding: isExpandedNow ? widget.paddingBeforeCollapse : widget.paddingAfterCollapse,
-        sliver: isExpandedNow ? widget.sliverPanel : null,
+        sliver: widget.sliverPanel,
       ),
       overlapsContent: widget.overlapsContent,
       sticky: widget.sticky,
-      controller: widget.panelController,
+      controller: _effectiveController,
       isExpanded: isExpandedNow,
+      expansionAnimation: _expansionAnimation,
       iOSStyleSticky: widget.iOSStyleSticky,
       headerSize: widget.headerSize,
     );
+  }
+
+  @override
+  void dispose() {
+    _unbindController();
+    _expansionController.dispose();
+    super.dispose();
   }
 }
 
@@ -164,13 +300,11 @@ class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<
   /// the [sliverPanel] scrolls off the viewport.
   ///
   /// The [overlapsContent] and [sticky] arguments must not be null.
-  ///
-  /// If a [StickyCollapsablePanelController] is not provided, then the value of
-  /// [DefaultStickyCollapsablePanelController.of] will be used.
   const _SliverStickyCollapsablePanel({
     required this.boxHeader,
     required this.sliverPanel,
     required this.controller,
+    required this.expansionAnimation,
     this.overlapsContent = false,
     this.sticky = true,
     this.isExpanded = true,
@@ -185,9 +319,6 @@ class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<
   final Widget sliverPanel;
 
   /// The controller used to interact with this sliver.
-  ///
-  /// If a [StickyCollapsablePanelController] is not provided, then the value of [DefaultStickyCollapsablePanelController.of]
-  /// will be used.
   final StickyCollapsablePanelController controller;
 
   /// Whether the header should be drawn on top of the sliver
@@ -201,6 +332,9 @@ class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<
   /// Whether we are expanded,
   /// Default to true.
   final bool isExpanded;
+
+  /// Animation driving panel expansion in render layout.
+  final Animation<double> expansionAnimation;
 
   /// Like the iOS contact, header replace another header when it reaches the viewport edge
   final bool iOSStyleSticky;
@@ -226,6 +360,7 @@ class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<
       sticky: sticky,
       controller: controller,
       isExpanded: isExpanded,
+      expansionAnimation: expansionAnimation,
       iOSStyleSticky: iOSStyleSticky,
       devicePixelRatio: MediaQuery.of(context).devicePixelRatio,
       headerSize: headerSize,
@@ -239,6 +374,7 @@ class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<
       ..sticky = sticky
       ..controller = controller
       ..isExpanded = isExpanded
+      ..expansionAnimation = expansionAnimation
       ..iOSStyleSticky = iOSStyleSticky
       ..devicePixelRatio = MediaQuery.of(context).devicePixelRatio
       ..headerSize = headerSize;
