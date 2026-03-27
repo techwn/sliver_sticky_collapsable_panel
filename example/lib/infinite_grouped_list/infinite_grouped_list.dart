@@ -533,7 +533,6 @@ class InfiniteGroupedListState<Cell, GroupBy, Group> extends State<InfiniteGroup
                       return MapEntry(
                         index,
                         SliverStickyCollapsablePanel(
-                          key: Key("SliverStickyCollapsablePanel_$index"),
                           scrollController: _scrollController,
                           panelController: StickyCollapsablePanelController(
                             key: title.toString(),
