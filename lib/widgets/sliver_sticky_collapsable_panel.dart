@@ -236,8 +236,8 @@ class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePan
   void _expandPanel(bool isExpanded) {
     setState(() {
       _panelController.isExpanded = isExpanded;
+      _animateToExpanded(isExpanded);
     });
-    _animateToExpanded(isExpanded);
   }
 
   @override
