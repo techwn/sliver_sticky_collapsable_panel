@@ -40,13 +40,6 @@ class StickyCollapsablePanelController with ChangeNotifier {
 
   double get precedingScrollExtent => _precedingScrollExtent;
 
-  set precedingScrollExtent(double value) {
-    if (_precedingScrollExtent != value) {
-      _precedingScrollExtent = value;
-      notifyListeners();
-    }
-  }
-
   /// Layout-time update that avoids notification storms during scrolling.
   void updatePrecedingScrollExtentFromLayout(double value) {
     if (_precedingScrollExtent != value) {

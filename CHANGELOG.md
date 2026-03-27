@@ -1,5 +1,6 @@
 ## 5.0.0
 * [feature] enable animatable collaplse/expand with only one parameter `panelAnimationDuration`
+* [break change] no longer notify precedingScrollExtent to avoid potential notification storms during scrolling
 
 ## 4.0.1
 * [fix] - status wrong when panelController.expandPanel called
