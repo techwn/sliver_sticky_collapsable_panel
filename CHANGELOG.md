@@ -1,5 +1,6 @@
 ## 5.0.0
 * [feature] animate collapse/expand with only one parameter `panelAnimationDuration`
+* [feature] optional parameter `panelAnimationCurve` to control the animation
 * [break change] no longer notify precedingScrollExtent to avoid potential notification storms during scrolling
 
 ## 4.0.1
