@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:ui';
 
 import 'package:flutter/physics.dart';
 import 'package:flutter/rendering.dart';
@@ -19,16 +20,21 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     required bool sticky,
     required StickyCollapsablePanelController controller,
     required bool isExpanded,
+    required Animation<double> expansionAnimation,
     required bool iOSStyleSticky,
     required double devicePixelRatio,
     required Size? headerSize,
   }) : _overlapsContent = overlapsContent,
        _sticky = sticky,
        _isExpanded = isExpanded,
+       _expansionAnimation = expansionAnimation,
        _iOSStyleSticky = iOSStyleSticky,
        _controller = controller,
        _tolerance = 1 / devicePixelRatio,
-       _headerSize = headerSize;
+       _headerSize = headerSize {
+    _expansionAnimation?.addListener(_handleExpansionTick);
+  }
+
   SliverStickyCollapsablePanelStatus? _oldStatus;
 
   double _headerExtent = 0;
@@ -59,7 +65,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
 
   set controller(StickyCollapsablePanelController value) {
     if (_controller == value) return;
-    value.precedingScrollExtent = _controller.precedingScrollExtent;
+    value.updatePrecedingScrollExtentFromLayout(_controller.precedingScrollExtent);
     _controller = value;
   }
 
@@ -70,6 +76,27 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     _isExpanded = value;
     if (_oldStatus != null) _oldStatus = _oldStatus!.copyWith(isExpanded: _isExpanded);
     markNeedsLayout();
+  }
+
+  Animation<double>? _expansionAnimation;
+
+  set expansionAnimation(Animation<double>? value) {
+    if (_expansionAnimation == value) return;
+    _expansionAnimation?.removeListener(_handleExpansionTick);
+    _expansionAnimation = value;
+    _expansionAnimation?.addListener(_handleExpansionTick);
+    markNeedsLayout();
+  }
+
+  void _handleExpansionTick() {
+    markNeedsLayout();
+  }
+
+  double get _expansionProgress {
+    if (_expansionAnimation == null) {
+      return _isExpanded ? 1 : 0;
+    }
+    return _expansionAnimation!.value.clamp(0.0, 1.0);
   }
 
   bool _iOSStyleSticky;
@@ -95,6 +122,12 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     if (_headerSize == value) return;
     _headerSize = value;
     markNeedsLayout();
+  }
+
+  @override
+  void dispose() {
+    _expansionAnimation?.removeListener(_handleExpansionTick);
+    super.dispose();
   }
 
   RenderBox get headerChild => childForSlot(Slot.headerSlot) as RenderBox;
@@ -138,25 +171,18 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
       );
     }
     _headerExtent = computeHeaderExtent();
-    final double headerAndOverlapPaintExtent = calculatePaintOffset(
-      constraints,
-      from: 0,
-      to: childScrollOffset(panelChild),
-    );
-    final double headerAndOverlapCacheExtent = calculateCacheOffset(
-      constraints,
-      from: 0,
-      to: childScrollOffset(panelChild),
-    );
+    final double panelChildScrollOffset = childScrollOffset(panelChild);
+    final double headerAndOverlapPaintExtent = calculatePaintOffset(constraints, from: 0, to: panelChildScrollOffset);
+    final double headerAndOverlapCacheExtent = calculateCacheOffset(constraints, from: 0, to: panelChildScrollOffset);
     //layout sliver child, and compute paint offset
     panelChild.layout(
       constraints.copyWith(
-        scrollOffset: math.max(0, constraints.scrollOffset - childScrollOffset(panelChild)),
-        cacheOrigin: math.min(0, constraints.cacheOrigin + childScrollOffset(panelChild)),
+        scrollOffset: math.max(0, constraints.scrollOffset - panelChildScrollOffset),
+        cacheOrigin: math.min(0, constraints.cacheOrigin + panelChildScrollOffset),
         overlap: 0,
         remainingPaintExtent: math.max(0, constraints.remainingPaintExtent - headerAndOverlapPaintExtent),
         remainingCacheExtent: math.max(0, constraints.remainingCacheExtent - headerAndOverlapCacheExtent),
-        precedingScrollExtent: math.max(0, constraints.precedingScrollExtent + childScrollOffset(panelChild)),
+        precedingScrollExtent: math.max(0, constraints.precedingScrollExtent + panelChildScrollOffset),
       ),
       parentUsesSize: true,
     );
@@ -165,31 +191,35 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
       geometry = SliverGeometry(scrollOffsetCorrection: panelChildGeometry.scrollOffsetCorrection);
       return;
     }
+    final expansionProgress = _expansionProgress;
     final paintExtent = math.min(
-      headerAndOverlapPaintExtent + panelChildGeometry.paintExtent,
+      headerAndOverlapPaintExtent + panelChildGeometry.paintExtent * expansionProgress,
       constraints.remainingPaintExtent,
     );
     geometry = SliverGeometry(
       paintOrigin: panelChildGeometry.paintOrigin,
-      scrollExtent: childScrollOffset(panelChild) + panelChildGeometry.scrollExtent,
+      scrollExtent: panelChildScrollOffset + panelChildGeometry.scrollExtent * expansionProgress,
       paintExtent: paintExtent,
-      layoutExtent: math.min(headerAndOverlapPaintExtent + panelChildGeometry.layoutExtent, paintExtent),
+      layoutExtent: math.min(
+        headerAndOverlapPaintExtent + panelChildGeometry.layoutExtent * expansionProgress,
+        paintExtent,
+      ),
       cacheExtent: math.min(
-        headerAndOverlapCacheExtent + panelChildGeometry.cacheExtent,
+        headerAndOverlapCacheExtent + panelChildGeometry.cacheExtent * expansionProgress,
         constraints.remainingCacheExtent,
       ),
-      maxPaintExtent: childScrollOffset(panelChild) + panelChildGeometry.maxPaintExtent,
+      maxPaintExtent: panelChildScrollOffset + panelChildGeometry.maxPaintExtent * expansionProgress,
       hitTestExtent: math.max(
-        headerAndOverlapPaintExtent + panelChildGeometry.paintExtent,
-        headerAndOverlapPaintExtent + panelChildGeometry.hitTestExtent,
+        headerAndOverlapPaintExtent + panelChildGeometry.paintExtent * expansionProgress,
+        headerAndOverlapPaintExtent + panelChildGeometry.hitTestExtent * expansionProgress,
       ),
       hasVisualOverflow: panelChildGeometry.hasVisualOverflow,
     );
     final panelParentData = panelChild.parentData as SliverPhysicalParentData;
     panelParentData.paintOffset = switch (axisDirection) {
       AxisDirection.up || AxisDirection.left => Offset.zero,
-      AxisDirection.right => Offset(calculatePaintOffset(constraints, from: 0, to: childScrollOffset(panelChild)), 0),
-      AxisDirection.down => Offset(0, calculatePaintOffset(constraints, from: 0, to: childScrollOffset(panelChild))),
+      AxisDirection.right => Offset(headerAndOverlapPaintExtent, 0),
+      AxisDirection.down => Offset(0, headerAndOverlapPaintExtent),
     };
     //update constraints of header if needed, update header paint Offset
     updateIsPinned();
@@ -201,7 +231,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
       headerScrollRatio = 1;
     }
     if (_controller.precedingScrollExtent != constraints.precedingScrollExtent) {
-      _controller.precedingScrollExtent = constraints.precedingScrollExtent;
+      _controller.updatePrecedingScrollExtentFromLayout(constraints.precedingScrollExtent);
     }
     final status = SliverStickyCollapsablePanelStatus(headerScrollRatio, _isPinned, _isExpanded);
     if (_oldStatus != status || _headerSize != null) {
@@ -211,11 +241,11 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
           value: _oldStatus!,
           constraints: constraints.asBoxConstraints(),
         ),
-        parentUsesSize: false,
+        parentUsesSize: true,
       );
     }
     if (_iOSStyleSticky) {
-      geometry = geometry!.copyWith(hitTestExtent: geometry!.hitTestExtent + childScrollOffset(panelChild));
+      geometry = geometry!.copyWith(hitTestExtent: geometry!.hitTestExtent + panelChildScrollOffset);
     }
     final headerParentData = headerChild.parentData as SliverPhysicalParentData;
     headerParentData.paintOffset = switch (axisDirection) {
@@ -267,7 +297,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
   double childMainAxisPosition(RenderObject child) {
     assert(child == headerChild || child == panelChild);
     final SliverConstraints constraints = this.constraints;
-    final panelScrollExtent = panelChild.geometry!.scrollExtent;
+    final panelScrollExtent = panelChild.geometry!.scrollExtent * _expansionProgress;
     return switch (child) {
       RenderBox _ =>
         _iOSStyleSticky
@@ -301,9 +331,23 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
   @override
   void paint(PaintingContext context, Offset offset) {
     if (geometry!.visible) {
-      if (panelChild.geometry!.visible) {
+      if (panelChild.geometry!.visible && _expansionProgress != 0) {
         final panelParentData = panelChild.parentData as SliverPhysicalParentData;
-        context.paintChild(panelChild, offset + panelParentData.paintOffset);
+        final panelOffset = offset + panelParentData.paintOffset;
+        if (_expansionProgress == 1) {
+          context.paintChild(panelChild, panelOffset);
+        } else {
+          context.pushClipRect(
+            needsCompositing,
+            panelOffset,
+            Offset(0, 0) & Size(constraints.crossAxisExtent, panelChild.geometry!.paintExtent),
+            (context, offset) => context.pushOpacity(
+              offset,
+              lerpDouble(0, 255, _expansionProgress)!.toInt(),
+              (context, offset) => context.paintChild(panelChild, offset),
+            ),
+          );
+        }
       }
       final headerParentData = headerChild.parentData as SliverPhysicalParentData;
       context.paintChild(headerChild, offset + headerParentData.paintOffset);

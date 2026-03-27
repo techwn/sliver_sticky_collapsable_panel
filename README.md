@@ -1,5 +1,5 @@
 # sliver_sticky_collapsable_panel
-[![pub](https://img.shields.io/badge/pub-4.0.0-blue)](https://pub.dev/packages/sliver_sticky_collapsable_panel)
+[![pub](https://img.shields.io/badge/pub-5.0.0-blue)](https://pub.dev/packages/sliver_sticky_collapsable_panel)
 [![license](https://img.shields.io/badge/license-MIT-orange)](https://github.com/techwn/sliver_sticky_collapsable_panel/blob/main/LICENSE)
 [![build status](https://img.shields.io/badge/build-passing-green?logo=github&logoColor=white)](https://github.com/techwn/sliver_sticky_collapsable_panel)
 [![flutter compatibility](https://img.shields.io/badge/flutter-3.32+-blue)](https://flutter.dev/)
@@ -32,7 +32,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
 
     ```yaml
     dependencies:
-      sliver_sticky_collapsable_panel: ^4.0.0
+      sliver_sticky_collapsable_panel: ^5.0.0
     ```
 
 - In your library add the following import:
@@ -145,6 +145,25 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
     ```
     <img src="https://raw.githubusercontent.com/techwn/files/main/imgs/sliver_sticky_collapsable_pannel/padding.gif" width=180 alt="simple Shot">
 
+---
+- You can animate collapse/expand with only one parameter: `panelAnimationDuration`
+    ```
+    CustomScrollView(
+      controller: _scrollController,
+      slivers: [
+        SliverStickyCollapsablePanel(
+          scrollController: _scrollController,
+          panelController: StickyCollapsablePanelController(key:'key_1'),
+          panelAnimationDuration: Duration(milliseconds: 300),
+          paddingBeforeCollapse: const EdgeInsets.all(16),
+          paddingAfterCollapse: const EdgeInsets.only(bottom: 10),
+          headerBuilder: (context, status) => SizedBox.fromSize(size: Size.fromHeight(48)),
+          sliverPanel: SliverList.list(children: [...]),
+        ),
+        ...,
+      ],
+    );
+    ```
 ---
 ## Performance configuration
 - You can use optional parameter `headerSize` to speed up the layout process when the size not change

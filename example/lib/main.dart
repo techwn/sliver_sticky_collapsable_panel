@@ -106,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Padding(
                       padding: const EdgeInsetsDirectional.only(end: 16),
                       child: AnimatedRotation(
-                        duration: const Duration(milliseconds: 0),
+                        duration: const Duration(milliseconds: 300),
                         turns: isExpanded ? 0 : 0.5,
                         child: const Icon(Icons.expand_more),
                       ),
