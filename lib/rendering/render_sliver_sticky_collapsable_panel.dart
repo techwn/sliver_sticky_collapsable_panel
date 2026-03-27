@@ -331,7 +331,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
   @override
   void paint(PaintingContext context, Offset offset) {
     if (geometry!.visible) {
-      if (panelChild.geometry!.visible) {
+      if (panelChild.geometry!.visible && _expansionProgress != 0) {
         final panelParentData = panelChild.parentData as SliverPhysicalParentData;
         final panelOffset = offset + panelParentData.paintOffset;
         if (_expansionProgress == 1) {
