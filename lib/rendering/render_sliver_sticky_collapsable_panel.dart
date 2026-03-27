@@ -241,7 +241,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
           value: _oldStatus!,
           constraints: constraints.asBoxConstraints(),
         ),
-        parentUsesSize: false,
+        parentUsesSize: true,
       );
     }
     if (_iOSStyleSticky) {
@@ -340,7 +340,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
           context.pushClipRect(
             needsCompositing,
             panelOffset,
-            -panelOffset & Size(constraints.crossAxisExtent, panelChild.geometry!.paintExtent),
+            Offset(0, 0) & Size(constraints.crossAxisExtent, panelChild.geometry!.paintExtent),
             (context, offset) => context.pushOpacity(
               offset,
               lerpDouble(0, 255, _expansionProgress)!.toInt(),
