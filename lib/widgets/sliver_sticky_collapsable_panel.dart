@@ -249,10 +249,10 @@ class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePan
             if (!_panelController.disableCollapsable) {
               setState(() {
                 _panelController.isExpanded = !_panelController.isExpanded;
+                _jumpWhenPinned(constraints.value);
+                _animateToExpanded(_panelController.isExpanded);
+                widget.expandCallback?.call(_panelController.isExpanded);
               });
-              _jumpWhenPinned(constraints.value);
-              _animateToExpanded(_panelController.isExpanded);
-              widget.expandCallback?.call(_panelController.isExpanded);
             }
           },
           child: widget.headerBuilder(context, constraints.value),
