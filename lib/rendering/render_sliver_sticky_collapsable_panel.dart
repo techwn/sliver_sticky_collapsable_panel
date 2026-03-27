@@ -65,7 +65,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
 
   set controller(StickyCollapsablePanelController value) {
     if (_controller == value) return;
-    value.updatePrecedingScrollExtentFromLayout(_controller.precedingScrollExtent);
+    value.precedingScrollExtent = _controller.precedingScrollExtent;
     _controller = value;
   }
 
@@ -231,7 +231,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
       headerScrollRatio = 1;
     }
     if (_controller.precedingScrollExtent != constraints.precedingScrollExtent) {
-      _controller.updatePrecedingScrollExtentFromLayout(constraints.precedingScrollExtent);
+      _controller.precedingScrollExtent = constraints.precedingScrollExtent;
     }
     final status = SliverStickyCollapsablePanelStatus(headerScrollRatio, _isPinned, _isExpanded);
     if (_oldStatus != status || _headerSize != null) {

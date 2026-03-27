@@ -4,80 +4,14 @@ import '../rendering/render_sliver_sticky_collapsable_panel.dart';
 import '../sliver_sticky_collapsable_panel.dart';
 import '../utils/slot.dart';
 
+part '../utils/sliver_sticky_collapsable_panel_controller.dart';
+
 /// Callback used by [SliverStickyCollapsablePanel] to notify when the panel expand status change
 typedef ExpandCallback = void Function(bool isExpanded);
 
 /// Signature used by [SliverStickyCollapsablePanel] to build the header
 /// when the sticky header status has changed.
 typedef HeaderBuilder = Widget Function(BuildContext context, SliverStickyCollapsablePanelStatus status);
-
-/// Controller to manage Sticker Header
-class StickyCollapsablePanelController with ChangeNotifier {
-  StickyCollapsablePanelController({
-    this.key = 'default',
-    this.disableCollapsable = false,
-    this.defaultExpanded = true,
-  }) {
-    _isExpanded = defaultExpanded;
-  }
-
-  final String key;
-  final bool disableCollapsable;
-  final bool defaultExpanded;
-
-  ExpandCallback? _expandCallback;
-
-  void _register(ExpandCallback expandCallback) {
-    _expandCallback = expandCallback;
-  }
-
-  void _unregister() {
-    _expandCallback = null;
-  }
-
-  /// The offset used as calibration when collapse/expand the panel
-  double _precedingScrollExtent = 0;
-
-  double get precedingScrollExtent => _precedingScrollExtent;
-
-  /// Layout-time update that avoids notification storms during scrolling.
-  void updatePrecedingScrollExtentFromLayout(double value) {
-    if (_precedingScrollExtent != value) {
-      _precedingScrollExtent = value;
-    }
-  }
-
-  bool _isExpanded = true;
-
-  bool get isExpanded => _isExpanded;
-
-  set isExpanded(bool value) {
-    if (_isExpanded != value) {
-      _isExpanded = value;
-      notifyListeners();
-    }
-  }
-
-  void collapsePanel() {
-    if (disableCollapsable == false && _expandCallback != null) {
-      _expandCallback?.call(false);
-      isExpanded = false;
-    }
-  }
-
-  void expandPanel() {
-    if (disableCollapsable == false && _expandCallback != null) {
-      _expandCallback?.call(true);
-      isExpanded = true;
-    }
-  }
-
-  @override
-  void dispose() {
-    _expandCallback = null;
-    super.dispose();
-  }
-}
 
 /// A sliver that displays a header before its sliver and can allow click to collapse.
 /// The header scrolls off the viewport only when the sliver does.
