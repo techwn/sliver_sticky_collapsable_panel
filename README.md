@@ -146,7 +146,7 @@ A Sliver implementation of sticky collapsable panel, with a box header rebuild o
     <img src="https://raw.githubusercontent.com/techwn/files/main/imgs/sliver_sticky_collapsable_pannel/padding.gif" width=180 alt="simple Shot">
 
 ---
-- You can enable animatable collapse/expand with only one parameter: `panelAnimationDuration`
+- You can animate collapse/expand with only one parameter: `panelAnimationDuration`
     ```
     CustomScrollView(
       controller: _scrollController,

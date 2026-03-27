@@ -1,5 +1,5 @@
 ## 5.0.0
-* [feature] enable animatable collaplse/expand with only one parameter `panelAnimationDuration`
+* [feature] animate collapse/expand with only one parameter `panelAnimationDuration`
 * [break change] no longer notify precedingScrollExtent to avoid potential notification storms during scrolling
 
 ## 4.0.1
