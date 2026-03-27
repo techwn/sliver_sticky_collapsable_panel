@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:sliver_sticky_collapsable_panel/sliver_sticky_collapsable_panel.dart';
 
@@ -10,6 +12,8 @@ enum ListStyle {
   /// The list will be displayed as a list.
   listView,
 }
+
+final panelController = HashMap<String, StickyCollapsablePanelController>();
 
 /// A list of items that are grouped and infinite.
 ///
@@ -534,9 +538,12 @@ class InfiniteGroupedListState<Cell, GroupBy, Group> extends State<InfiniteGroup
                         index,
                         SliverStickyCollapsablePanel(
                           scrollController: _scrollController,
-                          panelController: StickyCollapsablePanelController(
-                            key: title.toString(),
-                            disableCollapsable: (index % 2) == 1,
+                          panelController: panelController.putIfAbsent(
+                            title.toString(),
+                            () => StickyCollapsablePanelController(
+                              key: title.toString(),
+                              disableCollapsable: (index % 2) == 1,
+                            ),
                           ),
                           paddingAfterCollapse: const EdgeInsets.only(bottom: 10),
                           sticky: widget.stickyGroups,
