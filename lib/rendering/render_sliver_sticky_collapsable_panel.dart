@@ -134,7 +134,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     markNeedsLayout();
   }
 
-  get paddingExtent {
+  double get paddingExtent {
     switch (constraints.axis) {
       case Axis.vertical:
         return _padding.vertical;
