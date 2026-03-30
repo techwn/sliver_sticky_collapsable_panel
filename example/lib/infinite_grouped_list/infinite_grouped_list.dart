@@ -545,7 +545,8 @@ class InfiniteGroupedListState<Cell, GroupBy, Group> extends State<InfiniteGroup
                               disableCollapsable: (index % 2) == 1,
                             ),
                           ),
-                          // paddingAfterCollapse: const EdgeInsets.only(bottom: 10),
+                          paddingBeforeCollapse: const EdgeInsets.only(bottom: 10),
+                          paddingAfterCollapse: const EdgeInsets.only(bottom: 10),
                           sticky: widget.stickyGroups,
                           expandCallback: (isExpanded) {
                             if (!isExpanded) {

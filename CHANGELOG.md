@@ -1,3 +1,6 @@
+## 5.0.1
+* [fix] - animate collapse not respect paddingAfterCollapse
+
 ## 5.0.0
 * [feature] animate collapse/expand with only one parameter `panelAnimationDuration`
 * [feature] optional parameter `panelAnimationCurve` to control the animation

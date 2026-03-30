@@ -207,6 +207,7 @@ class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePan
       expansionAnimation: _expansionAnimation,
       iOSStyleSticky: widget.iOSStyleSticky,
       headerSize: widget.headerSize,
+      padding: isExpandedNow ? widget.paddingBeforeCollapse : widget.paddingAfterCollapse,
     );
   }
 
@@ -234,6 +235,7 @@ class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<
     required this.sliverPanel,
     required this.controller,
     required this.expansionAnimation,
+    required this.padding,
     this.overlapsContent = false,
     this.sticky = true,
     this.isExpanded = true,
@@ -265,6 +267,9 @@ class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<
   /// Animation driving panel expansion in render layout.
   final Animation<double> expansionAnimation;
 
+  /// Padding used for sliver child, it means even it's collapsed, Padding still exist between headers
+  final EdgeInsetsGeometry padding;
+
   /// Like the iOS contact, header replace another header when it reaches the viewport edge
   final bool iOSStyleSticky;
 
@@ -293,6 +298,7 @@ class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<
       iOSStyleSticky: iOSStyleSticky,
       devicePixelRatio: MediaQuery.of(context).devicePixelRatio,
       headerSize: headerSize,
+      padding: padding,
     );
   }
 
@@ -306,6 +312,7 @@ class _SliverStickyCollapsablePanel extends SlottedMultiChildRenderObjectWidget<
       ..expansionAnimation = expansionAnimation
       ..iOSStyleSticky = iOSStyleSticky
       ..devicePixelRatio = MediaQuery.of(context).devicePixelRatio
-      ..headerSize = headerSize;
+      ..headerSize = headerSize
+      ..padding = padding;
   }
 }
