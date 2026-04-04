@@ -211,57 +211,49 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
       return;
     }
     final expansionProgress = _expansionProgress;
+    final basePaintExtent = panelChildGeometry.paintExtent * expansionProgress;
+    final baseScrollExtent = panelChildGeometry.scrollExtent * expansionProgress;
+    final baseLayoutExtent = panelChildGeometry.layoutExtent * expansionProgress;
+    final baseCacheExtent = panelChildGeometry.cacheExtent * expansionProgress;
+    final baseMaxPaintExtent = panelChildGeometry.maxPaintExtent * expansionProgress;
+    final baseHitTestPaintExtent = panelChildGeometry.paintExtent * expansionProgress;
+    final baseHitTestExtent = panelChildGeometry.hitTestExtent * expansionProgress;
+
+    final bool shouldApplyPaddingExtent = (headerAndOverlapPaintExtent + basePaintExtent) > paddingExtent;
+
     final paintExtent = math.min(
-      headerAndOverlapPaintExtent + panelChildGeometry.paintExtent * expansionProgress,
+      headerAndOverlapPaintExtent +
+          (shouldApplyPaddingExtent ? math.max(basePaintExtent, paddingExtent) : basePaintExtent),
       constraints.remainingPaintExtent,
     );
-    if (paintExtent > paddingExtent) {
-      final paintExtent = math.min(
-        headerAndOverlapPaintExtent + math.max(panelChildGeometry.paintExtent * expansionProgress, paddingExtent),
-        constraints.remainingPaintExtent,
-      );
-      geometry = SliverGeometry(
-        paintOrigin: panelChildGeometry.paintOrigin,
-        scrollExtent:
-            panelChildScrollOffset + math.max(panelChildGeometry.scrollExtent * expansionProgress, paddingExtent),
-        paintExtent: paintExtent,
-        layoutExtent: math.min(
-          headerAndOverlapPaintExtent + math.max(panelChildGeometry.layoutExtent * expansionProgress, paddingExtent),
-          paintExtent,
-        ),
-        cacheExtent: math.min(
-          headerAndOverlapCacheExtent + math.max(panelChildGeometry.cacheExtent * expansionProgress, paddingExtent),
-          constraints.remainingCacheExtent,
-        ),
-        maxPaintExtent:
-            panelChildScrollOffset + math.max(panelChildGeometry.maxPaintExtent * expansionProgress, paddingExtent),
-        hitTestExtent: math.max(
-          headerAndOverlapPaintExtent + math.max(panelChildGeometry.paintExtent * expansionProgress, paddingExtent),
-          headerAndOverlapPaintExtent + math.max(panelChildGeometry.hitTestExtent * expansionProgress, paddingExtent),
-        ),
-        hasVisualOverflow: panelChildGeometry.hasVisualOverflow,
-      );
-    } else {
-      geometry = SliverGeometry(
-        paintOrigin: panelChildGeometry.paintOrigin,
-        scrollExtent: panelChildScrollOffset + panelChildGeometry.scrollExtent * expansionProgress,
-        paintExtent: paintExtent,
-        layoutExtent: math.min(
-          headerAndOverlapPaintExtent + panelChildGeometry.layoutExtent * expansionProgress,
-          paintExtent,
-        ),
-        cacheExtent: math.min(
-          headerAndOverlapCacheExtent + panelChildGeometry.cacheExtent * expansionProgress,
-          constraints.remainingCacheExtent,
-        ),
-        maxPaintExtent: panelChildScrollOffset + panelChildGeometry.maxPaintExtent * expansionProgress,
-        hitTestExtent: math.max(
-          headerAndOverlapPaintExtent + panelChildGeometry.paintExtent * expansionProgress,
-          headerAndOverlapPaintExtent + panelChildGeometry.hitTestExtent * expansionProgress,
-        ),
-        hasVisualOverflow: panelChildGeometry.hasVisualOverflow,
-      );
-    }
+
+    geometry = SliverGeometry(
+      paintOrigin: panelChildGeometry.paintOrigin,
+      scrollExtent:
+          panelChildScrollOffset +
+          (shouldApplyPaddingExtent ? math.max(baseScrollExtent, paddingExtent) : baseScrollExtent),
+      paintExtent: paintExtent,
+      layoutExtent: math.min(
+        headerAndOverlapPaintExtent +
+            (shouldApplyPaddingExtent ? math.max(baseLayoutExtent, paddingExtent) : baseLayoutExtent),
+        paintExtent,
+      ),
+      cacheExtent: math.min(
+        headerAndOverlapCacheExtent +
+            (shouldApplyPaddingExtent ? math.max(baseCacheExtent, paddingExtent) : baseCacheExtent),
+        constraints.remainingCacheExtent,
+      ),
+      maxPaintExtent:
+          panelChildScrollOffset +
+          (shouldApplyPaddingExtent ? math.max(baseMaxPaintExtent, paddingExtent) : baseMaxPaintExtent),
+      hitTestExtent: math.max(
+        headerAndOverlapPaintExtent +
+            (shouldApplyPaddingExtent ? math.max(baseHitTestPaintExtent, paddingExtent) : baseHitTestPaintExtent),
+        headerAndOverlapPaintExtent +
+            (shouldApplyPaddingExtent ? math.max(baseHitTestExtent, paddingExtent) : baseHitTestExtent),
+      ),
+      hasVisualOverflow: panelChildGeometry.hasVisualOverflow,
+    );
 
     final panelParentData = panelChild.parentData as SliverPhysicalParentData;
     panelParentData.paintOffset = switch (axisDirection) {
