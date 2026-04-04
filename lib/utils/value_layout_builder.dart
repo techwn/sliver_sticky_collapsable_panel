@@ -6,12 +6,7 @@ typedef ValueLayoutWidgetBuilder<T> = Widget Function(BuildContext context, BoxV
 
 class BoxValueConstraints<T> extends BoxConstraints {
   BoxValueConstraints({required this.value, required BoxConstraints constraints})
-    : super(
-        minWidth: constraints.minWidth,
-        maxWidth: constraints.maxWidth,
-        minHeight: constraints.minHeight,
-        maxHeight: constraints.maxHeight,
-      );
+    : super(minWidth: constraints.minWidth, maxWidth: constraints.maxWidth, minHeight: constraints.minHeight, maxHeight: constraints.maxHeight);
 
   final T value;
 

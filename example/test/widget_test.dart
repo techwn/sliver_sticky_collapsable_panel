@@ -16,9 +16,6 @@ void main() {
     await tester.pumpWidget(const MyApp());
 
     // Verify that platform version is retrieved.
-    expect(
-      find.byWidgetPredicate((Widget widget) => widget is Text && widget.data!.startsWith('Running on:')),
-      findsOneWidget,
-    );
+    expect(find.byWidgetPredicate((Widget widget) => widget is Text && widget.data!.startsWith('Running on:')), findsOneWidget);
   });
 }

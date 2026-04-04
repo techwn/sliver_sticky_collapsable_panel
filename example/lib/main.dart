@@ -138,10 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   : item.type == TransactionType.health
                   ? const Icon(Icons.medical_services)
                   : const Icon(Icons.money),
-              trailing: Text(
-                '${item.amount.toStringAsFixed(2)}€',
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+              trailing: Text('${item.amount.toStringAsFixed(2)}€', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               subtitle: Text(item.dateTime.toIso8601String()),
             ),
           );
@@ -156,9 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
           if (today.day == dateTime.day && today.month == dateTime.month && today.year == dateTime.year) {
             return 'Today';
-          } else if (yesterday.day == dateTime.day &&
-              yesterday.month == dateTime.month &&
-              yesterday.year == dateTime.year) {
+          } else if (yesterday.day == dateTime.day && yesterday.month == dateTime.month && yesterday.year == dateTime.year) {
             return 'Yesterday';
           } else if (lastWeek.isBefore(dateTime) && dateTime.isBefore(yesterday)) {
             return 'Last Week';

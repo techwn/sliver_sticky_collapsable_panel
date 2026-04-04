@@ -35,15 +35,7 @@ class InfiniteGroupedList<ItemType, GroupBy, GroupTitle> extends StatefulWidget 
   factory InfiniteGroupedList({
     required Widget Function(Map<GroupTitle, List<ItemType>> items, GroupTitle title, int index) itemBuilder,
     required GroupBy Function(ItemType item) groupBy,
-    required Widget Function(
-      int index,
-      GroupTitle title,
-      GroupBy groupBy,
-      bool isPinned,
-      bool isExpanded,
-      double scrollPercentage,
-    )
-    groupTitleBuilder,
+    required Widget Function(int index, GroupTitle title, GroupBy groupBy, bool isPinned, bool isExpanded, double scrollPercentage) groupTitleBuilder,
     required Future<List<ItemType>> Function(PaginationInfo paginationInfo) onLoadMore,
     required GroupTitle Function(GroupBy) groupCreator,
     Function(ItemType)? sortGroupBy,
@@ -86,15 +78,7 @@ class InfiniteGroupedList<ItemType, GroupBy, GroupTitle> extends StatefulWidget 
   factory InfiniteGroupedList.gridView({
     required Widget Function(Map<GroupTitle, List<ItemType>> items, GroupTitle title, int index) itemBuilder,
     required GroupBy Function(ItemType item) groupBy,
-    required Widget Function(
-      int index,
-      GroupTitle title,
-      GroupBy groupBy,
-      bool isPinned,
-      bool isExpanded,
-      double scrollPercentage,
-    )
-    groupTitleBuilder,
+    required Widget Function(int index, GroupTitle title, GroupBy groupBy, bool isPinned, bool isExpanded, double scrollPercentage) groupTitleBuilder,
     required Future<List<ItemType>> Function(PaginationInfo paginationInfo) onLoadMore,
     required GroupTitle Function(GroupBy) groupCreator,
     Function(ItemType)? sortGroupBy,
@@ -183,15 +167,7 @@ class InfiniteGroupedList<ItemType, GroupBy, GroupTitle> extends StatefulWidget 
   /// The third parameter is a boolean that indicates if the group is pinned or not.
   ///
   /// The fourth parameter is the scroll percentage of the group title. 0 means the group title is at the top of the screen, 1 means the group title is at the bottom of the screen.
-  final Widget Function(
-    int index,
-    GroupTitle title,
-    GroupBy groupBy,
-    bool isPinned,
-    bool isExpanded,
-    double scrollPercentage,
-  )
-  groupTitleBuilder;
+  final Widget Function(int index, GroupTitle title, GroupBy groupBy, bool isPinned, bool isExpanded, double scrollPercentage) groupTitleBuilder;
 
   /// The widget to show when the list is loading.
   final Widget loadingWidget;
@@ -251,8 +227,7 @@ class InfiniteGroupedListState<Cell, GroupBy, Group> extends State<InfiniteGroup
   bool hasError = false;
 
   bool stillHasItems = true;
-  final _InfiniteGroupedListInternalController<Cell, GroupBy, Group> _pageInformationController =
-      _InfiniteGroupedListInternalController();
+  final _InfiniteGroupedListInternalController<Cell, GroupBy, Group> _pageInformationController = _InfiniteGroupedListInternalController();
 
   late final ScrollController _scrollController;
 
@@ -401,10 +376,7 @@ class InfiniteGroupedListState<Cell, GroupBy, Group> extends State<InfiniteGroup
         List<Cell> items = [];
         try {
           items = await widget.onLoadMore(
-            PaginationInfo(
-              offset: _pageInformationController.currentOffset,
-              page: _pageInformationController.currentPage,
-            ),
+            PaginationInfo(offset: _pageInformationController.currentOffset, page: _pageInformationController.currentPage),
           );
 
           // Increment the offset after a successful fetch
@@ -540,10 +512,7 @@ class InfiniteGroupedListState<Cell, GroupBy, Group> extends State<InfiniteGroup
                           scrollController: _scrollController,
                           panelController: panelController.putIfAbsent(
                             title.toString(),
-                            () => StickyCollapsablePanelController(
-                              key: title.toString(),
-                              disableCollapsable: (index % 2) == 1,
-                            ),
+                            () => StickyCollapsablePanelController(key: title.toString(), disableCollapsable: (index % 2) == 1),
                           ),
                           paddingBeforeCollapse: const EdgeInsets.only(bottom: 10),
                           paddingAfterCollapse: const EdgeInsets.only(bottom: 10),
@@ -580,11 +549,7 @@ class InfiniteGroupedListState<Cell, GroupBy, Group> extends State<InfiniteGroup
                                 )
                               : SliverGrid(
                                   gridDelegate:
-                                      widget.gridDelegate ??
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 3,
-                                        childAspectRatio: 2,
-                                      ),
+                                      widget.gridDelegate ?? const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 2),
                                   delegate: SliverChildBuilderDelegate((context, index) {
                                     final items = groupedItems[title]!;
                                     return Column(
@@ -603,19 +568,13 @@ class InfiniteGroupedListState<Cell, GroupBy, Group> extends State<InfiniteGroup
                   ..addAll([
                     if (loading)
                       SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 14.0, top: 5.0),
-                          child: widget.loadingWidget,
-                        ),
+                        child: Padding(padding: const EdgeInsets.only(bottom: 14.0, top: 5.0), child: widget.loadingWidget),
                       ),
                     if (hasError)
                       SliverToBoxAdapter(
                         child:
                             widget.loadMoreItemsErrorWidget ??
-                            const Text(
-                              'Oops something went wrong !',
-                              style: TextStyle(color: Colors.black, fontSize: 20),
-                            ),
+                            const Text('Oops something went wrong !', style: TextStyle(color: Colors.black, fontSize: 20)),
                       ),
                   ]),
               ],

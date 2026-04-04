@@ -2,11 +2,7 @@ part of '../widgets/sliver_sticky_collapsable_panel.dart';
 
 /// Controller to manage Sticker Header
 class StickyCollapsablePanelController with ChangeNotifier {
-  StickyCollapsablePanelController({
-    this.key = 'default',
-    this.disableCollapsable = false,
-    this.defaultExpanded = true,
-  }) {
+  StickyCollapsablePanelController({this.key = 'default', this.disableCollapsable = false, this.defaultExpanded = true}) {
     _isExpanded = defaultExpanded;
   }
 

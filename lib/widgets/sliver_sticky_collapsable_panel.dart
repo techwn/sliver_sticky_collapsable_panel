@@ -110,8 +110,7 @@ class SliverStickyCollapsablePanel extends StatefulWidget {
   State<StatefulWidget> createState() => SliverStickyCollapsablePanelState();
 }
 
-class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePanel>
-    with SingleTickerProviderStateMixin {
+class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePanel> with SingleTickerProviderStateMixin {
   late StickyCollapsablePanelController _panelController;
   late AnimationController _animationController;
   late Animation<double> _expansionAnimation;
@@ -120,11 +119,7 @@ class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePan
   void initState() {
     super.initState();
     _bindController();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: widget.animationDuration,
-      value: _panelController.isExpanded ? 1 : 0,
-    );
+    _animationController = AnimationController(vsync: this, duration: widget.animationDuration, value: _panelController.isExpanded ? 1 : 0);
     _expansionAnimation = CurvedAnimation(parent: _animationController, curve: widget.panelAnimationCurve);
   }
 
@@ -196,10 +191,7 @@ class SliverStickyCollapsablePanelState extends State<SliverStickyCollapsablePan
     final isExpandedNow = _panelController.disableCollapsable || _panelController.isExpanded;
     return _SliverStickyCollapsablePanel(
       boxHeader: boxHeader,
-      sliverPanel: SliverPadding(
-        padding: isExpandedNow ? widget.paddingBeforeCollapse : widget.paddingAfterCollapse,
-        sliver: widget.sliverPanel,
-      ),
+      sliverPanel: SliverPadding(padding: isExpandedNow ? widget.paddingBeforeCollapse : widget.paddingAfterCollapse, sliver: widget.sliverPanel),
       overlapsContent: widget.overlapsContent,
       sticky: widget.sticky,
       controller: _panelController,

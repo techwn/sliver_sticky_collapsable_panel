@@ -13,8 +13,7 @@ import '../widgets/sliver_sticky_collapsable_panel.dart';
 ///
 /// The [headerChild] stays pinned when it hits the start of the viewport until
 /// the [panelChild] scrolls off the viewport.
-class RenderSliverStickyCollapsablePanel extends RenderSliver
-    with SlottedContainerRenderObjectMixin<Slot, RenderObject>, RenderSliverHelpers {
+class RenderSliverStickyCollapsablePanel extends RenderSliver with SlottedContainerRenderObjectMixin<Slot, RenderObject>, RenderSliverHelpers {
   RenderSliverStickyCollapsablePanel({
     required bool overlapsContent,
     required bool sticky,
@@ -219,38 +218,29 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     final baseHitTestPaintExtent = panelChildGeometry.paintExtent * expansionProgress;
     final baseHitTestExtent = panelChildGeometry.hitTestExtent * expansionProgress;
 
-    final bool shouldApplyPaddingExtent = (headerAndOverlapPaintExtent + basePaintExtent) > paddingExtent;
+    final bool applyPadding = (headerAndOverlapPaintExtent + basePaintExtent) > paddingExtent;
 
     final paintExtent = math.min(
-      headerAndOverlapPaintExtent +
-          (shouldApplyPaddingExtent ? math.max(basePaintExtent, paddingExtent) : basePaintExtent),
+      headerAndOverlapPaintExtent + (applyPadding ? math.max(basePaintExtent, paddingExtent) : basePaintExtent),
       constraints.remainingPaintExtent,
     );
 
     geometry = SliverGeometry(
       paintOrigin: panelChildGeometry.paintOrigin,
-      scrollExtent:
-          panelChildScrollOffset +
-          (shouldApplyPaddingExtent ? math.max(baseScrollExtent, paddingExtent) : baseScrollExtent),
+      scrollExtent: panelChildScrollOffset + (applyPadding ? math.max(baseScrollExtent, paddingExtent) : baseScrollExtent),
       paintExtent: paintExtent,
       layoutExtent: math.min(
-        headerAndOverlapPaintExtent +
-            (shouldApplyPaddingExtent ? math.max(baseLayoutExtent, paddingExtent) : baseLayoutExtent),
+        headerAndOverlapPaintExtent + (applyPadding ? math.max(baseLayoutExtent, paddingExtent) : baseLayoutExtent),
         paintExtent,
       ),
       cacheExtent: math.min(
-        headerAndOverlapCacheExtent +
-            (shouldApplyPaddingExtent ? math.max(baseCacheExtent, paddingExtent) : baseCacheExtent),
+        headerAndOverlapCacheExtent + (applyPadding ? math.max(baseCacheExtent, paddingExtent) : baseCacheExtent),
         constraints.remainingCacheExtent,
       ),
-      maxPaintExtent:
-          panelChildScrollOffset +
-          (shouldApplyPaddingExtent ? math.max(baseMaxPaintExtent, paddingExtent) : baseMaxPaintExtent),
+      maxPaintExtent: panelChildScrollOffset + (applyPadding ? math.max(baseMaxPaintExtent, paddingExtent) : baseMaxPaintExtent),
       hitTestExtent: math.max(
-        headerAndOverlapPaintExtent +
-            (shouldApplyPaddingExtent ? math.max(baseHitTestPaintExtent, paddingExtent) : baseHitTestPaintExtent),
-        headerAndOverlapPaintExtent +
-            (shouldApplyPaddingExtent ? math.max(baseHitTestExtent, paddingExtent) : baseHitTestExtent),
+        headerAndOverlapPaintExtent + (applyPadding ? math.max(baseHitTestPaintExtent, paddingExtent) : baseHitTestPaintExtent),
+        headerAndOverlapPaintExtent + (applyPadding ? math.max(baseHitTestExtent, paddingExtent) : baseHitTestExtent),
       ),
       hasVisualOverflow: panelChildGeometry.hasVisualOverflow,
     );
@@ -277,10 +267,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
     if (_oldStatus != status || _headerSize != null) {
       _oldStatus = status;
       headerChild.layout(
-        BoxValueConstraints<SliverStickyCollapsablePanelStatus>(
-          value: _oldStatus!,
-          constraints: constraints.asBoxConstraints(),
-        ),
+        BoxValueConstraints<SliverStickyCollapsablePanelStatus>(value: _oldStatus!, constraints: constraints.asBoxConstraints()),
         parentUsesSize: true,
       );
     }
@@ -297,11 +284,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
   }
 
   @override
-  bool hitTestChildren(
-    SliverHitTestResult result, {
-    required double mainAxisPosition,
-    required double crossAxisPosition,
-  }) {
+  bool hitTestChildren(SliverHitTestResult result, {required double mainAxisPosition, required double crossAxisPosition}) {
     bool tryHitTestPanelChild() {
       if (panelChild.geometry!.hitTestExtent > 0) {
         return panelChild.hitTest(
@@ -343,10 +326,7 @@ class RenderSliverStickyCollapsablePanel extends RenderSliver
         _iOSStyleSticky
             ? (_isPinned ? constraints.overlap : -(constraints.scrollOffset - constraints.overlap))
             : (_isPinned
-                  ? math.min(
-                      constraints.overlap,
-                      panelScrollExtent - constraints.scrollOffset - (_overlapsContent ? _headerExtent : 0),
-                    )
+                  ? math.min(constraints.overlap, panelScrollExtent - constraints.scrollOffset - (_overlapsContent ? _headerExtent : 0))
                   : -(constraints.scrollOffset - constraints.overlap)),
       _ => calculatePaintOffset(constraints, from: 0, to: childScrollOffset(panelChild)),
     };

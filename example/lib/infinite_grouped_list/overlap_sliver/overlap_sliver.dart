@@ -36,10 +36,7 @@ class RenderOverlapSliver extends RenderSliver with RenderObjectWithChildMixin<R
   @protected
   void setChildParentData(RenderObject child, SliverConstraints constraints, SliverGeometry geometry) {
     final SliverPhysicalParentData childParentData = child.parentData! as SliverPhysicalParentData;
-    childParentData.paintOffset = switch (applyGrowthDirectionToAxisDirection(
-      constraints.axisDirection,
-      constraints.growthDirection,
-    )) {
+    childParentData.paintOffset = switch (applyGrowthDirectionToAxisDirection(constraints.axisDirection, constraints.growthDirection)) {
       AxisDirection.up => Offset(0.0, -(geometry.scrollExtent - (geometry.paintExtent + constraints.scrollOffset))),
       AxisDirection.right => Offset(-constraints.scrollOffset, 0.0),
       AxisDirection.down => Offset(0.0, -constraints.scrollOffset),
@@ -53,19 +50,10 @@ class RenderOverlapSliver extends RenderSliver with RenderObjectWithChildMixin<R
   }
 
   @override
-  bool hitTestChildren(
-    SliverHitTestResult result, {
-    required double mainAxisPosition,
-    required double crossAxisPosition,
-  }) {
+  bool hitTestChildren(SliverHitTestResult result, {required double mainAxisPosition, required double crossAxisPosition}) {
     assert(geometry!.hitTestExtent > 0.0);
     if (child != null) {
-      return hitTestBoxChild(
-        BoxHitTestResult.wrap(result),
-        child!,
-        mainAxisPosition: mainAxisPosition,
-        crossAxisPosition: crossAxisPosition,
-      );
+      return hitTestBoxChild(BoxHitTestResult.wrap(result), child!, mainAxisPosition: mainAxisPosition, crossAxisPosition: crossAxisPosition);
     }
     return false;
   }
